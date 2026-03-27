@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miércoles de Fútbol — MDF 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#39FF14;--green-dark:#00952E;
+  --bg:#0a0f0d;--bg2:#111a14;--card:#1a2e1e;--card2:#1f361e;
+  --text:#e8f5e9;--text2:#7fad84;
+  --gold:#FFD700;--silver:#C0C0C0;--bronze:#CD7F32;--red:#ff5555;
+  --row-odd:#151f17;--row-even:#111a14;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,.97);backdrop-filter:blur(12px);border-bottom:2px solid var(--green-dark);display:flex;align-items:center;justify-content:space-between;padding:0 1rem;height:60px;box-shadow:0 4px 30px rgba(57,255,20,.1)}
+.logo{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--green);cursor:pointer;display:flex;align-items:center;gap:.35rem;flex-shrink:0}
+.logo .sub{color:var(--text2);font-size:.6rem;letter-spacing:3px;font-family:'Barlow Condensed',sans-serif}
+nav{display:flex;gap:.05rem;flex-wrap:nowrap}
+nav a{color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:.4rem .5rem;border-radius:4px;transition:all .2s;white-space:nowrap;cursor:pointer}
+nav a:hover,nav a.active{color:var(--green);background:rgba(57,255,20,.08)}
+.hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px;flex-shrink:0}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text)}
+.page{display:none;padding-top:60px;min-height:100vh}
+.page.active{display:block}
+
+/* HERO */
+.hero{position:relative;min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 60%,rgba(0,180,60,.1) 0%,transparent 70%),linear-gradient(180deg,#0a0f0d,#0c160f 50%,#0a0f0d)}
+.field-lines{position:absolute;inset:0;opacity:.05;background-image:linear-gradient(var(--green) 1px,transparent 1px),linear-gradient(90deg,var(--green) 1px,transparent 1px);background-size:55px 55px}
+.hero-content{position:relative;z-index:2;text-align:center;padding:3rem 2rem}
+.hero-badge{display:inline-block;background:rgba(57,255,20,.08);border:1px solid var(--green-dark);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;padding:.3rem 1rem;border-radius:2px;margin-bottom:1.25rem;text-transform:uppercase}
+.hero h1{font-family:'Anton',sans-serif;font-size:clamp(3rem,10vw,7rem);line-height:.9;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.75rem}
+.hero h1 .gr{color:var(--green);animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(57,255,20,.4)}50%{text-shadow:0 0 50px rgba(57,255,20,.8)}}
+.hero-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.hero-stats{display:flex;gap:2.5rem;justify-content:center;margin-top:3.5rem;flex-wrap:wrap}
+.stat-item{text-align:center}
+.stat-num{font-family:'Anton',sans-serif;font-size:2.2rem;color:var(--green);display:block;line-height:1}
+.stat-label{color:var(--text2);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;margin-top:.2rem}
+
+/* BUTTONS */
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;padding:.8rem 1.75rem;border-radius:4px;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}
+.btn-p{background:var(--green);color:#0a0f0d;box-shadow:0 0 25px rgba(57,255,20,.35)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(57,255,20,.6)}
+.btn-s{background:transparent;color:var(--text);border:2px solid var(--green-dark)}
+.btn-s:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+.btn-wa{background:#25D366;color:#fff;font-size:.8rem;padding:.6rem 1.25rem}
+.btn-wa:hover{background:#1ebe5d;transform:translateY(-2px)}
+
+/* LAYOUT */
+.section{padding:3.5rem 2rem;max-width:1200px;margin:0 auto}
+.stitle{font-family:'Anton',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);text-transform:uppercase;letter-spacing:2px;margin-bottom:.4rem}
+.stitle .acc{color:var(--green)}
+.divider{width:50px;height:3px;background:var(--green);margin:1rem 0 2rem}
+.ssub{color:var(--text2);margin-bottom:2rem;font-size:.88rem;line-height:1.5}
+
+/* TABS */
+.tabs{display:flex;gap:.4rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.tab-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;padding:.45rem 1.1rem;border:2px solid var(--green-dark);border-radius:4px;background:transparent;color:var(--text2);cursor:pointer;transition:all .2s}
+.tab-btn:hover,.tab-btn.active{background:var(--green);color:#0a0f0d;border-color:var(--green)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* STANDINGS TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid rgba(57,255,20,.12)}
+table.st{width:100%;border-collapse:separate;border-spacing:0;font-size:.8rem}
+table.st thead tr{background:#1a2e1e}
+table.st th{color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:.66rem;padding:.55rem .5rem;text-align:center;border-bottom:2px solid var(--green-dark);white-space:nowrap}
+table.st th.lft{text-align:left;padding-left:.75rem}
+table.st td{padding:.32rem .5rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.03);white-space:nowrap}
+table.st td.lft{text-align:left;padding-left:.75rem;font-weight:600;vertical-align:top;padding-top:.38rem;padding-bottom:.38rem}
+table.st tbody tr:nth-child(odd) td{background:#151f17}
+table.st tbody tr:nth-child(even) td{background:#111a14}
+table.st tbody tr.r1 td{background:#2d2408!important}
+table.st tbody tr.r2 td{background:#1e2020!important}
+table.st tbody tr.r3 td{background:#21190d!important}
+table.st tbody tr:hover td{background:#1e3322!important;transition:background .15s}
+/* Sticky cols */
+table.st th:nth-child(1),table.st td:nth-child(1){position:sticky;left:0;z-index:2}
+table.st th:nth-child(2),table.st td:nth-child(2){position:sticky;left:34px;z-index:2}
+table.st thead th:nth-child(1),table.st thead th:nth-child(2){background:#1a2e1e;z-index:3}
+table.st tbody tr:nth-child(odd) td:nth-child(1),table.st tbody tr:nth-child(odd) td:nth-child(2){background:#151f17}
+table.st tbody tr:nth-child(even) td:nth-child(1),table.st tbody tr:nth-child(even) td:nth-child(2){background:#111a14}
+table.st tbody tr.r1 td:nth-child(1),table.st tbody tr.r1 td:nth-child(2){background:#2d2408!important}
+table.st tbody tr.r2 td:nth-child(1),table.st tbody tr.r2 td:nth-child(2){background:#1e2020!important}
+table.st tbody tr.r3 td:nth-child(1),table.st tbody tr.r3 td:nth-child(2){background:#21190d!important}
+table.st tbody tr:hover td:nth-child(1),table.st tbody tr:hover td:nth-child(2){background:#1e3322!important}
+table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,0,.5)}
+.pb{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:50%;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem}
+.p1{background:var(--gold);color:#000}.p2{background:var(--silver);color:#000}.p3{background:var(--bronze);color:#000}.pn{background:rgba(255,255,255,.1);color:var(--text2)}
+.pts-cell{color:var(--green);font-weight:700;font-size:.9rem}
+.dif-pos{color:#6ee06e}.dif-neg{color:#ff7777}
+.racha-wrap{display:flex;gap:3px;justify-content:flex-start;align-items:center;min-width:88px}
+.rc{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.3);flex-shrink:0}
+.rc-g{background:#22c55e}.rc-p{background:#ef4444}.rc-e{background:#eab308}
+.name-wrap{display:inline-flex;flex-direction:column;gap:0;line-height:1.25}
+.shirt-badge{display:inline-flex;align-items:center;gap:.2rem;background:rgba(255,200,50,.15);border:1px solid rgba(255,200,50,.3);color:#ffd700;font-size:.6rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;padding:.04rem .28rem;border-radius:8px;margin-top:.08rem;width:fit-content}
+.pts-legend{margin-top:1rem;background:var(--card2);border:1px solid rgba(57,255,20,.1);border-radius:8px;padding:.65rem 1rem;display:flex;flex-wrap:wrap;gap:.35rem .75rem}
+.pts-legend span{color:var(--text2);font-size:.73rem;display:flex;align-items:center;gap:.2rem}
+.pts-legend strong{color:var(--green)}
+/* Fecha filter */
+.tabla-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
+.fecha-filter{display:flex;gap:.3rem;flex-wrap:wrap;align-items:center}
+.fecha-filter span{color:var(--text2);font-size:.74rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.ff-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.73rem;letter-spacing:1px;text-transform:uppercase;padding:.28rem .7rem;border:1px solid var(--green-dark);border-radius:4px;background:transparent;color:var(--text2);cursor:pointer;transition:all .2s}
+.ff-btn:hover{border-color:var(--green);color:var(--green)}
+.ff-btn.active{background:var(--green);color:#0a0f0d;border-color:var(--green)}
+.ff-btn.last-fecha{border-color:var(--gold);color:var(--gold)}
+.ff-btn.last-fecha.active{background:var(--gold);color:#0a0f0d;border-color:var(--gold)}
+.updated-lbl{color:var(--text2);font-size:.73rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;text-align:right}
+.updated-lbl strong{color:var(--green)}
+
+/* LIVE BADGE */
+.live-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(57,255,20,.07);border:1px solid rgba(57,255,20,.18);color:var(--green);font-size:.76rem;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;padding:.22rem .7rem;border-radius:20px;margin-bottom:1.2rem}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+/* ═══ MATCH CARDS — redesigned pro ═══ */
+.fh{font-family:'Anton',sans-serif;font-size:.9rem;letter-spacing:2px;color:var(--green);text-transform:uppercase;border-left:3px solid var(--green);padding-left:.8rem;margin:2rem 0 .65rem;display:flex;align-items:center;gap:.75rem}
+.fh-date{font-family:'Barlow',sans-serif;font-size:.75rem;color:var(--text2);font-weight:400;letter-spacing:0;text-transform:none}
+.mc{background:var(--card);border:1px solid rgba(57,255,20,.1);border-radius:12px;overflow:hidden;margin-bottom:1.1rem;transition:box-shadow .2s,transform .2s}
+.mc:hover{box-shadow:0 6px 30px rgba(0,0,0,.4);transform:translateY(-2px)}
+/* Score header */
+.mc-head{display:flex;align-items:stretch;background:#131d15;border-bottom:1px solid rgba(255,255,255,.05)}
+.mc-team{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.9rem .75rem;gap:.25rem}
+.mc-team-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:.4rem}
+.dot-w{width:11px;height:11px;border-radius:50%;background:#e0e0e0;border:2px solid rgba(255,255,255,.25);flex-shrink:0}
+.dot-n{width:11px;height:11px;border-radius:50%;background:#2a2a2a;border:2px solid rgba(255,255,255,.12);flex-shrink:0}
+.mc-result-badge{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;padding:.12rem .5rem;border-radius:10px}
+.rb-win{background:rgba(57,255,20,.15);color:var(--green);border:1px solid rgba(57,255,20,.3)}
+.rb-loss{background:rgba(255,85,85,.1);color:#ff8888;border:1px solid rgba(255,85,85,.25)}
+.mc-score-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem 1.25rem;flex-shrink:0;border-left:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06)}
+.mc-score{font-family:'Anton',sans-serif;font-size:2.8rem;line-height:1;display:flex;align-items:center;gap:.35rem}
+.mc-score-b{color:var(--green)}.mc-score-n{color:var(--text)}.mc-score-sep{color:var(--text2);font-size:1.8rem}
+.mc-bonus{font-size:.62rem;color:var(--green);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;margin-top:.2rem;background:rgba(57,255,20,.1);padding:.1rem .4rem;border-radius:8px;border:1px solid rgba(57,255,20,.25);white-space:nowrap}
+/* Body: player columns */
+.mc-body{display:grid;grid-template-columns:1fr 1px 1fr;padding:.65rem 1rem .75rem}
+.mc-divider{background:linear-gradient(to bottom,transparent,rgba(255,255,255,.1) 20%,rgba(255,255,255,.1) 80%,transparent);margin:0 .6rem}
+.pl-list{display:flex;flex-direction:column;gap:.1rem;padding:0 .2rem}
+.pl-item{display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--text2);padding:.12rem 0}
+.pl-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.pl-name{flex:1;font-size:.78rem}
+.pl-gol{color:var(--green);font-size:.72rem;font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:.1rem}
+.pl-mvp-item{color:var(--gold)}
+.pl-mvp-item .pl-dot{background:var(--gold)}
+.pl-mvp-item .pl-name::after{content:' ★';font-size:.65rem}
+/* MVP ribbon */
+.mc-mvp{padding:.4rem 1rem .6rem;font-size:.72rem;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;display:flex;align-items:center;gap:.4rem;border-top:1px solid rgba(255,255,255,.04)}
+.mc-mvp::before{content:'★ MVP';font-weight:700}
+
+/* RANK LIST */
+.rank-section{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+.rank-list{display:flex;flex-direction:column;gap:.4rem}
+.rank-item{display:flex;align-items:center;gap:.75rem;background:var(--card);border-radius:8px;padding:.45rem .85rem;border:1px solid rgba(57,255,20,.07);transition:all .2s;cursor:pointer}
+.rank-item:hover{border-color:var(--green);transform:translateX(4px)}
+.ri-pos{font-family:'Anton',sans-serif;font-size:1.2rem;min-width:1.6rem;color:var(--text2);text-align:center}
+.ri-pos.r1{color:var(--gold)}.ri-pos.r2{color:var(--silver)}.ri-pos.r3{color:var(--bronze)}
+.ri-info{flex:1}.ri-name{font-weight:600;font-size:.88rem}.ri-sub{color:var(--text2);font-size:.68rem}
+.ri-stats{display:flex;flex-direction:column;align-items:flex-end;gap:.05rem}
+.ri-count{font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--green);line-height:1}
+.ri-unit{color:var(--text2);font-size:.58rem;letter-spacing:1px;text-transform:uppercase}
+.ri-prom{color:var(--text2);font-size:.68rem}
+.rank-header{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:.6rem}
+.rh-col{display:flex;align-items:center;gap:.5rem}
+.rh-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2)}
+.rh-prom-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);text-align:right}
+
+/* SCORE/VALLA MODAL */
+.score-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:1.5rem}
+.score-modal.open{display:flex}
+.score-modal-inner{background:var(--card);border:2px solid var(--green-dark);border-radius:14px;padding:1.75rem;max-width:340px;width:100%;position:relative;animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.score-modal-close{position:absolute;top:.65rem;right:.65rem;background:rgba(255,255,255,.1);border:none;color:var(--text);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center}
+.sm-title{font-family:'Anton',sans-serif;font-size:1.35rem;color:var(--green);margin-bottom:.2rem}
+.sm-sub{color:var(--text2);font-size:.78rem;margin-bottom:1rem}
+.sm-rows{display:flex;flex-direction:column;gap:.3rem}
+.sm-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem .6rem;border-radius:6px;background:var(--bg2)}
+.sm-row.sm-total{background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.15);margin-top:.25rem}
+.sm-fecha{color:var(--text2);font-size:.8rem}.sm-val{color:var(--green);font-weight:700;font-size:.85rem}
+.sm-total .sm-fecha{color:var(--text);font-weight:600}.sm-total .sm-val{color:var(--green)}
+
+/* MVP MODAL */
+.mvp-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:2rem}
+.mvp-modal.open{display:flex}
+.mvp-modal-inner{background:var(--card);border:2px solid var(--gold);border-radius:14px;padding:2rem;max-width:420px;width:100%;position:relative;text-align:center;animation:popIn .25s ease}
+.mvp-modal-close{position:absolute;top:.75rem;right:.75rem;background:rgba(255,255,255,.1);border:none;color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.mvp-modal-img{width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);margin:0 auto 1rem;display:block}
+.mvp-modal-img-ph{width:130px;height:130px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.mvp-modal-lbl{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;font-size:.72rem;text-transform:uppercase;margin-bottom:.35rem}
+.mvp-modal-name{font-family:'Anton',sans-serif;font-size:1.65rem;margin-bottom:.3rem}
+.mvp-modal-date{color:var(--text2);font-size:.83rem;margin-bottom:.65rem}
+.mvp-modal-stat{color:var(--text2);font-size:.88rem;line-height:1.5}
+
+/* MVP PAGE */
+.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
+.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0}
+.mvp-l{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;font-size:.7rem;text-transform:uppercase;margin-bottom:.35rem}
+.mvp-n{font-family:'Anton',sans-serif;font-size:1.8rem}
+.mvp-d{color:var(--text2);font-size:.83rem;margin-top:.2rem}
+.mvp-desc{color:var(--text2);margin-top:.6rem;font-size:.88rem;line-height:1.5}
+.mvp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;margin-top:1rem}
+.mvp-card{background:var(--card);border:1px solid rgba(255,215,0,.1);border-radius:10px;padding:1rem;transition:all .2s;cursor:pointer}
+.mvp-card:hover{border-color:rgba(255,215,0,.35);transform:translateY(-3px)}
+.mvp-card-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.55rem}
+.mvp-thumb{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,215,0,.3);flex-shrink:0}
+.mvp-thumb-ph{width:46px;height:46px;border-radius:50%;background:var(--card2);border:2px solid rgba(255,215,0,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;position:relative;cursor:pointer}
+.mvp-upload-btn{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;font-size:.6rem;color:#fff;text-align:center}
+.mvp-thumb-ph:hover .mvp-upload-btn{opacity:1}
+.mvp-card-date{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase}
+.mvp-card-name{font-weight:700;font-size:.9rem}
+.mvp-card-stat{color:var(--text2);font-size:.78rem}
+.mvp-file-input{display:none}
+
+/* PRÓXIMA FECHA */
+.next-hero{background:linear-gradient(135deg,var(--card2),var(--bg2));border:2px solid var(--green-dark);border-radius:12px;padding:2.25rem;text-align:center;margin-bottom:2rem;position:relative;overflow:hidden}
+.next-hero::before{content:'⚽';position:absolute;top:-20px;right:-20px;font-size:7rem;opacity:.03}
+.nd{font-family:'Anton',sans-serif;font-size:2.2rem;color:var(--green)}
+.nt{color:var(--text2);font-size:1rem;margin-top:.2rem}
+.np{color:var(--text);margin-top:.85rem;font-size:.93rem}
+.np strong{color:var(--green)}
+.next-edit-row{display:flex;gap:.5rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+.tgrid{display:grid;grid-template-columns:1fr auto 1fr;gap:1.75rem;align-items:start;margin-top:1.75rem}
+.tlist{background:var(--card);border-radius:8px;padding:1.25rem}
+.tlist h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.82rem;color:var(--green);margin-bottom:.85rem;padding-bottom:.6rem;border-bottom:1px solid rgba(57,255,20,.15)}
+.tlist ul{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.tlist li{display:flex;align-items:center;gap:.4rem;font-size:.88rem;padding:.2rem 0}
+.tlist li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.vs{font-family:'Anton',sans-serif;font-size:1.75rem;color:var(--text2);text-align:center;padding-top:2.5rem}
+.wa-section{background:var(--card2);border:1px solid rgba(37,211,102,.2);border-radius:10px;padding:1.25rem;margin-top:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.wa-txt{font-size:.88rem;color:var(--text2)}.wa-txt strong{color:var(--text)}
+
+/* FORUM */
+.forum-section{margin-top:2.5rem}
+.forum-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.forum-header h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase}
+.forum-select{background:var(--card);border:1px solid var(--green-dark);color:var(--text);font-family:'Barlow',sans-serif;font-size:.85rem;padding:.4rem .75rem;border-radius:6px;cursor:pointer}
+.forum-select:focus{outline:none;border-color:var(--green)}
+.forum-posts{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1rem;max-height:300px;overflow-y:auto}
+.forum-post{background:var(--card);border:1px solid rgba(57,255,20,.08);border-radius:8px;padding:.8rem 1rem}
+.fp-meta{display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem}
+.fp-name{font-weight:600;font-size:.83rem;color:var(--green)}
+.fp-time{color:var(--text2);font-size:.7rem}
+.fp-body{color:var(--text2);font-size:.83rem;line-height:1.5}
+.forum-form{display:flex;flex-direction:column;gap:.6rem}
+.forum-form input,.forum-form textarea{background:var(--bg2);border:1px solid var(--green-dark);border-radius:6px;color:var(--text);padding:.75rem;font-family:'Barlow',sans-serif;font-size:.88rem;transition:border-color .2s}
+.forum-form input::placeholder,.forum-form textarea::placeholder{color:var(--text2)}
+.forum-form input:focus,.forum-form textarea:focus{outline:none;border-color:var(--green)}
+.forum-form textarea{resize:vertical;min-height:80px}
+
+/* MAP */
+.map-section{margin-top:1.5rem;border-radius:12px;overflow:hidden;border:2px solid var(--green-dark);position:relative}
+.map-section a{display:block;position:relative}
+.map-section iframe{width:100%;height:220px;border:none;display:block;filter:grayscale(30%) contrast(1.1)}
+.map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,15,13,.9));padding:1rem 1.25rem;pointer-events:none}
+.map-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:#0a0f0d;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;padding:.5rem 1rem;border-radius:6px;text-decoration:none;margin-top:.75rem;transition:all .2s;pointer-events:all}
+.map-cta:hover{background:#fff;transform:translateY(-1px)}
+
+/* ESTADISTICAS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem}
+.stat-card{background:var(--card);border:1px solid rgba(57,255,20,.09);border-radius:10px;padding:1.25rem;transition:all .25s}
+.stat-card:hover{border-color:rgba(57,255,20,.25);transform:translateY(-3px)}
+.stat-card-icon{font-size:1.8rem;margin-bottom:.65rem;display:block}
+.stat-card-label{color:var(--text2);font-size:.73rem;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;font-weight:600;margin-bottom:.3rem}
+.stat-card-value{font-family:'Anton',sans-serif;font-size:1.6rem;color:var(--green);line-height:1.1}
+.stat-card-sub{color:var(--text2);font-size:.78rem;margin-top:.25rem}
+.curiosidad-list{display:flex;flex-direction:column;gap:.75rem;margin-top:2rem}
+.cur-item{background:var(--card);border-radius:10px;padding:1.1rem 1.25rem;border-left:3px solid var(--green);display:flex;gap:.85rem;align-items:flex-start}
+.cur-emoji{font-size:1.4rem;flex-shrink:0;line-height:1.3}
+.cur-text{font-size:.88rem;line-height:1.55;color:var(--text2)}
+.cur-text strong{color:var(--text)}
+
+/* AWARDS */
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
+.acard{background:var(--card);border-radius:10px;padding:1.5rem;border:1px solid rgba(255,255,255,.05);transition:all .25s}
+.acard:hover{transform:translateY(-4px);border-color:rgba(57,255,20,.15)}
+.aicon{font-size:2.2rem;margin-bottom:.85rem;display:block}
+.atitle{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.85rem}
+.arow{display:flex;align-items:center;gap:.6rem;padding:.6rem;border-radius:6px;margin-bottom:.4rem}
+.a23{background:rgba(205,127,50,.08);border:1px solid rgba(205,127,50,.15)}
+.a24{background:rgba(192,192,192,.05);border:1px solid rgba(192,192,192,.1)}
+.a25{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15)}
+.ay{font-size:.66rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);min-width:2.2rem}
+.an{font-weight:600;font-size:.88rem}
+
+/* QUICK CARDS */
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.85rem}
+.qcard{background:var(--card);border:1px solid rgba(57,255,20,.07);border-radius:10px;padding:1.3rem;text-align:center;cursor:pointer;transition:all .25s}
+.qcard:hover{border-color:rgba(57,255,20,.28);transform:translateY(-3px);background:var(--card2)}
+.qi{font-size:2rem;margin-bottom:.65rem;display:block}
+.qt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.3rem}
+.qd{color:var(--text2);font-size:.73rem;line-height:1.4}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5rem 2rem 2rem;margin-top:3rem}
+.fi{max-width:1200px;margin:0 auto}
+.ft{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:1.75rem}
+.fl{font-family:'Anton',sans-serif;font-size:1.25rem;color:var(--green);letter-spacing:2px;margin-bottom:.5rem}
+.floc h4{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.76rem;color:var(--text2);margin-bottom:.6rem}
+.floc p{color:var(--text2);font-size:.82rem;line-height:1.6}
+.fb{border-top:1px solid rgba(255,255,255,.04);padding-top:1.25rem;color:var(--text2);font-size:.72rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
+
+/* EMPTY */
+.empty-box{background:var(--card);border:1px dashed var(--green-dark);border-radius:8px;padding:2rem;text-align:center;color:var(--text2)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green-dark);border-radius:3px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav a{font-size:.66rem;padding:.35rem .42rem}
+}
+@media(max-width:768px){
+  nav{display:none;position:fixed;top:60px;left:0;right:0;background:var(--bg);padding:1rem;flex-direction:column;border-bottom:1px solid var(--green-dark);z-index:199}
+  nav.open{display:flex}
+  nav a{padding:.7rem 1rem;font-size:.9rem}
+  .hamburger{display:flex}
+  .tgrid{grid-template-columns:1fr}.vs{display:none}
+  .ft{grid-template-columns:1fr}
+  .mc-head{flex-direction:column}
+  .mc-score-center{border:none;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);padding:.5rem}
+  table.st{font-size:.7rem}
+  table.st th,table.st td{padding:.38rem .32rem}
+  .rank-section{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr}
+  .mc-body{grid-template-columns:1fr}
+  .mc-divider{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- SCORE MODAL -->
+<div class="score-modal" id="score-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="score-modal-inner">
+    <button class="score-modal-close" onclick="document.getElementById('score-modal').classList.remove('open')">✕</button>
+    <div class="sm-title" id="sm-name"></div>
+    <div class="sm-sub" id="sm-sub"></div>
+    <div class="sm-rows" id="sm-rows"></div>
+  </div>
+</div>
+
+<!-- MVP MODAL -->
+<div class="mvp-modal" id="mvp-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mvp-modal-inner">
+    <button class="mvp-modal-close" onclick="document.getElementById('mvp-modal').classList.remove('open')">✕</button>
+    <div id="modal-img-wrap"></div>
+    <div class="mvp-modal-lbl">★ MVP de la Fecha</div>
+    <div class="mvp-modal-name" id="modal-name"></div>
+    <div class="mvp-modal-date" id="modal-date"></div>
+    <div class="mvp-modal-stat" id="modal-stat"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo" onclick="showPage('home')">⚽ MDF <span class="sub">MIÉRCOLES DE FÚTBOL</span></div>
+  <nav id="main-nav">
+    <a onclick="showPage('home')" class="active">Inicio</a>
+    <a onclick="showPage('tabla')">Tabla</a>
+    <a onclick="showPage('partidos')">Partidos</a>
+    <a onclick="showPage('goleadores')">Goleadores</a>
+    <a onclick="showPage('mvp')">MVP</a>
+    <a onclick="showPage('proxima')">Próxima Fecha</a>
+    <a onclick="showPage('stats')">Estadísticas</a>
+    <a onclick="showPage('premios')">Premios</a>
+  </nav>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</header>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-bg"></div><div class="field-lines"></div>
+    <div class="hero-content">
+      <div class="hero-badge">🏆 Temporada 2026 · Fecha 6 jugada</div>
+      <h1><span class="gr">MIÉRCOLES</span><br>DE FÚTBOL</h1>
+      <div class="hero-btns">
+        <button class="btn btn-p" onclick="showPage('tabla')">📊 Ver Tabla 2026</button>
+        <button class="btn btn-s" onclick="showPage('proxima')">📅 Próxima Fecha</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-num">6</span><div class="stat-label">Fechas</div></div>
+        <div class="stat-item"><span class="stat-num">26+</span><div class="stat-label">Jugadores</div></div>
+        <div class="stat-item"><span class="stat-num">97</span><div class="stat-label">Apariciones</div></div>
+        <div class="stat-item"><span class="stat-num">71</span><div class="stat-label">Goles</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <h2 class="stitle">Accesos <span class="acc">Rápidos</span></h2>
+    <div class="divider"></div>
+    <div class="qgrid">
+      <div class="qcard" onclick="showPage('tabla')"><span class="qi">📊</span><div class="qt">Tabla 2026</div><div class="qd">Lidera Ramírez, Jere</div></div>
+      <div class="qcard" onclick="showPage('partidos')"><span class="qi">⚽</span><div class="qt">Partidos</div><div class="qd">6 fechas jugadas</div></div>
+      <div class="qcard" onclick="showPage('goleadores')"><span class="qi">🥅</span><div class="qt">Goleadores</div><div class="qd">Ramírez: 15 goles</div></div>
+      <div class="qcard" onclick="showPage('mvp')"><span class="qi">🌟</span><div class="qt">MVP F6</div><div class="qd">Lorda, Fernando</div></div>
+      <div class="qcard" onclick="showPage('proxima')"><span class="qi">📅</span><div class="qt">Próxima Fecha</div><div class="qd">Fecha 7 · Miércoles</div></div>
+      <div class="qcard" onclick="showPage('stats')"><span class="qi">📈</span><div class="qt">Estadísticas</div><div class="qd">Curiosidades y récords</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TABLA ══════════════ -->
+<div id="page-tabla" class="page">
+  <div class="section">
+    <h2 class="stitle">Tabla de <span class="acc">Posiciones</span></h2>
+    <div class="divider"></div>
+    <div class="live-badge"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('tabla','2026',this)">⚡ 2026 Actual</button>
+      <button class="tab-btn" onclick="switchTab('tabla','2023',this)">2023</button>
+      <button class="tab-btn" onclick="switchTab('tabla','2024',this)">2024</button>
+      <button class="tab-btn" onclick="switchTab('tabla','2025',this)">2025</button>
+    </div>
+
+    <div id="tabla-2026" class="tab-content active">
+      <div class="tabla-top">
+        <div class="fecha-filter" id="fecha-filter-wrap">
+          <!-- filled by JS -->
+        </div>
+        <div class="updated-lbl">Actualizado a fecha: <strong id="updated-fecha-lbl">F6 · 25/03/2026</strong></div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="st">
+          <thead><tr>
+            <th>POS</th><th class="lft">JUGADOR</th><th>PTS</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th>
+            <th>GOL</th><th>+/-</th><th>MVP</th><th>BONUS</th><th>%VIC</th><th>P/G</th><th>RACHA</th>
+          </tr></thead>
+          <tbody id="tb26"></tbody>
+        </table>
+      </div>
+      <div class="pts-legend">
+        <span><strong>PJ</strong> +2 pts</span>
+        <span><strong>PG</strong> Victoria +3</span>
+        <span><strong>PE</strong> Empate +1</span>
+        <span><strong>PP</strong> Derrota 0</span>
+        <span><strong>MVP</strong> +1</span>
+        <span><strong>Goleada</strong> (+5 dif) +1</span>
+        <span><strong>👕</strong> = camiseta se llevó para lavar</span>
+      </div>
+    </div>
+    <div id="tabla-2023" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá una hoja "BASE_DATOS_2023" en tu Sheets.</div></div>
+    <div id="tabla-2024" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá "BASE_DATOS_2024" en tu Sheets.</div></div>
+    <div id="tabla-2025" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá "BASE_DATOS_2025" en tu Sheets.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ PARTIDOS ══════════════ -->
+<div id="page-partidos" class="page">
+  <div class="section">
+    <h2 class="stitle">Partidos y <span class="acc">Resultados</span></h2>
+    <div class="divider"></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('par','p2026',this)">⚡ 2026</button>
+      <button class="tab-btn" onclick="switchTab('par','p2025',this)">2025</button>
+      <button class="tab-btn" onclick="switchTab('par','p2024',this)">2024</button>
+      <button class="tab-btn" onclick="switchTab('par','p2023',this)">2023</button>
+    </div>
+    <div id="par-p2026" class="tab-content active"></div>
+    <div id="par-p2025" class="tab-content"><div class="empty-box">Agregá datos de 2025 en tu Sheets.</div></div>
+    <div id="par-p2024" class="tab-content"><div class="empty-box">Agregá datos de 2024 en tu Sheets.</div></div>
+    <div id="par-p2023" class="tab-content"><div class="empty-box">Agregá datos de 2023 en tu Sheets.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ GOLEADORES ══════════════ -->
+<div id="page-goleadores" class="page">
+  <div class="section">
+    <h2 class="stitle">Goleadores y <span class="acc">Vallas</span></h2>
+    <div class="divider"></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('gol','g26',this)">⚽ Goleadores 2026</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida</button>
+    </div>
+    <div id="gol-g26" class="tab-content active">
+      <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
+      <div class="rank-section">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por goles totales</div>
+          <div class="rank-list" id="scorers-cnt"></div>
+        </div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por promedio / partido</div>
+          <div class="rank-list" id="scorers-prom-cnt"></div>
+        </div>
+      </div>
+    </div>
+    <div id="gol-gv" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🧤 Arqueros 2026 · Toca un nombre para ver goles recibidos por fecha</p>
+      <div class="rank-section">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por goles recibidos (menor = mejor)</div>
+          <div class="rank-list" id="valla-cnt"></div>
+        </div>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por promedio recibido / partido</div>
+          <div class="rank-list" id="valla-prom-cnt"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MVP ══════════════ -->
+<div id="page-mvp" class="page">
+  <div class="section">
+    <h2 class="stitle">MVP de <span class="acc">la Fecha</span></h2>
+    <div class="divider"></div>
+    <div class="mvp-featured">
+      <div class="mvp-photo-placeholder">⭐</div>
+      <div>
+        <div class="mvp-l">★ MVP — Última fecha · 25/03/2026</div>
+        <div class="mvp-n">Lorda, Fernando</div>
+        <div class="mvp-d">Miércoles 25 de Marzo, 2026 · Fecha 6</div>
+        <div class="mvp-desc">3 goles en la victoria 9-8 del Equipo Blanco. Partido muy peleado decidido por Lorda.</div>
+      </div>
+    </div>
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs · 2026</h3>
+    <p style="color:var(--text2);font-size:.76rem;margin-bottom:1.1rem">Toca cualquier card para ver el popup. Toca la foto para subir imagen desde tu PC.</p>
+    <div class="mvp-grid" id="mvp-cnt"></div>
+  </div>
+</div>
+
+<!-- ══════════════ PRÓXIMA FECHA ══════════════ -->
+<div id="page-proxima" class="page">
+  <div class="section">
+    <h2 class="stitle">Próxima <span class="acc">Fecha</span></h2>
+    <div class="divider"></div>
+    <div class="next-hero">
+      <div style="display:inline-block;background:rgba(57,255,20,.07);border:1px solid var(--green-dark);padding:.28rem .9rem;border-radius:2px;font-size:.7rem;letter-spacing:3px;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:1.2rem" id="fecha-num-label">📅 Fecha 7 · Temporada 2026</div>
+      <div class="nd" id="next-date-display">MIÉRCOLES 1 DE ABRIL</div>
+      <div class="nt" id="next-time-display">⏰ 20:00 hs</div>
+      <div class="np">📍 <strong>Campus El Irlandés</strong> — Campo de Deportes del Marin<br><span style="color:var(--text2);font-size:.85rem">Av. Bartolomé Mitre 1650, B1643 Béccar, Buenos Aires</span></div>
+      <div class="next-edit-row">
+        <div id="no-play-msg" style="display:none;background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);color:#ff8888;padding:.4rem 1rem;border-radius:20px;font-size:.82rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">⚠️ FECHA SUSPENDIDA</div>
+        <button class="btn btn-s" style="font-size:.72rem;padding:.42rem .85rem" onclick="toggleNoPlay()" id="no-play-btn">⚠️ Marcar fecha suspendida</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem">
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;color:var(--text2)">Armado de Equipos — 8 vs 8</h3>
+    </div>
+    <div class="tgrid">
+      <div class="tlist">
+        <h3>⚪ Equipo Blanco</h3>
+        <ul id="team-blanco">
+          <li>Ramirez, Jere</li>
+          <li>Natiello, Cristian</li>
+          <li>Lorda, Fernando</li>
+          <li>Cañete, Maxi</li>
+          <li>Reggi, Tomas</li>
+          <li>Besse, Luciano</li>
+          <li>Espul, Lucas</li>
+          <li>Valdez, Lucas</li>
+        </ul>
+      </div>
+      <div class="vs">VS</div>
+      <div class="tlist">
+        <h3>⚫ Equipo Negro</h3>
+        <ul id="team-negro">
+          <li>Questa, Ezequiel</li>
+          <li>Mendoza, Guillermo</li>
+          <li>Del Rio, Pipa</li>
+          <li>Diez, Juan Pablo</li>
+          <li>Gonzalez, Matias</li>
+          <li>Vissani, Matias</li>
+          <li>Florio, Tomas</li>
+          <li>Questa, Sebastian</li>
+        </ul>
+      </div>
+    </div>
+    <p style="color:var(--text2);font-size:.74rem;margin-top:.75rem">✏️ Para modificar los equipos editá las listas en el HTML (buscar "team-blanco" y "team-negro").</p>
+    <div class="wa-section">
+      <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br>Solo el admin puede compartir los equipos</div>
+      <button class="btn btn-wa" onclick="shareWhatsApp()">WhatsApp</button>
+    </div>
+    <div class="forum-section">
+      <div class="forum-header">
+        <h3>😤 Foro de quejas por fecha</h3>
+        <select class="forum-select" id="forum-fecha-sel" onchange="renderForum()">
+          <option value="7">Fecha 7</option>
+          <option value="6">Fecha 6</option>
+          <option value="5">Fecha 5</option>
+          <option value="4">Fecha 4</option>
+          <option value="3">Fecha 3</option>
+          <option value="2">Fecha 2</option>
+          <option value="1">Fecha 1</option>
+        </select>
+      </div>
+      <div class="forum-posts" id="forum-posts"></div>
+      <div class="forum-form">
+        <input type="text" id="forum-name" placeholder="Tu nombre" maxlength="30">
+        <textarea id="forum-msg" placeholder="Tu queja u opinión sobre el armado... 😅" maxlength="300"></textarea>
+        <div><button class="btn btn-p" onclick="postForum()" style="font-size:.78rem;padding:.6rem 1.4rem">📤 Publicar</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ESTADÍSTICAS ══════════════ -->
+<div id="page-stats" class="page">
+  <div class="section">
+    <h2 class="stitle">Estadísticas y <span class="acc">Curiosidades</span></h2>
+    <div class="divider"></div>
+    <p class="ssub">Datos acumulados de las 6 fechas disputadas en la Temporada 2026</p>
+
+    <div class="stats-grid" id="stats-cards"></div>
+
+    <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
+    <div class="divider"></div>
+    <div class="curiosidad-list" id="curiosidades"></div>
+  </div>
+</div>
+
+<!-- ══════════════ PREMIOS ══════════════ -->
+<div id="page-premios" class="page">
+  <div class="section">
+    <h2 class="stitle">Premios y <span class="acc">Campeones</span></h2>
+    <div class="divider"></div>
+    <p class="ssub">Galardones de fin de temporada 2023 · 2024 · 2025</p>
+    <div class="agrid">
+      <div class="acard"><span class="aicon">🏆</span><div class="atitle">Campeón del Año</div><div class="arow a23"><span class="ay">2023</span><span class="an">— completar —</span></div><div class="arow a24"><span class="ay">2024</span><span class="an">— completar —</span></div><div class="arow a25"><span class="ay">2025</span><span class="an">— completar —</span></div></div>
+      <div class="acard"><span class="aicon">👟</span><div class="atitle">Máximo Goleador</div><div class="arow a23"><span class="ay">2023</span><span class="an">— completar —</span></div><div class="arow a24"><span class="ay">2024</span><span class="an">— completar —</span></div><div class="arow a25"><span class="ay">2025</span><span class="an">— completar —</span></div></div>
+      <div class="acard"><span class="aicon">🌟</span><div class="atitle">MVP del Año</div><div class="arow a23"><span class="ay">2023</span><span class="an">— completar —</span></div><div class="arow a24"><span class="ay">2024</span><span class="an">— completar —</span></div><div class="arow a25"><span class="ay">2025</span><span class="an">— completar —</span></div></div>
+      <div class="acard"><span class="aicon">🤝</span><div class="atitle">Mejor Compañero</div><div class="arow a23"><span class="ay">2023</span><span class="an">— completar —</span></div><div class="arow a24"><span class="ay">2024</span><span class="an">— completar —</span></div><div class="arow a25"><span class="ay">2025</span><span class="an">— completar —</span></div></div>
+      <div class="acard"><span class="aicon">🧤</span><div class="atitle">Valla Menos Vencida</div><div class="arow a23"><span class="ay">2023</span><span class="an">— completar —</span></div><div class="arow a24"><span class="ay">2024</span><span class="an">— completar —</span></div><div class="arow a25"><span class="ay">2025</span><span class="an">— completar —</span></div></div>
+      <div class="acard"><span class="aicon">📈</span><div class="atitle">Mayor Progreso</div><div class="arow a23"><span class="ay">2023</span><span class="an">— completar —</span></div><div class="arow a24"><span class="ay">2024</span><span class="an">— completar —</span></div><div class="arow a25"><span class="ay">2025</span><span class="an">— completar —</span></div></div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(57,255,20,.04),rgba(0,200,83,.02));border:1px solid rgba(57,255,20,.1);border-radius:12px;padding:1.75rem;margin-top:2.5rem;text-align:center">
+      <div style="font-size:2.5rem;margin-bottom:.7rem">🏅</div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--green);margin-bottom:.4rem">TEMPORADA 2026 EN CURSO</h3>
+      <p style="color:var(--text2)">Los premios de 2026 se definen al final del año.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div class="ft">
+      <div>
+        <div class="fl">⚽ MDF</div>
+        <p style="color:var(--text2);font-size:.82rem;line-height:1.6">Miércoles de Fútbol · Temporada 2026</p>
+      </div>
+      <div class="floc">
+        <h4>📍 Ubicación</h4>
+        <p><strong>Campus El Irlandés</strong><br>Campo de Deportes del Marin<br>Av. Bartolomé Mitre 1650<br>B1643 Béccar, Buenos Aires</p>
+        <div class="map-section" style="margin-top:1rem">
+          <a href="https://www.google.com/maps/place/Campus+El+Irland%C3%A9s+(Campo+de+Deportes+del+Marin)/@-34.4565625,-58.5107859,597m/data=!3m2!1e3!4b1!4m6!3m5!1s0x95bcb02b9e0d76c1:0x95b8e35670a781ed!8m2!3d-34.456567!4d-58.508211!16s%2Fg%2F11bwnyb01x?entry=ttu" target="_blank" rel="noopener">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1489.4140886714!2d-58.51078586!3d-34.4565625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb02b9e0d76c1%3A0x95b8e35670a781ed!2sCampus%20El%20Irland%C3%A9s%20(Campo%20de%20Deportes%20del%20Marin)!5e0!3m2!1ses!2sar!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="map-overlay">
+              <span class="map-cta">📍 Ver en Google Maps</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="fb"><span>© 2026 Miércoles de Fútbol (MDF)</span><span>Datos desde Google Sheets 📊</span></div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════
+const SHEET_ID='1GIcSZ6cIWOaAwi6P2cPXTd3LYvgUoFDJ0N6auLWJ4ZQ';
+const SHEET_GID='0';
+const ADMIN_PASS='mdf2026';
+let adminUnlocked=false;
+
+// ═══════════════════════════════════════
+// DATA — Fecha 6 included, Questa Ezequiel F4 removed (did not play)
+// ═══════════════════════════════════════
+const D=[{"fecha":1,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Sabate, Juan","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Baltazar, Martin","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Tomas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":2,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Besse, Luciano","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Sebastian","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":1,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Nicolas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Besse, Luciano","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Vissani, Matias","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":2,"jugador":"Diez, Juan Pablo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Florio, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":1,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Sabate, Juan","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Natiello, Cristian","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Ramirez, Jere","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":4,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Cañete, Martin","equipo":"NEGRO","resultado":"","gf":0,"gc":0,"goles":1,"mvp":0,"dif":0,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Florio, Tomas","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Gonzalez, Matias","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":2,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Florio, Nicolas","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":2,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":1,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Vissani, Matias","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":1,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":0,"dif":4,"bonus":0,"camiseta":1},{"fecha":3,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":2,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Ramirez, Jere","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":4,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":1,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Reggi, Tomas","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":2,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Florio, Tomas","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Werder, Hernan","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Vissani, Matias","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Questa, Sebastian","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Valdez, Lucas","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":5,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Castiglione, Tomas","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Besse, Luciano","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":2,"mvp":1,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":1},{"fecha":5,"jugador":"Gonzalez, Matias","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":5,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":2,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Vissani, Matias","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Novoa, Ramiro","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Diez, Ezequiel","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":1,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Valdez, Lucas","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":3,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Invitado, Amigo (Hernan)","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Invitado, Nicolas (Hernan)","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Reggi, Tomas","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":1,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":3,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":5,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Werder, Hernan","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":3,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Castiglione, Tomas","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Diez, Ezequiel","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":6,"jugador":"Natiello, Cristian","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":3,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Invitado, Gaston (Pela)","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0}];
+
+const FD={1:'11/02/2026',2:'18/02/2026',3:'25/02/2026',4:'04/03/2026',5:'18/03/2026',6:'25/03/2026'};
+const MAX_FECHA=6;
+
+// Arqueros GC per fecha (hardcoded from Excel)
+const GC_ARQUEROS={
+  'Cañete, Maxi':{1:7,2:6,3:8,4:1,5:4,6:8},
+  'Questa, Ezequiel':{1:8,2:5,3:4,5:9,6:9}  // F4 not played
+};
+
+const MVP_DATA=[
+  {fecha:6,date:'25/03/2026',nombre:'Lorda, Fernando',stat:'3 goles · Blanco ganó 9-8',key:'mvp_6'},
+  {fecha:5,date:'18/03/2026',nombre:'Besse, Luciano',stat:'2 goles · Blanco ganó 9-4 (goleada)',key:'mvp_5'},
+  {fecha:4,date:'04/03/2026',nombre:'Cañete, Maxi',stat:'Capitán · Blanco ganó 2-1',key:'mvp_4'},
+  {fecha:3,date:'25/02/2026',nombre:'Questa, Ezequiel',stat:'MVP · Negro ganó 8-4',key:'mvp_3'},
+  {fecha:2,date:'18/02/2026',nombre:'Ramirez, Jere',stat:'4 goles · Negro ganó 6-5',key:'mvp_2'},
+  {fecha:1,date:'11/02/2026',nombre:'Natiello, Cristian',stat:'3 goles · Blanco ganó 8-7',key:'mvp_1'},
+];
+
+let _rawData=null, _allStandings=[], _golesPerFecha={};
+
+// ═══════════════════════════════════════
+// COMPUTE
+// ═══════════════════════════════════════
+function computeStandings(data){
+  const p={};
+  data.forEach(r=>{
+    if(!p[r.jugador])p[r.jugador]={pj:0,pg:0,pe:0,pp:0,goles:0,dif:0,bonus:0,mvp:0,camiseta:0,hist:[]};
+    const x=p[r.jugador];
+    if(r.resultado==='G'||r.resultado==='E'||r.resultado==='P'){
+      x.pj++;x.goles+=r.goles;x.dif+=r.dif;x.bonus+=r.bonus;x.mvp+=r.mvp;x.camiseta+=r.camiseta;
+      if(r.resultado==='G')x.pg++;else if(r.resultado==='E')x.pe++;else x.pp++;
+      x.hist.push(r.resultado);
+    }else{x.goles+=r.goles;x.camiseta+=r.camiseta;}
+  });
+  return Object.entries(p).map(([n,x])=>{
+    let pts=x.pj*2+x.pg*3+x.pe*1+x.mvp+x.bonus;
+    if(n==='Cañete, Martin')pts-=2;
+    const pct=x.pj>0?Math.round(x.pg/x.pj*100):0;
+    const prom=x.pj>0?(x.goles/x.pj).toFixed(2):0;
+    return{nombre:n,pts,pct,prom,...x};
+  }).sort((a,b)=>b.pts-a.pts||b.pg-a.pg||b.goles-a.goles);
+}
+function computeScorers(data){
+  const g={};
+  const pj={};
+  data.forEach(r=>{
+    if(!g[r.jugador])g[r.jugador]=0;
+    g[r.jugador]+=r.goles;
+    if(r.resultado==='G'||r.resultado==='E'||r.resultado==='P'){
+      if(!pj[r.jugador])pj[r.jugador]=0;
+      pj[r.jugador]++;
+    }
+  });
+  return Object.entries(g).filter(([,v])=>v>0).map(([n,v])=>({nombre:n,goles:v,pj:pj[n]||1}))
+    .sort((a,b)=>b.goles-a.goles);
+}
+function computeMatches(data){
+  return[...new Set(data.map(r=>r.fecha))].sort((a,b)=>a-b).map(f=>{
+    const rows=data.filter(r=>r.fecha===f);
+    const bl=rows.filter(r=>r.equipo==='BLANCO'),ng=rows.filter(r=>r.equipo==='NEGRO');
+    return{fecha:f,date:FD[f]||'',gfB:bl[0]?.gf||0,gfN:ng[0]?.gf||0,blanco:bl,negro:ng,
+      mvp:rows.find(r=>r.mvp===1)?.jugador||null};
+  });
+}
+function buildGolesPerFecha(data){
+  _golesPerFecha={};
+  data.forEach(r=>{
+    if(!_golesPerFecha[r.jugador])_golesPerFecha[r.jugador]={};
+    _golesPerFecha[r.jugador][r.fecha]=(_golesPerFecha[r.jugador][r.fecha]||0)+r.goles;
+  });
+}
+
+// ═══════════════════════════════════════
+// RACHA
+// ═══════════════════════════════════════
+function rachaHTML(hist,n=7){
+  return hist.slice(-n).map(r=>
+    `<span class="rc ${r==='G'?'rc-g':r==='P'?'rc-p':'rc-e'}" title="${r==='G'?'Victoria':r==='P'?'Derrota':'Empate'}"></span>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════
+// RENDER STANDINGS
+// ═══════════════════════════════════════
+function renderStandings(standings){
+  const tb=document.getElementById('tb26');if(!tb)return;
+  const cls=['r1','r2','r3'];
+  tb.innerHTML=standings.map((p,i)=>{
+    const difStr=p.dif>0?'+'+p.dif:p.dif;
+    const shirt=p.camiseta>0?`<div class="shirt-badge">👕 x${p.camiseta}</div>`:'';
+    const pos=i<3?`<span class="pb p${i+1}">${i+1}</span>`:`<span class="pb pn">${i+1}</span>`;
+    return`<tr class="${cls[i]||''}">
+      <td>${pos}</td>
+      <td class="lft"><div class="name-wrap"><span>${p.nombre}</span>${shirt}</div></td>
+      <td class="pts-cell">${p.pts}</td>
+      <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
+      <td style="color:#7dd87d">${p.goles>0?p.goles:'—'}</td>
+      <td class="${p.dif>=0?'dif-pos':'dif-neg'}">${difStr}</td>
+      <td>${p.mvp>0?p.mvp:'—'}</td>
+      <td style="color:#7db8d8">${p.bonus>0?'+'+p.bonus:'—'}</td>
+      <td>${p.pct}%</td><td>${p.prom}</td>
+      <td><div class="racha-wrap">${rachaHTML(p.hist)}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// RENDER FECHA FILTER
+// ═══════════════════════════════════════
+function renderFechaFilter(){
+  const wrap=document.getElementById('fecha-filter-wrap');if(!wrap)return;
+  const fechas=[...new Set((_rawData||D).map(r=>r.fecha))].sort((a,b)=>a-b);
+  const maxF=Math.max(...fechas);
+  wrap.innerHTML=fechas.map(f=>{
+    const isLast=f===maxF;
+    return`<button class="ff-btn${f===maxF?' active':''} ${isLast?'last-fecha':''}" onclick="filterFecha(${f},this)">F${f}</button>`;
+  }).join('');
+}
+function filterFecha(maxF,btn){
+  document.querySelectorAll('.ff-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const data=(_rawData||D).filter(r=>r.fecha<=maxF);
+  buildGolesPerFecha(data);
+  const st=computeStandings(data);
+  _allStandings=st;
+  renderStandings(st);
+  // Update label
+  const lbl=document.getElementById('updated-fecha-lbl');
+  if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
+}
+
+// ═══════════════════════════════════════
+// RENDER MATCHES — pro redesign
+// ═══════════════════════════════════════
+function renderMatches(ms){
+  const c=document.getElementById('par-p2026');if(!c)return;
+  c.innerHTML=[...ms].reverse().map(m=>{
+    const bW=m.gfB>m.gfN,nW=m.gfN>m.gfB;
+    const diff=Math.abs(m.gfB-m.gfN);
+    const bonusTag=diff>=5?`<div class="mc-bonus">+1 GOLEADA</div>`:'';
+    const makeList=(players,mvp)=>players
+      .filter(r=>r.resultado==='G'||r.resultado==='P'||r.resultado==='E')
+      .map(r=>{
+        const isMvp=r.jugador===mvp;
+        const gol=r.goles>0?`<span class="pl-gol">⚽${r.goles}</span>`:'';
+        return`<div class="pl-item ${isMvp?'pl-mvp-item':''}">
+          <div class="pl-dot"></div>
+          <span class="pl-name">${r.jugador}</span>${gol}
+        </div>`;
+      }).join('');
+    return`
+      <div class="fh">Fecha ${m.fecha} <span class="fh-date">${m.date?'· Miércoles '+m.date:''}</span></div>
+      <div class="mc">
+        <div class="mc-head">
+          <div class="mc-team">
+            <div class="mc-team-name"><span class="dot-w"></span> EQUIPO BLANCO</div>
+            <div class="mc-result-badge ${bW?'rb-win':'rb-loss'}">${bW?'VICTORIA':'DERROTA'}</div>
+          </div>
+          <div class="mc-score-center">
+            <div class="mc-score">
+              <span class="${bW?'mc-score-b':'mc-score-n'}">${m.gfB}</span>
+              <span class="mc-score-sep">–</span>
+              <span class="${nW?'mc-score-b':'mc-score-n'}">${m.gfN}</span>
+            </div>
+            ${bonusTag}
+          </div>
+          <div class="mc-team">
+            <div class="mc-team-name"><span class="dot-n"></span> EQUIPO NEGRO</div>
+            <div class="mc-result-badge ${nW?'rb-win':'rb-loss'}">${nW?'VICTORIA':'DERROTA'}</div>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="pl-list">${makeList(m.blanco,m.mvp)}</div>
+          <div class="mc-divider"></div>
+          <div class="pl-list">${makeList(m.negro,m.mvp)}</div>
+        </div>
+        ${m.mvp?`<div class="mc-mvp"> ${m.mvp}</div>`:''}
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// RENDER SCORERS & VALLAS
+// ═══════════════════════════════════════
+function openScoreModal(nombre,isValla){
+  const modal=document.getElementById('score-modal');
+  document.getElementById('sm-name').textContent=nombre;
+  let rows='',total=0;
+  if(isValla){
+    const gcData=GC_ARQUEROS[nombre]||{};
+    total=Object.values(gcData).reduce((a,b)=>a+b,0);
+    const pj=Object.keys(gcData).length||1;
+    const prom=(total/pj).toFixed(2);
+    document.getElementById('sm-sub').textContent='Goles recibidos por fecha';
+    rows=Object.entries(gcData).sort((a,b)=>Number(a[0])-Number(b[0]))
+      .map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val" style="color:#ff9977">${g} gol${g!==1?'es':''}</span></div>`).join('');
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total recibidos</span><span class="sm-val" style="color:#ff9977">${total}</span></div>`;
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val" style="color:#ff9977">${prom}</span></div>`;
+  }else{
+    const fd=_golesPerFecha[nombre]||{};
+    total=Object.values(fd).reduce((a,b)=>a+b,0);
+    const allPj=(_allStandings.find(s=>s.nombre===nombre)||{pj:1}).pj||1;
+    const prom=(total/allPj).toFixed(2);
+    document.getElementById('sm-sub').textContent='Goles anotados por fecha';
+    rows=Object.entries(fd).filter(([,g])=>g>0).sort((a,b)=>Number(a[0])-Number(b[0]))
+      .map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val">${g} gol${g>1?'es':''}</span></div>`).join('');
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total goles</span><span class="sm-val">${total}</span></div>`;
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val">${prom}</span></div>`;
+  }
+  document.getElementById('sm-rows').innerHTML=rows;
+  modal.classList.add('open');
+}
+
+function renderScorers(sc){
+  const c=document.getElementById('scorers-cnt');
+  const cp=document.getElementById('scorers-prom-cnt');
+  if(!c||!cp)return;
+  const byTotal=sc;
+  const byProm=[...sc].sort((a,b)=>(b.goles/b.pj)-(a.goles/a.pj));
+  const makeItem=(s,i)=>{
+    const pj=(_allStandings.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1;
+    const prom=(s.goles/pj).toFixed(2);
+    return`<div class="rank-item" onclick="openScoreModal('${s.nombre.replace(/'/g,"\\'")}',false)">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${s.nombre}</div><div class="ri-sub">Toca para ver desglose</div></div>
+      <div class="ri-stats"><div class="ri-count">${s.goles}</div><div class="ri-unit">goles</div><div class="ri-prom">${prom}/pj</div></div>
+    </div>`;
+  };
+  const makeItemProm=(s,i)=>{
+    const pj=(_allStandings.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1;
+    const prom=(s.goles/pj).toFixed(2);
+    return`<div class="rank-item" onclick="openScoreModal('${s.nombre.replace(/'/g,"\\'")}',false)">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${s.nombre}</div><div class="ri-sub">${pj} partidos</div></div>
+      <div class="ri-stats"><div class="ri-count">${prom}</div><div class="ri-unit">gol/pj</div><div class="ri-prom">${s.goles} totales</div></div>
+    </div>`;
+  };
+  c.innerHTML=byTotal.map(makeItem).join('');
+  cp.innerHTML=byProm.map(makeItemProm).join('');
+}
+
+function renderVallas(){
+  const c=document.getElementById('valla-cnt');
+  const cp=document.getElementById('valla-prom-cnt');
+  if(!c||!cp)return;
+  const vallas=Object.entries(GC_ARQUEROS).map(([n,fd])=>{
+    const total=Object.values(fd).reduce((a,b)=>a+b,0);
+    const pj=Object.keys(fd).length;
+    return{nombre:n,gc:total,pj};
+  }).sort((a,b)=>a.gc-b.gc);
+  const vallasProm=[...vallas].sort((a,b)=>(a.gc/a.pj)-(b.gc/b.pj));
+  const makeValla=(a,i)=>{
+    const prom=(a.gc/a.pj).toFixed(2);
+    return`<div class="rank-item" onclick="openScoreModal('${a.nombre}',true)">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${a.nombre}</div><div class="ri-sub">Toca para ver desglose</div></div>
+      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${a.gc}</div><div class="ri-unit">recibidos</div><div class="ri-prom">${prom}/pj</div></div>
+    </div>`;
+  };
+  const makeVallaProm=(a,i)=>{
+    const prom=(a.gc/a.pj).toFixed(2);
+    return`<div class="rank-item" onclick="openScoreModal('${a.nombre}',true)">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${a.nombre}</div><div class="ri-sub">${a.pj} partidos</div></div>
+      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${prom}</div><div class="ri-unit">prom/pj</div><div class="ri-prom">${a.gc} totales</div></div>
+    </div>`;
+  };
+  c.innerHTML=vallas.map(makeValla).join('');
+  cp.innerHTML=vallasProm.map(makeVallaProm).join('');
+}
+
+// ═══════════════════════════════════════
+// RENDER MVPs
+// ═══════════════════════════════════════
+function getPhoto(key){return localStorage.getItem(key)||null;}
+function renderMVPs(){
+  const c=document.getElementById('mvp-cnt');if(!c)return;
+  c.innerHTML=MVP_DATA.map(m=>{
+    const photo=getPhoto(m.key);
+    const thumb=photo
+      ?`<img class="mvp-thumb" src="${photo}" alt="${m.nombre}">`
+      :`<div class="mvp-thumb-ph">😎<div class="mvp-upload-btn" onclick="event.stopPropagation();triggerUpload('${m.key}')">📷</div></div>`;
+    return`<div class="mvp-card" onclick="openMvpModal('${m.key}','${m.nombre}','Fecha ${m.fecha} · ${m.date}','${m.stat}')">
+      <div class="mvp-card-top">${thumb}<div>
+        <div class="mvp-card-date">Fecha ${m.fecha} · ${m.date}</div>
+        <div class="mvp-card-name">${m.nombre}</div>
+      </div></div>
+      <div class="mvp-card-stat">${m.stat}</div>
+      <input type="file" accept="image/*" class="mvp-file-input" id="file-${m.key}" onchange="handlePhotoUpload(event,'${m.key}')">
+    </div>`;
+  }).join('');
+}
+function triggerUpload(key){document.getElementById('file-'+key).click();}
+function handlePhotoUpload(e,key){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{localStorage.setItem(key,ev.target.result);renderMVPs();};
+  r.readAsDataURL(file);
+}
+function openMvpModal(key,name,date,stat){
+  const photo=getPhoto(key);
+  document.getElementById('modal-img-wrap').innerHTML=photo
+    ?`<img class="mvp-modal-img" src="${photo}" alt="${name}">`
+    :`<div class="mvp-modal-img-ph">😎</div>`;
+  document.getElementById('modal-name').textContent=name;
+  document.getElementById('modal-date').textContent=date;
+  document.getElementById('modal-stat').textContent=stat;
+  document.getElementById('mvp-modal').classList.add('open');
+}
+
+// ═══════════════════════════════════════
+// ESTADÍSTICAS PAGE
+// ═══════════════════════════════════════
+function renderEstadisticas(data){
+  const st=_allStandings.length?_allStandings:computeStandings(data);
+  const matches=computeMatches(data);
+  const totalGoles=matches.reduce((s,m)=>s+m.gfB+m.gfN,0);
+  const avgGoles=(totalGoles/matches.length).toFixed(1);
+  const mostGoles=matches.reduce((a,b)=>(b.gfB+b.gfN)>(a.gfB+a.gfN)?b:a);
+  const tightest=matches.reduce((a,b)=>Math.abs(b.gfB-b.gfN)<Math.abs(a.gfB-a.gfN)?b:a);
+  const biggestWin=matches.reduce((a,b)=>Math.abs(b.gfB-b.gfN)>Math.abs(a.gfB-a.gfN)?b:a);
+  const blancoWins=matches.filter(m=>m.gfB>m.gfN).length;
+  const negroWins=matches.filter(m=>m.gfN>m.gfB).length;
+  const topScorer=st.filter(p=>p.goles>0).sort((a,b)=>b.goles-a.goles)[0];
+  const topWinPct=st.filter(p=>p.pj>=3&&!p.nombre.startsWith('Invitado')).sort((a,b)=>b.pct-a.pct)[0];
+  const mostMVP=st.filter(p=>p.mvp>0).sort((a,b)=>b.mvp-a.mvp)[0];
+  const unbeaten=st.filter(p=>p.pp===0&&p.pj>=2&&!p.nombre.startsWith('Invitado'));
+  const topProm=st.filter(p=>p.pj>=3&&p.goles>0&&!p.nombre.startsWith('Invitado')).sort((a,b)=>b.goles/b.pj-a.goles/a.pj)[0];
+
+  const cardsData=[
+    {icon:'⚽',label:'Total de goles',value:totalGoles,sub:'en 6 fechas'},
+    {icon:'📊',label:'Promedio por partido',value:avgGoles,sub:'goles por fecha'},
+    {icon:'🔥',label:'Partido más goleador',value:`F${mostGoles.fecha}`,sub:`${mostGoles.gfB+mostGoles.gfN} goles totales (${mostGoles.gfB}-${mostGoles.gfN})`},
+    {icon:'😰',label:'Partido más ajustado',value:`F${tightest.fecha}`,sub:`${tightest.gfB}-${tightest.gfN} · solo ${Math.abs(tightest.gfB-tightest.gfN)} gol de diferencia`},
+    {icon:'💪',label:'Mayor goleada',value:`F${biggestWin.fecha}`,sub:`${biggestWin.gfB}-${biggestWin.gfN} · diferencia de ${Math.abs(biggestWin.gfB-biggestWin.gfN)}`},
+    {icon:'⚪',label:'Victorias Equipo Blanco',value:blancoWins,sub:`de ${matches.length} partidos jugados`},
+    {icon:'⚫',label:'Victorias Equipo Negro',value:negroWins,sub:`de ${matches.length} partidos jugados`},
+    {icon:'👟',label:'Máximo goleador',value:topScorer?.nombre.split(',')[0]||'—',sub:`${topScorer?.goles||0} goles en la temporada`},
+    {icon:'📈',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${topWinPct?.nombre||''} · ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos`},
+    {icon:'🌟',label:'Más veces MVP',value:mostMVP?.mvp||0,sub:`${mostMVP?.nombre||''}`},
+    {icon:'🎯',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'—',sub:`${topProm?.nombre||''} · ${topProm?.goles||0} goles en ${topProm?.pj||0} PJ`},
+    {icon:'🏆',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>p.nombre.split(',')[0]).join(', '):'—',sub:'sin ninguna derrota en la temporada'},
+  ];
+
+  document.getElementById('stats-cards').innerHTML=cardsData.map(c=>`
+    <div class="stat-card">
+      <span class="stat-card-icon">${c.icon}</span>
+      <div class="stat-card-label">${c.label}</div>
+      <div class="stat-card-value">${c.value}</div>
+      <div class="stat-card-sub">${c.sub}</div>
+    </div>`).join('');
+
+  const clist=[
+    {e:'🔥',t:`<strong>Ramirez, Jere</strong> es el único jugador en ganar los <strong>5 partidos</strong> que jugó — temporada perfecta hasta la fecha.`},
+    {e:'🎯',t:`<strong>Natiello, Cristian</strong> metió <strong>5 goles en un solo partido</strong> (Fecha 5) — el récord goleador de la temporada en una fecha.`},
+    {e:'⚡',t:`<strong>Valdez, Lucas</strong> también marcó 5 goles, pero en la Fecha 6. Dos fechas seguidas con un jugador que mete 5.`},
+    {e:'⚪',t:`El <strong>Equipo Blanco</strong> domina: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro todavía busca equilibrar la balanza.`},
+    {e:'⚽',t:`La Fecha 6 fue la <strong>más goleadora</strong> de la temporada con <strong>17 goles</strong> (9-8). ¡Un clásico!`},
+    {e:'😅',t:`La Fecha 1 y la Fecha 6 fueron las más ajustadas — separadas por <strong>solo 1 gol</strong> de diferencia.`},
+    {e:'👕',t:`<strong>Questa, Sebastian</strong> lidera el ranking de camisetas olvidadas con <strong>2</strong>. ¡Cuidá la ropa!`},
+    {e:'🤝',t:`En las 6 fechas jugadas participaron <strong>26 jugadores</strong> distintos, incluyendo invitados. La cancha siempre llena.`},
+    {e:'🏆',t:`El equipo de <strong>Lorda, Fernando</strong> ganó la Fecha 6 y Fernando fue el MVP con 3 goles. Primera vez que gana el premio esta temporada.`},
+    {e:'📊',t:`El promedio de goles por partido es de <strong>${avgGoles} goles</strong> — los Miércoles de Fútbol son un show ofensivo.`},
+  ];
+  document.getElementById('curiosidades').innerHTML=clist.map(c=>`
+    <div class="cur-item">
+      <span class="cur-emoji">${c.e}</span>
+      <div class="cur-text">${c.t}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// PRÓXIMA FECHA
+// ═══════════════════════════════════════
+function getNextWednesday(){
+  const now=new Date();const day=now.getDay();let diff=3-day;
+  if(diff<=0)diff+=7;const nw=new Date(now);nw.setDate(now.getDate()+diff);return nw;
+}
+function setupNextDate(){
+  const nw=getNextWednesday();
+  const days=['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
+  const months=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+  document.getElementById('next-date-display').textContent=`${days[nw.getDay()]} ${nw.getDate()} DE ${months[nw.getMonth()]}`;
+  document.getElementById('fecha-num-label').textContent=`📅 Fecha ${MAX_FECHA+1} · Temporada 2026`;
+}
+let noPlayActive=false;
+function toggleNoPlay(){
+  noPlayActive=!noPlayActive;
+  document.getElementById('no-play-msg').style.display=noPlayActive?'block':'none';
+  document.getElementById('no-play-btn').textContent=noPlayActive?'✅ Cancelar suspensión':'⚠️ Marcar fecha suspendida';
+}
+
+// ═══════════════════════════════════════
+// WHATSAPP — admin only, plain text
+// ═══════════════════════════════════════
+function shareWhatsApp(){
+  if(!adminUnlocked){
+    const pass=prompt('Contraseña de admin:');
+    if(pass!==ADMIN_PASS){alert('Contraseña incorrecta.');return;}
+    adminUnlocked=true;
+  }
+  const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
+  const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
+  const nw=getNextWednesday();
+  const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const fechaNum=MAX_FECHA+1;
+  const dateStr=`${nw.getDate()} de ${months[nw.getMonth()]} de ${nw.getFullYear()}`;
+
+  let msg=`*FECHA ${fechaNum}*\n`;
+  msg+=`Miercoles ${dateStr}\n`;
+  msg+=`Horario: 20:00 hs\n`;
+  msg+=`Llegar temprano \u{1F557}\n`;
+  msg+=`Llevar efectivo \u{1F4B8}\n\n`;
+  msg+=`*EQUIPO BLANCO* \u26AA\n`;
+  bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+  msg+=`\n*EQUIPO NEGRO* \u26AB\n`;
+  ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ═══════════════════════════════════════
+// FORUM
+// ═══════════════════════════════════════
+function forumKey(f){return`mdf_forum_f${f}`;}
+function getPosts(f){try{return JSON.parse(localStorage.getItem(forumKey(f)))||[];}catch{return[];}}
+function savePosts(f,posts){localStorage.setItem(forumKey(f),JSON.stringify(posts));}
+function renderForum(){
+  const f=document.getElementById('forum-fecha-sel').value;
+  const posts=getPosts(f);
+  const container=document.getElementById('forum-posts');
+  if(!posts.length){container.innerHTML=`<div style="color:var(--text2);font-size:.83rem;text-align:center;padding:1rem">Nadie se quejó todavía para esta fecha... 🤐</div>`;return;}
+  container.innerHTML=posts.map(p=>`<div class="forum-post">
+    <div class="fp-meta"><span class="fp-name">${esc(p.name)}</span><span class="fp-time">· ${p.time}</span></div>
+    <div class="fp-body">${esc(p.msg)}</div>
+  </div>`).join('');
+  container.scrollTop=container.scrollHeight;
+}
+function postForum(){
+  const name=document.getElementById('forum-name').value.trim();
+  const msg=document.getElementById('forum-msg').value.trim();
+  if(!name||!msg){alert('Completá tu nombre y tu mensaje.');return;}
+  const f=document.getElementById('forum-fecha-sel').value;
+  const posts=getPosts(f);
+  const now=new Date();
+  const time=now.toLocaleDateString('es-AR')+' '+now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  posts.push({name,msg,time});savePosts(f,posts);
+  document.getElementById('forum-msg').value='';renderForum();
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ═══════════════════════════════════════
+// SHEETS + RENDER ALL
+// ═══════════════════════════════════════
+function parseCSV(csv){
+  const lines=csv.split('\n').filter(l=>l.trim());const out=[];
+  for(let i=1;i<lines.length;i++){
+    const v=lines[i].split(',').map(x=>x.trim().replace(/^"|"$/g,''));
+    const f=parseFloat(v[0]);if(!isFinite(f)||f<=0)continue;
+    const j=v[1];if(!j||j==='JUGADOR')continue;
+    const g=parseFloat(v[6]);
+    out.push({fecha:Math.round(f),jugador:j,equipo:v[2],resultado:v[3],
+      gf:parseInt(v[4])||0,gc:parseInt(v[5])||0,goles:isFinite(g)&&g>0?g:0,
+      mvp:v[7]==='1'?1:0,dif:parseFloat(v[8])||0,bonus:parseFloat(v[9])||0,
+      camiseta:v[10]&&v[10].includes('👕')?1:0});
+  }return out;
+}
+async function loadData(){
+  try{
+    const r=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`);
+    if(!r.ok)throw new Error();
+    const csv=await r.text();const rows=parseCSV(csv);
+    if(rows.length>5){renderAll(rows);return;}
+  }catch(e){}
+  renderAll(D);
+}
+function renderAll(data){
+  _rawData=data;
+  buildGolesPerFecha(data);
+  const st=computeStandings(data);
+  _allStandings=st;
+  renderFechaFilter();
+  renderStandings(st);
+  renderMatches(computeMatches(data));
+  renderScorers(computeScorers(data));
+  renderVallas();
+  renderMVPs();
+  renderEstadisticas(data);
+  // Set updated label to last fecha
+  const fechas=[...new Set(data.map(r=>r.fecha))].sort((a,b)=>a-b);
+  const maxF=fechas[fechas.length-1];
+  const lbl=document.getElementById('updated-fecha-lbl');
+  if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
+}
+
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const idx={home:0,tabla:1,partidos:2,goleadores:3,mvp:4,proxima:5,stats:6,premios:7};
+  const links=document.querySelectorAll('nav a');
+  if(idx[id]!==undefined)links[idx[id]].classList.add('active');
+  document.getElementById('main-nav').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='proxima')renderForum();
+}
+function toggleMenu(){document.getElementById('main-nav').classList.toggle('open');}
+function switchTab(g,id,btn){
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('[id^="'+g+'-"]').forEach(c=>c.classList.remove('active'));
+  document.getElementById(g+'-'+id).classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadData();setupNextDate();renderForum();
+});
+</script>
+</body>
+</html>
