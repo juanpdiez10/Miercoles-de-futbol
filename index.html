@@ -1116,23 +1116,41 @@ function postForum(){
 function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
 // ═══════════════════════════════════════
-// JSON LOCAL + RENDER ALL
+// SHEETS + RENDER ALL (VERSIÓN DEFINITIVA)
 // ═══════════════════════════════════════
 
-async function loadData() {
-  try {
-    const r = await fetch('./datos.json');
-    if (!r.ok) throw new Error('No se encontró el archivo datos.json');
-    const rows = await r.json();
+// 1. Pegá acá tu ID real (te dejé el que usabas antes, si es otro cambialo)
+const SHEET_ID = '1GIcSZ6cIWOaAwi6P2cPXTd3LYvgUoFDJ0N6auLWJ4ZQ'; 
+
+// 2. Link interno de Google que salta los bloqueos de GitHub
+const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
+
+function parseCSV(csv){
+  const lines=csv.split('\n').filter(l=>l.trim());const out=[];
+  for(let i=1;i<lines.length;i++){
+    // Mejoré esta línea para que lea perfecto los nombres que tienen comas (Ej: "Cañete, Maxi")
+    const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
     
-    if (rows.length > 0) {
-      renderAll(rows);
-      return;
-    }
-  } catch (e) {
-    console.error("Error cargando los datos:", e);
+    const f=parseFloat(v[0]);if(!isFinite(f)||f<=0)continue;
+    const j=v[1];if(!j||j==='JUGADOR')continue;
+    const g=parseFloat(v[6]);
+    out.push({fecha:Math.round(f),jugador:j,equipo:v[2],resultado:v[3],
+      gf:parseInt(v[4])||0,gc:parseInt(v[5])||0,goles:isFinite(g)&&g>0?g:0,
+      mvp:v[7]==='1'?1:0,dif:parseFloat(v[8])||0,bonus:parseFloat(v[9])||0,
+      camiseta:v[10]&&v[10].includes('👕')?1:0});
+  }return out;
+}
+
+async function loadData(){
+  try{
+    const r=await fetch(GVIZ_URL);
+    if(!r.ok)throw new Error('Error al conectar con Sheets');
+    const csv=await r.text();
+    const rows=parseCSV(csv);
+    if(rows.length>5){renderAll(rows);return;}
+  }catch(e){
+    console.error("Falló la carga de Sheets, usando respaldo:", e);
   }
-  
   renderAll(D);
 }
 
