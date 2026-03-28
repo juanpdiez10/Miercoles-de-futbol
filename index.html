@@ -25,7 +25,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,
   height: 45px;
   width: auto;
   border-radius: 4px;
-  mix-blend-mode: screen; /* Hace transparente el fondo negro */
+  mix-blend-mode: screen; /* EL TRUCO MAGICO: borra el fondo negro y deja el logo limpio */
   filter: drop-shadow(0 0 6px rgba(57, 255, 20, 0.8)) drop-shadow(0 0 15px rgba(57, 255, 20, 0.4));
   transition: all 0.3s ease;
 }
@@ -34,9 +34,10 @@ header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,
   transform: scale(1.05);
 }
 
-/* Navegación (Menú centrado y letra más grande) */
+/* Navegación (Menú centrado y más grande) */
 nav{display:flex;gap:.2rem;flex-wrap:nowrap}
 @media(min-width:769px){
+  /* En PC: Centra el menú perfectamente en el medio de la pantalla */
   nav { position: absolute; left: 50%; transform: translateX(-50%); }
 }
 nav a{color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;padding:.4rem .6rem;border-radius:4px;transition:all .2s;white-space:nowrap;cursor:pointer}
@@ -376,7 +377,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
 </div>
 
 <header>
-  <header>
   <div class="logo" onclick="showPage('home')">
     <img src="logo.png" alt="MDF" class="logo-img">
     MIÉRCOLES DE FÚTBOL
@@ -679,21 +679,20 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
 // ═══════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════
+const SHEET_ID = '1GIcSZ6cIWOaAwi6P2cPXTd3LYvgUoFDJ0N6auLWJ4ZQ'; 
+const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
 const ADMIN_PASS='mdf2026';
 let adminUnlocked=false;
 
-// ═══════════════════════════════════════
-// DATA — Fecha 6 included, Questa Ezequiel F4 removed (did not play)
-// ═══════════════════════════════════════
-const D=[{"fecha":1,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Sabate, Juan","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Baltazar, Martin","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Tomas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":2,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Besse, Luciano","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Sebastian","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":1,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Nicolas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Besse, Luciano","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Vissani, Matias","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":2,"jugador":"Diez, Juan Pablo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Florio, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":1,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Sabate, Juan","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Natiello, Cristian","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Ramirez, Jere","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":4,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Cañete, Martin","equipo":"NEGRO","resultado":"","gf":0,"gc":0,"goles":1,"mvp":0,"dif":0,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Florio, Tomas","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Gonzalez, Matias","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":2,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Florio, Nicolas","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":2,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"P","gf":4,"gc":8,"goles":0,"mvp":0,"dif":-4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":1,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Vissani, Matias","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":1,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":0,"dif":4,"bonus":0,"camiseta":1},{"fecha":3,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":0,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":2,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Ramirez, Jere","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":4,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":3,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"G","gf":8,"gc":4,"goles":1,"mvp":0,"dif":4,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Reggi, Tomas","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":2,"gc":1,"goles":2,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Florio, Tomas","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Werder, Hernan","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Vissani, Matias","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Questa, Sebastian","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":4,"jugador":"Valdez, Lucas","equipo":"NEGRO","resultado":"P","gf":1,"gc":2,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":5,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Castiglione, Tomas","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Besse, Luciano","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":2,"mvp":1,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":1},{"fecha":5,"jugador":"Gonzalez, Matias","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":0,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":5,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":9,"gc":4,"goles":2,"mvp":0,"dif":5,"bonus":1,"camiseta":0},{"fecha":5,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Vissani, Matias","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Novoa, Ramiro","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":0,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Diez, Ezequiel","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":1,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":5,"jugador":"Valdez, Lucas","equipo":"NEGRO","resultado":"P","gf":4,"gc":9,"goles":3,"mvp":0,"dif":-5,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Invitado, Amigo (Hernan)","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Invitado, Nicolas (Hernan)","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Reggi, Tomas","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":1,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":3,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"G","gf":9,"gc":8,"goles":5,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Werder, Hernan","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":3,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Castiglione, Tomas","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Diez, Ezequiel","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":6,"jugador":"Natiello, Cristian","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":3,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":6,"jugador":"Invitado, Gaston (Pela)","equipo":"NEGRO","resultado":"P","gf":8,"gc":9,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0}];
+// Respaldo de datos por si no carga Sheets
+const D=[{"fecha":1,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Sabate, Juan","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Baltazar, Martin","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Tomas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":2,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Besse, Luciano","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Sebastian","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":1,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Nicolas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Besse, Luciano","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Vissani, Matias","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":2,"jugador":"Diez, Juan Pablo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Florio, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":1,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Sabate, Juan","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Natiello, Cristian","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Ramirez, Jere","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":4,"mvp":1,"dif":1,"bonus":0,"camiseta":0}];
 
 const FD={1:'11/02/2026',2:'18/02/2026',3:'25/02/2026',4:'04/03/2026',5:'18/03/2026',6:'25/03/2026'};
 const MAX_FECHA=6;
 
-// Arqueros GC per fecha (hardcoded from Excel)
 const GC_ARQUEROS={
   'Cañete, Maxi':{1:7,2:6,3:8,4:1,5:4,6:8},
-  'Questa, Ezequiel':{1:8,2:5,3:4,5:9,6:9}  // F4 not played
+  'Questa, Ezequiel':{1:8,2:5,3:4,5:9,6:9}
 };
 
 const MVP_DATA=[
@@ -759,9 +758,6 @@ function buildGolesPerFecha(data){
   });
 }
 
-// ═══════════════════════════════════════
-// RACHA
-// ═══════════════════════════════════════
 function rachaHTML(hist,n=7){
   return hist.slice(-n).map(r=>
     `<span class="rc ${r==='G'?'rc-g':r==='P'?'rc-p':'rc-e'}" title="${r==='G'?'Victoria':r==='P'?'Derrota':'Empate'}"></span>`
@@ -793,9 +789,6 @@ function renderStandings(standings){
   }).join('');
 }
 
-// ═══════════════════════════════════════
-// RENDER FECHA FILTER
-// ═══════════════════════════════════════
 function renderFechaFilter(){
   const wrap=document.getElementById('fecha-filter-wrap');if(!wrap)return;
   const fechas=[...new Set((_rawData||D).map(r=>r.fecha))].sort((a,b)=>a-b);
@@ -813,13 +806,12 @@ function filterFecha(maxF,btn){
   const st=computeStandings(data);
   _allStandings=st;
   renderStandings(st);
-  // Update label
   const lbl=document.getElementById('updated-fecha-lbl');
   if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
 }
 
 // ═══════════════════════════════════════
-// RENDER MATCHES — pro redesign
+// RENDER MATCHES
 // ═══════════════════════════════════════
 function renderMatches(ms){
   const c=document.getElementById('par-p2026');if(!c)return;
@@ -998,7 +990,7 @@ function openMvpModal(key,name,date,stat){
 }
 
 // ═══════════════════════════════════════
-// ESTADÍSTICAS PAGE
+// ESTADÍSTICAS Y CURIOSIDADES DINÁMICAS
 // ═══════════════════════════════════════
 function renderEstadisticas(data){
   const st=_allStandings.length?_allStandings:computeStandings(data);
@@ -1039,10 +1031,7 @@ function renderEstadisticas(data){
       <div class="stat-card-sub">${c.sub}</div>
     </div>`).join('');
 
-  // ═══════════════════════════════════════
-  // CURIOSIDADES DINÁMICAS (Automáticas)
-  // ═══════════════════════════════════════
-  
+  // 1. Racha
   let maxStreak = 0;
   let streakPlayers = [];
   st.forEach(p => {
@@ -1061,6 +1050,7 @@ function renderEstadisticas(data){
     ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
     : 'Aún no hay rachas de victorias registradas.';
 
+  // 2. Goles
   let maxGolesP = 0;
   let golesEventos = [];
   data.forEach(r => {
@@ -1075,31 +1065,37 @@ function renderEstadisticas(data){
     ? `El récord de goles en un solo partido es de <strong>${maxGolesP} goles</strong>, logrado por ` + golesEventos.map(e => `<strong>${e.n}</strong> (Fecha ${e.f})`).join(' y ') + `.`
     : 'Aún no hay goles registrados.';
 
+  // 3. Dominio
   let domTeamTxt = '';
   if (blancoWins > negroWins) domTeamTxt = `El <strong>Equipo Blanco</strong> domina: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro (con ${negroWins}) todavía busca equilibrar la balanza.`;
   else if (negroWins > blancoWins) domTeamTxt = `El <strong>Equipo Negro</strong> domina: ganó <strong>${negroWins} de ${matches.length}</strong> partidos. El Blanco (con ${blancoWins}) todavía busca equilibrar la balanza.`;
   else domTeamTxt = `¡Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos de los ${matches.length} jugados.`;
 
+  // 4. Fechas goleadoras
   const maxTotalGoles = Math.max(...matches.map(m => m.gfB + m.gfN));
   const fechasGoleadoras = matches.filter(m => m.gfB + m.gfN === maxTotalGoles);
   const txtFechaGoles = matches.length > 0
     ? `La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`
     : 'Todavía no hay partidos jugados.';
 
+  // 5. Fechas ajustadas
   const minDiff = Math.min(...matches.map(m => Math.abs(m.gfB - m.gfN)));
   const ajustadas = matches.filter(m => Math.abs(m.gfB - m.gfN) === minDiff);
   const txtAjustadas = matches.length > 0
     ? `La ${ajustadas.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${ajustadas.length>1?'fueron las más ajustadas':'fue la más ajustada'} — separada${ajustadas.length>1?'s':''} por <strong>solo ${minDiff} gol${minDiff!==1?'es':''}</strong> de diferencia.`
     : 'Todavía no hay partidos jugados.';
 
+  // 6. Lavandería
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
   const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => p.nombre.split(',')[0]);
   const txtCamisetas = maxCamisetas > 0
     ? `<strong>${lavaPlayers.join(' y ')}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
     : 'Todavía nadie se llevó las camisetas a lavar (o no lo anotaron).';
 
+  // 7. Promedio
   const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
 
+  // 8. Random
   const winsBlanco = {}, winsNegro = {};
   data.forEach(r => {
       if(r.resultado === 'G') {
@@ -1166,9 +1162,6 @@ function toggleNoPlay(){
   document.getElementById('no-play-btn').textContent=noPlayActive?'✅ Cancelar suspensión':'⚠️ Marcar fecha suspendida';
 }
 
-// ═══════════════════════════════════════
-// WHATSAPP — admin only, plain text
-// ═══════════════════════════════════════
 function shareWhatsApp(){
   if(!adminUnlocked){
     const pass=prompt('Contraseña de admin:');
@@ -1195,9 +1188,6 @@ function shareWhatsApp(){
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-// ═══════════════════════════════════════
-// FORUM
-// ═══════════════════════════════════════
 function forumKey(f){return`mdf_forum_f${f}`;}
 function getPosts(f){try{return JSON.parse(localStorage.getItem(forumKey(f)))||[];}catch{return[];}}
 function savePosts(f,posts){localStorage.setItem(forumKey(f),JSON.stringify(posts));}
@@ -1226,19 +1216,11 @@ function postForum(){
 function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
 // ═══════════════════════════════════════
-// SHEETS + RENDER ALL (VERSIÓN DEFINITIVA)
+// SHEETS PARSER + INIT
 // ═══════════════════════════════════════
-
-// 1. Pegá acá tu ID real (te dejé el que usabas antes, si es otro cambialo)
-const SHEET_ID = '1GIcSZ6cIWOaAwi6P2cPXTd3LYvgUoFDJ0N6auLWJ4ZQ'; 
-
-// 2. Link interno de Google que salta los bloqueos de GitHub
-const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
-
 function parseCSV(csv){
   const lines=csv.split('\n').filter(l=>l.trim());const out=[];
   for(let i=1;i<lines.length;i++){
-    // Mejoré esta línea para que lea perfecto los nombres que tienen comas (Ej: "Cañete, Maxi")
     const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
     
     const f=parseFloat(v[0]);if(!isFinite(f)||f<=0)continue;
@@ -1257,7 +1239,7 @@ async function loadData(){
     if(!r.ok)throw new Error('Error al conectar con Sheets');
     const csv=await r.text();
     const rows=parseCSV(csv);
-    if(rows.length>5){renderAll(rows);return;}
+    if(rows.length>0){renderAll(rows);return;}
   }catch(e){
     console.error("Falló la carga de Sheets, usando respaldo:", e);
   }
@@ -1276,7 +1258,7 @@ function renderAll(data){
   renderVallas();
   renderMVPs();
   renderEstadisticas(data);
-  // Set updated label to last fecha
+  
   const fechas=[...new Set(data.map(r=>r.fecha))].sort((a,b)=>a-b);
   const maxF=fechas[fechas.length-1];
   const lbl=document.getElementById('updated-fecha-lbl');
@@ -1284,7 +1266,7 @@ function renderAll(data){
 }
 
 // ═══════════════════════════════════════
-// NAV
+// NAVEGACIÓN
 // ═══════════════════════════════════════
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1292,12 +1274,18 @@ function showPage(id){
   document.getElementById('page-'+id).classList.add('active');
   const idx={home:0,tabla:1,partidos:2,goleadores:3,mvp:4,proxima:5,stats:6,premios:7};
   const links=document.querySelectorAll('nav a');
-  if(idx[id]!==undefined)links[idx[id]].classList.add('active');
-  document.getElementById('main-nav').classList.remove('open');
+  if(idx[id]!==undefined && links[idx[id]]) links[idx[id]].classList.add('active');
+  const mainNav = document.getElementById('main-nav');
+  if(mainNav) mainNav.classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
   if(id==='proxima')renderForum();
 }
-function toggleMenu(){document.getElementById('main-nav').classList.toggle('open');}
+
+function toggleMenu(){
+  const mainNav = document.getElementById('main-nav');
+  if(mainNav) mainNav.classList.toggle('open');
+}
+
 function switchTab(g,id,btn){
   btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
