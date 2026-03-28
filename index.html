@@ -1016,12 +1016,10 @@ function renderEstadisticas(data){
       <div class="stat-card-sub">${c.sub}</div>
     </div>`).join('');
 
-  const clist=[
-// ═══════════════════════════════════════
+  // ═══════════════════════════════════════
   // CURIOSIDADES DINÁMICAS (Automáticas)
   // ═══════════════════════════════════════
   
-  // 1. Mejor racha de victorias seguidas
   let maxStreak = 0;
   let streakPlayers = [];
   st.forEach(p => {
@@ -1040,7 +1038,6 @@ function renderEstadisticas(data){
     ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
     : 'Aún no hay rachas de victorias registradas.';
 
-  // 2. Más goles en un partido
   let maxGolesP = 0;
   let golesEventos = [];
   data.forEach(r => {
@@ -1055,37 +1052,31 @@ function renderEstadisticas(data){
     ? `El récord de goles en un solo partido es de <strong>${maxGolesP} goles</strong>, logrado por ` + golesEventos.map(e => `<strong>${e.n}</strong> (Fecha ${e.f})`).join(' y ') + `.`
     : 'Aún no hay goles registrados.';
 
-  // 3. Dominio de equipo
   let domTeamTxt = '';
   if (blancoWins > negroWins) domTeamTxt = `El <strong>Equipo Blanco</strong> domina: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro (con ${negroWins}) todavía busca equilibrar la balanza.`;
   else if (negroWins > blancoWins) domTeamTxt = `El <strong>Equipo Negro</strong> domina: ganó <strong>${negroWins} de ${matches.length}</strong> partidos. El Blanco (con ${blancoWins}) todavía busca equilibrar la balanza.`;
   else domTeamTxt = `¡Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos de los ${matches.length} jugados.`;
 
-  // 4. Fecha más goleadora
   const maxTotalGoles = Math.max(...matches.map(m => m.gfB + m.gfN));
   const fechasGoleadoras = matches.filter(m => m.gfB + m.gfN === maxTotalGoles);
   const txtFechaGoles = matches.length > 0
     ? `La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`
     : 'Todavía no hay partidos jugados.';
 
-  // 5. Fechas más ajustadas
   const minDiff = Math.min(...matches.map(m => Math.abs(m.gfB - m.gfN)));
   const ajustadas = matches.filter(m => Math.abs(m.gfB - m.gfN) === minDiff);
   const txtAjustadas = matches.length > 0
     ? `La ${ajustadas.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${ajustadas.length>1?'fueron las más ajustadas':'fue la más ajustada'} — separada${ajustadas.length>1?'s':''} por <strong>solo ${minDiff} gol${minDiff!==1?'es':''}</strong> de diferencia.`
     : 'Todavía no hay partidos jugados.';
 
-  // 6. Ranking lavandería (Llevarse camisetas)
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
   const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => p.nombre.split(',')[0]);
   const txtCamisetas = maxCamisetas > 0
     ? `<strong>${lavaPlayers.join(' y ')}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
     : 'Todavía nadie se llevó las camisetas a lavar (o no lo anotaron).';
 
-  // 7. Promedio de goles
   const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
 
-  // 8. Dato random (Talismán de equipo)
   const winsBlanco = {}, winsNegro = {};
   data.forEach(r => {
       if(r.resultado === 'G') {
@@ -1113,7 +1104,6 @@ function renderEstadisticas(data){
      txtRandom = `Dato random: ¡El torneo está súper peleado y nadie saca ventaja clara con ninguna camiseta!`;
   }
 
-  // Se renderiza la lista usando las variables calculadas arriba
   const clist=[
     {e:'🔥',t: txtRacha},
     {e:'🎯',t: txtGoles},
