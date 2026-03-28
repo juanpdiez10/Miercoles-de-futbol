@@ -1017,17 +1017,114 @@ function renderEstadisticas(data){
     </div>`).join('');
 
   const clist=[
-    {e:'🔥',t:`<strong>Ramirez, Jere</strong> es el único jugador en ganar los <strong>5 partidos</strong> que jugó — temporada perfecta hasta la fecha.`},
-    {e:'🎯',t:`<strong>Natiello, Cristian</strong> metió <strong>5 goles en un solo partido</strong> (Fecha 5) — el récord goleador de la temporada en una fecha.`},
-    {e:'⚡',t:`<strong>Valdez, Lucas</strong> también marcó 5 goles, pero en la Fecha 6. Dos fechas seguidas con un jugador que mete 5.`},
-    {e:'⚪',t:`El <strong>Equipo Blanco</strong> domina: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro todavía busca equilibrar la balanza.`},
-    {e:'⚽',t:`La Fecha 6 fue la <strong>más goleadora</strong> de la temporada con <strong>17 goles</strong> (9-8). ¡Un clásico!`},
-    {e:'😅',t:`La Fecha 1 y la Fecha 6 fueron las más ajustadas — separadas por <strong>solo 1 gol</strong> de diferencia.`},
-    {e:'👕',t:`<strong>Questa, Sebastian</strong> lidera el ranking de camisetas olvidadas con <strong>2</strong>. ¡Cuidá la ropa!`},
-    {e:'🤝',t:`En las 6 fechas jugadas participaron <strong>26 jugadores</strong> distintos, incluyendo invitados. La cancha siempre llena.`},
-    {e:'🏆',t:`El equipo de <strong>Lorda, Fernando</strong> ganó la Fecha 6 y Fernando fue el MVP con 3 goles. Primera vez que gana el premio esta temporada.`},
-    {e:'📊',t:`El promedio de goles por partido es de <strong>${avgGoles} goles</strong> — los Miércoles de Fútbol son un show ofensivo.`},
+// ═══════════════════════════════════════
+  // CURIOSIDADES DINÁMICAS (Automáticas)
+  // ═══════════════════════════════════════
+  
+  // 1. Mejor racha de victorias seguidas
+  let maxStreak = 0;
+  let streakPlayers = [];
+  st.forEach(p => {
+     let current = 0; let localMax = 0;
+     p.hist.forEach(r => {
+         if(r === 'G') { current++; localMax = Math.max(localMax, current); }
+         else { current = 0; }
+     });
+     if(localMax > maxStreak && localMax > 0) {
+         maxStreak = localMax; streakPlayers = [p.nombre.split(',')[0]];
+     } else if (localMax === maxStreak && localMax > 0) {
+         if(!streakPlayers.includes(p.nombre.split(',')[0])) streakPlayers.push(p.nombre.split(',')[0]);
+     }
+  });
+  const txtRacha = maxStreak > 0 
+    ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
+    : 'Aún no hay rachas de victorias registradas.';
+
+  // 2. Más goles en un partido
+  let maxGolesP = 0;
+  let golesEventos = [];
+  data.forEach(r => {
+      if(r.goles > maxGolesP) {
+          maxGolesP = r.goles;
+          golesEventos = [{n: r.jugador.split(',')[0], f: r.fecha}];
+      } else if (r.goles === maxGolesP && r.goles > 0) {
+          golesEventos.push({n: r.jugador.split(',')[0], f: r.fecha});
+      }
+  });
+  const txtGoles = maxGolesP > 0
+    ? `El récord de goles en un solo partido es de <strong>${maxGolesP} goles</strong>, logrado por ` + golesEventos.map(e => `<strong>${e.n}</strong> (Fecha ${e.f})`).join(' y ') + `.`
+    : 'Aún no hay goles registrados.';
+
+  // 3. Dominio de equipo
+  let domTeamTxt = '';
+  if (blancoWins > negroWins) domTeamTxt = `El <strong>Equipo Blanco</strong> domina: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro (con ${negroWins}) todavía busca equilibrar la balanza.`;
+  else if (negroWins > blancoWins) domTeamTxt = `El <strong>Equipo Negro</strong> domina: ganó <strong>${negroWins} de ${matches.length}</strong> partidos. El Blanco (con ${blancoWins}) todavía busca equilibrar la balanza.`;
+  else domTeamTxt = `¡Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos de los ${matches.length} jugados.`;
+
+  // 4. Fecha más goleadora
+  const maxTotalGoles = Math.max(...matches.map(m => m.gfB + m.gfN));
+  const fechasGoleadoras = matches.filter(m => m.gfB + m.gfN === maxTotalGoles);
+  const txtFechaGoles = matches.length > 0
+    ? `La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`
+    : 'Todavía no hay partidos jugados.';
+
+  // 5. Fechas más ajustadas
+  const minDiff = Math.min(...matches.map(m => Math.abs(m.gfB - m.gfN)));
+  const ajustadas = matches.filter(m => Math.abs(m.gfB - m.gfN) === minDiff);
+  const txtAjustadas = matches.length > 0
+    ? `La ${ajustadas.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${ajustadas.length>1?'fueron las más ajustadas':'fue la más ajustada'} — separada${ajustadas.length>1?'s':''} por <strong>solo ${minDiff} gol${minDiff!==1?'es':''}</strong> de diferencia.`
+    : 'Todavía no hay partidos jugados.';
+
+  // 6. Ranking lavandería (Llevarse camisetas)
+  const maxCamisetas = Math.max(...st.map(p => p.camiseta));
+  const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => p.nombre.split(',')[0]);
+  const txtCamisetas = maxCamisetas > 0
+    ? `<strong>${lavaPlayers.join(' y ')}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
+    : 'Todavía nadie se llevó las camisetas a lavar (o no lo anotaron).';
+
+  // 7. Promedio de goles
+  const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
+
+  // 8. Dato random (Talismán de equipo)
+  const winsBlanco = {}, winsNegro = {};
+  data.forEach(r => {
+      if(r.resultado === 'G') {
+         if(r.equipo === 'BLANCO') winsBlanco[r.jugador] = (winsBlanco[r.jugador]||0)+1;
+         if(r.equipo === 'NEGRO') winsNegro[r.jugador] = (winsNegro[r.jugador]||0)+1;
+      }
+  });
+  let maxWB = 0, pWB = [];
+  for(let j in winsBlanco) {
+      if(winsBlanco[j] > maxWB) { maxWB = winsBlanco[j]; pWB = [j.split(',')[0]]; }
+      else if(winsBlanco[j] === maxWB) pWB.push(j.split(',')[0]);
+  }
+  let maxWN = 0, pWN = [];
+  for(let j in winsNegro) {
+      if(winsNegro[j] > maxWN) { maxWN = winsNegro[j]; pWN = [j.split(',')[0]]; }
+      else if(winsNegro[j] === maxWN) pWN.push(j.split(',')[0]);
+  }
+  
+  let txtRandom = '';
+  if(maxWB >= maxWN && maxWB > 0) {
+     txtRandom = `Dato random: <strong>${pWB.join(' y ')}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Equipo Blanco, con <strong>${maxWB} victorias</strong> vistiendo ese color.`;
+  } else if (maxWN > 0) {
+     txtRandom = `Dato random: <strong>${pWN.join(' y ')}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Equipo Negro, con <strong>${maxWN} victorias</strong> vistiendo ese color.`;
+  } else {
+     txtRandom = `Dato random: ¡El torneo está súper peleado y nadie saca ventaja clara con ninguna camiseta!`;
+  }
+
+  // Se renderiza la lista usando las variables calculadas arriba
+  const clist=[
+    {e:'🔥',t: txtRacha},
+    {e:'🎯',t: txtGoles},
+    {e:'⚪',t: domTeamTxt},
+    {e:'⚽',t: txtFechaGoles},
+    {e:'😅',t: txtAjustadas},
+    {e:'👕',t: txtCamisetas},
+    {e:'📊',t: txtPromedio},
+    {e:'🍀',t: txtRandom},
   ];
+
   document.getElementById('curiosidades').innerHTML=clist.map(c=>`
     <div class="cur-item">
       <span class="cur-emoji">${c.e}</span>
