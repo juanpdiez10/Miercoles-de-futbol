@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta property="og:title" content="Miércoles de Fútbol — MDF 2026">
+<meta property="og:description" content="Tabla de posiciones, goleadores, MVP, resultados y estadísticas del torneo.">
+<meta property="og:image" content="https://juanpdiez10.github.io/Miercoles-de-futbol/logo.png">
+<meta property="og:url" content="https://juanpdiez10.github.io/Miercoles-de-futbol/">
+<meta property="og:type" content="website">
+
 <title>Miércoles de Fútbol — MDF 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -25,7 +32,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,
   height: 45px;
   width: auto;
   border-radius: 4px;
-  mix-blend-mode: screen; /* EL TRUCO MAGICO: borra el fondo negro y deja el logo limpio */
+  mix-blend-mode: screen; 
   filter: drop-shadow(0 0 6px rgba(57, 255, 20, 0.8)) drop-shadow(0 0 15px rgba(57, 255, 20, 0.4));
   transition: all 0.3s ease;
 }
@@ -34,10 +41,9 @@ header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,
   transform: scale(1.05);
 }
 
-/* Navegación (Menú centrado y más grande) */
+/* Navegación */
 nav{display:flex;gap:.2rem;flex-wrap:nowrap}
 @media(min-width:769px){
-  /* En PC: Centra el menú perfectamente en el medio de la pantalla */
   nav { position: absolute; left: 50%; transform: translateX(-50%); }
 }
 nav a{color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;padding:.4rem .6rem;border-radius:4px;transition:all .2s;white-space:nowrap;cursor:pointer}
@@ -208,8 +214,8 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-modal.open{display:flex}
 .mvp-modal-inner{background:var(--card);border:2px solid var(--gold);border-radius:14px;padding:2rem;max-width:420px;width:100%;position:relative;text-align:center;animation:popIn .25s ease}
 .mvp-modal-close{position:absolute;top:.75rem;right:.75rem;background:rgba(255,255,255,.1);border:none;color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
-.mvp-modal-img{width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);margin:0 auto 1rem;display:block}
-.mvp-modal-img-ph{width:130px;height:130px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.mvp-modal-img{width:220px;height:220px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);margin:0 auto 1rem;display:block}
+.mvp-modal-img-ph{width:220px;height:220px;border-radius:50%;background:var(--card2);border:4px solid rgba(255,215,0,.3);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:5rem}
 .mvp-modal-lbl{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;font-size:.72rem;text-transform:uppercase;margin-bottom:.35rem}
 .mvp-modal-name{font-family:'Anton',sans-serif;font-size:1.65rem;margin-bottom:.3rem}
 .mvp-modal-date{color:var(--text2);font-size:.83rem;margin-bottom:.65rem}
@@ -272,11 +278,11 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .forum-form textarea{resize:vertical;min-height:80px}
 
 /* MAP */
-.map-section{margin-top:1.5rem;border-radius:12px;overflow:hidden;border:2px solid var(--green-dark);position:relative}
+.map-section{border-radius:12px;overflow:hidden;border:2px solid var(--green-dark);position:relative}
 .map-section a{display:block;position:relative}
-.map-section iframe{width:100%;height:220px;border:none;display:block;filter:grayscale(30%) contrast(1.1)}
-.map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,15,13,.9));padding:1rem 1.25rem;pointer-events:none}
-.map-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:#0a0f0d;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;padding:.5rem 1rem;border-radius:6px;text-decoration:none;margin-top:.75rem;transition:all .2s;pointer-events:all}
+.map-section iframe{width:100%;border:none;display:block;filter:grayscale(30%) contrast(1.1)}
+.map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,15,13,.9));pointer-events:none}
+.map-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:#0a0f0d;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;border-radius:6px;text-decoration:none;transition:all .2s;pointer-events:all}
 .map-cta:hover{background:#fff;transform:translateY(-1px)}
 
 /* ESTADISTICAS */
@@ -346,6 +352,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
   table.st th,table.st td{padding:.38rem .32rem}
   .rank-section{grid-template-columns:1fr}
   .stats-grid{grid-template-columns:1fr 1fr}
+  .map-section iframe {height: 200px !important;}
 }
 @media(max-width:480px){
   .stats-grid{grid-template-columns:1fr}
@@ -432,10 +439,10 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
     <div class="divider"></div>
     <div class="live-badge"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('tabla','2026',this)">⚡ 2026 Actual</button>
       <button class="tab-btn" onclick="switchTab('tabla','2023',this)">2023</button>
       <button class="tab-btn" onclick="switchTab('tabla','2024',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('tabla','2025',this)">2025</button>
+      <button class="tab-btn active" onclick="switchTab('tabla','2026',this)">⚡ 2026 Actual</button>
     </div>
 
     <div id="tabla-2026" class="tab-content active">
@@ -460,7 +467,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
         <span><strong>PP</strong> Derrota 0</span>
         <span><strong>MVP</strong> +1</span>
         <span><strong>Goleada</strong> (+5 dif) +1</span>
-        <span><strong>👕</strong> = camiseta se llevó para lavar</span>
+        <span><strong>👕</strong> = se llevó las camisetas para lavar</span>
       </div>
     </div>
     <div id="tabla-2023" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá una hoja "BASE_DATOS_2023" en tu Sheets.</div></div>
@@ -474,10 +481,10 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
     <h2 class="stitle">Partidos y <span class="acc">Resultados</span></h2>
     <div class="divider"></div>
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('par','p2026',this)">⚡ 2026</button>
-      <button class="tab-btn" onclick="switchTab('par','p2025',this)">2025</button>
-      <button class="tab-btn" onclick="switchTab('par','p2024',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('par','p2023',this)">2023</button>
+      <button class="tab-btn" onclick="switchTab('par','p2024',this)">2024</button>
+      <button class="tab-btn" onclick="switchTab('par','p2025',this)">2025</button>
+      <button class="tab-btn active" onclick="switchTab('par','p2026',this)">⚡ 2026</button>
     </div>
     <div id="par-p2026" class="tab-content active"></div>
     <div id="par-p2025" class="tab-content"><div class="empty-box">Agregá datos de 2025 en tu Sheets.</div></div>
@@ -593,7 +600,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
       <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br>Solo el admin puede compartir los equipos</div>
       <button class="btn btn-wa" onclick="shareWhatsApp()">WhatsApp</button>
     </div>
-    <div class="forum-section">
+    <div class="forum-section" id="foro-section">
       <div class="forum-header">
         <h3>😤 Foro de quejas por fecha</h3>
         <select class="forum-select" id="forum-fecha-sel" onchange="renderForum()">
@@ -655,19 +662,21 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
   <div class="fi">
     <div class="ft">
       <div>
-        <div class="fl">⚽ MDF</div>
+        <div class="fl" style="display:flex; align-items:center; gap:0.5rem;">
+          <img src="logo.png" alt="MDF" class="logo-img" style="height:35px;"> MDF
+        </div>
         <p style="color:var(--text2);font-size:.82rem;line-height:1.6">Miércoles de Fútbol · Temporada 2026</p>
       </div>
       <div class="floc">
         <h4>📍 Ubicación</h4>
-        <p><strong>Campus El Irlandés</strong><br>Campo de Deportes del Marin<br>Av. Bartolomé Mitre 1650<br>B1643 Béccar, Buenos Aires</p>
-        <div class="map-section" style="margin-top:1rem">
-          <a href="https://www.google.com/maps/place/Campus+El+Irland%C3%A9s+(Campo+de+Deportes+del+Marin)/@-34.4565625,-58.5107859,597m/data=!3m2!1e3!4b1!4m6!3m5!1s0x95bcb02b9e0d76c1:0x95b8e35670a781ed!8m2!3d-34.456567!4d-58.508211!16s%2Fg%2F11bwnyb01x?entry=ttu" target="_blank" rel="noopener">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1489.4140886714!2d-58.51078586!3d-34.4565625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb02b9e0d76c1%3A0x95b8e35670a781ed!2sCampus%20El%20Irland%C3%A9s%20(Campo%20de%20Deportes%20del%20Marin)!5e0!3m2!1ses!2sar!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="map-overlay">
-              <span class="map-cta">📍 Ver en Google Maps</span>
-            </div>
-          </a>
+        <div style="display:flex; gap:1.5rem; align-items:stretch; margin-top:0.5rem;">
+          <p style="flex:1;"><strong>Campus El Irlandés</strong><br>Campo de Deportes del Marin<br>Av. Bartolomé Mitre 1650<br>B1643 Béccar, Buenos Aires</p>
+          <div class="map-section" style="flex:1; margin-top:0;">
+            <a href="https://www.google.com/maps/place/Campus+El+Irland%C3%A9s+(Campo+de+Deportes+del+Marin)/@-34.4565625,-58.5107859,597m/data=!3m2!1e3!4b1!4m6!3m5!1s0x95bcb02b9e0d76c1:0x95b8e35670a781ed!8m2!3d-34.456567!4d-58.508211!16s%2Fg%2F11bwnyb01x?entry=ttu" target="_blank" rel="noopener">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1489.4140886714!2d-58.51078586!3d-34.4565625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb02b9e0d76c1%3A0x95b8e35670a781ed!2sCampus%20El%20Irland%C3%A9s%20(Campo%20de%20Deportes%20del%20Marin)!5e0!3m2!1ses!2sar!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height:110px;"></iframe>
+              <div class="map-overlay" style="padding:0.4rem;"><span class="map-cta" style="font-size:0.65rem; padding:0.3rem 0.6rem; margin-top:0;">📍 Ver mapa</span></div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -705,6 +714,15 @@ const MVP_DATA=[
 ];
 
 let _rawData=null, _allStandings=[], _golesPerFecha={};
+
+// Formatea "Apellido, Nombre" a "Nombre Apellido"
+function formatName(n) {
+  if(!n) return '—';
+  if(n.startsWith('Invitado')) return n;
+  const parts = n.split(',');
+  if(parts.length === 2) return parts[1].trim() + ' ' + parts[0].trim();
+  return n;
+}
 
 // ═══════════════════════════════════════
 // COMPUTE
@@ -975,7 +993,27 @@ function triggerUpload(key){document.getElementById('file-'+key).click();}
 function handlePhotoUpload(e,key){
   const file=e.target.files[0];if(!file)return;
   const r=new FileReader();
-  r.onload=ev=>{localStorage.setItem(key,ev.target.result);renderMVPs();};
+  r.onload=ev=>{
+    const img = new Image();
+    img.onload = () => {
+      // Compresor automático: achica la foto a 400px para que no explote la memoria del navegador
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 400;
+      const scaleSize = MAX_WIDTH / img.width;
+      canvas.width = MAX_WIDTH;
+      canvas.height = img.height * scaleSize;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      try {
+        localStorage.setItem(key, dataUrl);
+        renderMVPs();
+      } catch(err) {
+        alert('Memoria del navegador llena. No se pudo guardar la foto.');
+      }
+    }
+    img.src = ev.target.result;
+  };
   r.readAsDataURL(file);
 }
 function openMvpModal(key,name,date,stat){
@@ -1016,11 +1054,11 @@ function renderEstadisticas(data){
     {icon:'💪',label:'Mayor goleada',value:`F${biggestWin.fecha}`,sub:`${biggestWin.gfB}-${biggestWin.gfN} · diferencia de ${Math.abs(biggestWin.gfB-biggestWin.gfN)}`},
     {icon:'⚪',label:'Victorias Equipo Blanco',value:blancoWins,sub:`de ${matches.length} partidos jugados`},
     {icon:'⚫',label:'Victorias Equipo Negro',value:negroWins,sub:`de ${matches.length} partidos jugados`},
-    {icon:'👟',label:'Máximo goleador',value:topScorer?.nombre.split(',')[0]||'—',sub:`${topScorer?.goles||0} goles en la temporada`},
-    {icon:'📈',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${topWinPct?.nombre||''} · ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos`},
-    {icon:'🌟',label:'Más veces MVP',value:mostMVP?.mvp||0,sub:`${mostMVP?.nombre||''}`},
-    {icon:'🎯',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'—',sub:`${topProm?.nombre||''} · ${topProm?.goles||0} goles en ${topProm?.pj||0} PJ`},
-    {icon:'🏆',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>p.nombre.split(',')[0]).join(', '):'—',sub:'sin ninguna derrota en la temporada'},
+    {icon:'👟',label:'Máximo goleador',value:formatName(topScorer?.nombre)||'—',sub:`${topScorer?.goles||0} goles en la temporada`},
+    {icon:'📈',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${formatName(topWinPct?.nombre)||''} · ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos`},
+    {icon:'🌟',label:'Más veces MVP',value:mostMVP?.mvp||0,sub:`${formatName(mostMVP?.nombre)||''}`},
+    {icon:'🎯',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'—',sub:`${formatName(topProm?.nombre)||''} · ${topProm?.goles||0} goles en ${topProm?.pj||0} PJ`},
+    {icon:'🏆',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>formatName(p.nombre)).join(', '):'—',sub:'sin ninguna derrota en la temporada'},
   ];
 
   document.getElementById('stats-cards').innerHTML=cardsData.map(c=>`
@@ -1041,9 +1079,9 @@ function renderEstadisticas(data){
          else { current = 0; }
      });
      if(localMax > maxStreak && localMax > 0) {
-         maxStreak = localMax; streakPlayers = [p.nombre.split(',')[0]];
+         maxStreak = localMax; streakPlayers = [formatName(p.nombre)];
      } else if (localMax === maxStreak && localMax > 0) {
-         if(!streakPlayers.includes(p.nombre.split(',')[0])) streakPlayers.push(p.nombre.split(',')[0]);
+         if(!streakPlayers.includes(formatName(p.nombre))) streakPlayers.push(formatName(p.nombre));
      }
   });
   const txtRacha = maxStreak > 0 
@@ -1056,9 +1094,9 @@ function renderEstadisticas(data){
   data.forEach(r => {
       if(r.goles > maxGolesP) {
           maxGolesP = r.goles;
-          golesEventos = [{n: r.jugador.split(',')[0], f: r.fecha}];
+          golesEventos = [{n: formatName(r.jugador), f: r.fecha}];
       } else if (r.goles === maxGolesP && r.goles > 0) {
-          golesEventos.push({n: r.jugador.split(',')[0], f: r.fecha});
+          golesEventos.push({n: formatName(r.jugador), f: r.fecha});
       }
   });
   const txtGoles = maxGolesP > 0
@@ -1087,7 +1125,7 @@ function renderEstadisticas(data){
 
   // 6. Lavandería
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
-  const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => p.nombre.split(',')[0]);
+  const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => formatName(p.nombre));
   const txtCamisetas = maxCamisetas > 0
     ? `<strong>${lavaPlayers.join(' y ')}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
     : 'Todavía nadie se llevó las camisetas a lavar (o no lo anotaron).';
@@ -1105,13 +1143,13 @@ function renderEstadisticas(data){
   });
   let maxWB = 0, pWB = [];
   for(let j in winsBlanco) {
-      if(winsBlanco[j] > maxWB) { maxWB = winsBlanco[j]; pWB = [j.split(',')[0]]; }
-      else if(winsBlanco[j] === maxWB) pWB.push(j.split(',')[0]);
+      if(winsBlanco[j] > maxWB) { maxWB = winsBlanco[j]; pWB = [formatName(j)]; }
+      else if(winsBlanco[j] === maxWB) pWB.push(formatName(j));
   }
   let maxWN = 0, pWN = [];
   for(let j in winsNegro) {
-      if(winsNegro[j] > maxWN) { maxWN = winsNegro[j]; pWN = [j.split(',')[0]]; }
-      else if(winsNegro[j] === maxWN) pWN.push(j.split(',')[0]);
+      if(winsNegro[j] > maxWN) { maxWN = winsNegro[j]; pWN = [formatName(j)]; }
+      else if(winsNegro[j] === maxWN) pWN.push(formatName(j));
   }
   
   let txtRandom = '';
@@ -1178,12 +1216,13 @@ function shareWhatsApp(){
   let msg=`*FECHA ${fechaNum}*\n`;
   msg+=`Miercoles ${dateStr}\n`;
   msg+=`Horario: 20:00 hs\n`;
-  msg+=`Llegar temprano \u{1F557}\n`;
-  msg+=`Llevar efectivo \u{1F4B8}\n\n`;
-  msg+=`*EQUIPO BLANCO* \u26AA\n`;
+  msg+=`Llegar temprano ⏰\n`;
+  msg+=`Llevar efectivo 💵\n\n`;
+  msg+=`*EQUIPO BLANCO* ⚪\n`;
   bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
-  msg+=`\n*EQUIPO NEGRO* \u26AB\n`;
+  msg+=`\n*EQUIPO NEGRO* ⚫\n`;
   ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+  msg+=`\n👇 *Foro de quejas y opiniones:*\nhttps://juanpdiez10.github.io/Miercoles-de-futbol/#foro\n`;
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
@@ -1268,22 +1307,33 @@ function renderAll(data){
 // ═══════════════════════════════════════
 // NAVEGACIÓN
 // ═══════════════════════════════════════
-function showPage(id, updateUrl = true){
+function showPage(id){
+  let targetId = id;
+  if(id === 'foro') targetId = 'proxima';
+
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+  
+  let pageEl = document.getElementById('page-'+targetId);
+  if(pageEl) pageEl.classList.add('active');
   
   const idx={home:0,tabla:1,partidos:2,goleadores:3,mvp:4,proxima:5,stats:6,premios:7};
   const links=document.querySelectorAll('nav a');
-  if(idx[id]!==undefined && links[idx[id]]) links[idx[id]].classList.add('active');
+  if(idx[targetId]!==undefined && links[idx[targetId]]) links[idx[targetId]].classList.add('active');
   
   const mainNav = document.getElementById('main-nav');
   if(mainNav) mainNav.classList.remove('open');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(id==='proxima')renderForum();
   
-  // Agrega la sección a la URL (ej: #tabla)
-  if(updateUrl) history.pushState(null, null, '#' + id);
+  if(id === 'foro') {
+    setTimeout(() => {
+      const foroEl = document.getElementById('foro-section');
+      if(foroEl) foroEl.scrollIntoView({behavior: 'smooth'});
+    }, 100);
+  } else {
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  
+  if(targetId==='proxima')renderForum();
 }
 
 function toggleMenu(){
@@ -1298,20 +1348,15 @@ function switchTab(g,id,btn){
   document.getElementById(g+'-'+id).classList.add('active');
 }
 
-// Hace que funcionen los botones de "Atrás" y "Adelante" del celular/navegador
 window.addEventListener('popstate', () => {
   const hash = window.location.hash.substring(1) || 'home';
-  if(document.getElementById('page-'+hash)) showPage(hash, false);
+  showPage(hash);
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
   loadData();setupNextDate();renderForum();
-  
-  // Lee el link al entrar y abre la sección correspondiente
   const hash = window.location.hash.substring(1);
-  if(hash && document.getElementById('page-'+hash)) {
-    showPage(hash, false);
-  }
+  if(hash) showPage(hash);
 });
 </script>
 </body>
