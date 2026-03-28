@@ -18,12 +18,31 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;over
 
 /* HEADER */
 header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,15,13,.97);backdrop-filter:blur(12px);border-bottom:2px solid var(--green-dark);display:flex;align-items:center;justify-content:space-between;padding:0 1rem;height:60px;box-shadow:0 4px 30px rgba(57,255,20,.1)}
-.logo{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--green);cursor:pointer;display:flex;align-items:center;gap:.35rem;flex-shrink:0}
-.logo .sub{color:var(--text2);font-size:.6rem;letter-spacing:3px;font-family:'Barlow Condensed',sans-serif}
-nav{display:flex;gap:.05rem;flex-wrap:nowrap}
-nav a{color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:.4rem .5rem;border-radius:4px;transition:all .2s;white-space:nowrap;cursor:pointer}
+
+/* Logo y Texto */
+.logo{font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:1px;color:var(--green);cursor:pointer;display:flex;align-items:center;gap:.6rem;flex-shrink:0;z-index:201}
+.logo-img {
+  height: 45px;
+  width: auto;
+  border-radius: 4px;
+  mix-blend-mode: screen; /* Hace transparente el fondo negro */
+  filter: drop-shadow(0 0 6px rgba(57, 255, 20, 0.8)) drop-shadow(0 0 15px rgba(57, 255, 20, 0.4));
+  transition: all 0.3s ease;
+}
+.logo-img:hover {
+  filter: drop-shadow(0 0 10px rgba(57, 255, 20, 1)) drop-shadow(0 0 25px rgba(57, 255, 20, 0.7));
+  transform: scale(1.05);
+}
+
+/* Navegación (Menú centrado y letra más grande) */
+nav{display:flex;gap:.2rem;flex-wrap:nowrap}
+@media(min-width:769px){
+  nav { position: absolute; left: 50%; transform: translateX(-50%); }
+}
+nav a{color:var(--text2);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;padding:.4rem .6rem;border-radius:4px;transition:all .2s;white-space:nowrap;cursor:pointer}
 nav a:hover,nav a.active{color:var(--green);background:rgba(57,255,20,.08)}
-.hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px;flex-shrink:0}
+
+.hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px;flex-shrink:0;z-index:201}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text)}
 .page{display:none;padding-top:60px;min-height:100vh}
 .page.active{display:block}
@@ -357,7 +376,11 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
 </div>
 
 <header>
-  <div class="logo" onclick="showPage('home')">⚽ MDF <span class="sub">MIÉRCOLES DE FÚTBOL</span></div>
+  <header>
+  <div class="logo" onclick="showPage('home')">
+    <img src="logo.png" alt="MDF" class="logo-img">
+    MIÉRCOLES DE FÚTBOL
+  </div>
   <nav id="main-nav">
     <a onclick="showPage('home')" class="active">Inicio</a>
     <a onclick="showPage('tabla')">Tabla</a>
