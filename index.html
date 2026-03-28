@@ -656,7 +656,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
 // ═══════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════
-const CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vQo_soNDnzL0nOHmD6HUNpYNb8ixUmVYP6ouWLNWvFiJ88QUwiebFf0RCaorse0tbroId5rHqsdcvNu/pub?gid=0&single=true&output=csv';
 const ADMIN_PASS='mdf2026';
 let adminUnlocked=false;
 
@@ -1117,38 +1116,23 @@ function postForum(){
 function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
 // ═══════════════════════════════════════
-// SHEETS + RENDER ALL
+// JSON LOCAL + RENDER ALL
 // ═══════════════════════════════════════
-function parseCSV(csv){
-  const lines=csv.split('\n').filter(l=>l.trim());const out=[];
-  for(let i=1;i<lines.length;i++){
-    const v=lines[i].split(',').map(x=>x.trim().replace(/^"|"$/g,''));
-    const f=parseFloat(v[0]);if(!isFinite(f)||f<=0)continue;
-    const j=v[1];if(!j||j==='JUGADOR')continue;
-    const g=parseFloat(v[6]);
-    out.push({fecha:Math.round(f),jugador:j,equipo:v[2],resultado:v[3],
-      gf:parseInt(v[4])||0,gc:parseInt(v[5])||0,goles:isFinite(g)&&g>0?g:0,
-      mvp:v[7]==='1'?1:0,dif:parseFloat(v[8])||0,bonus:parseFloat(v[9])||0,
-      camiseta:v[10]&&v[10].includes('👕')?1:0});
-  }return out;
-}
-async function loadData(){
-  try{
-    const r=await fetch(CSV_URL);
-    if(!r.ok)throw new Error('No se pudo conectar con Google Sheets');
-    const csv=await r.text();
-    const rows=parseCSV(csv);
+
+async function loadData() {
+  try {
+    const r = await fetch('./datos.json');
+    if (!r.ok) throw new Error('No se encontró el archivo datos.json');
+    const rows = await r.json();
     
-    // Si trajo datos de la planilla, los renderiza
-    if(rows.length > 0){
+    if (rows.length > 0) {
       renderAll(rows);
       return;
     }
-  }catch(e){
+  } catch (e) {
     console.error("Error cargando los datos:", e);
   }
   
-  // Si algo falla o la planilla está vacía, renderiza los datos harcodeados (variable D) por defecto
   renderAll(D);
 }
 
