@@ -1268,17 +1268,22 @@ function renderAll(data){
 // ═══════════════════════════════════════
 // NAVEGACIÓN
 // ═══════════════════════════════════════
-function showPage(id){
+function showPage(id, updateUrl = true){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
+  
   const idx={home:0,tabla:1,partidos:2,goleadores:3,mvp:4,proxima:5,stats:6,premios:7};
   const links=document.querySelectorAll('nav a');
   if(idx[id]!==undefined && links[idx[id]]) links[idx[id]].classList.add('active');
+  
   const mainNav = document.getElementById('main-nav');
   if(mainNav) mainNav.classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
   if(id==='proxima')renderForum();
+  
+  // Agrega la sección a la URL (ej: #tabla)
+  if(updateUrl) history.pushState(null, null, '#' + id);
 }
 
 function toggleMenu(){
@@ -1293,8 +1298,20 @@ function switchTab(g,id,btn){
   document.getElementById(g+'-'+id).classList.add('active');
 }
 
+// Hace que funcionen los botones de "Atrás" y "Adelante" del celular/navegador
+window.addEventListener('popstate', () => {
+  const hash = window.location.hash.substring(1) || 'home';
+  if(document.getElementById('page-'+hash)) showPage(hash, false);
+});
+
 document.addEventListener('DOMContentLoaded',()=>{
   loadData();setupNextDate();renderForum();
+  
+  // Lee el link al entrar y abre la sección correspondiente
+  const hash = window.location.hash.substring(1);
+  if(hash && document.getElementById('page-'+hash)) {
+    showPage(hash, false);
+  }
 });
 </script>
 </body>
