@@ -210,7 +210,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-modal.open{display:flex}
 .mvp-modal-inner{background:var(--card);border:2px solid var(--gold);border-radius:14px;padding:2.5rem 2rem;max-width:480px;width:100%;position:relative;text-align:center;animation:popIn .25s ease}
 .mvp-modal-close{position:absolute;top:.75rem;right:.75rem;background:rgba(255,255,255,.1);border:none;color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
-.mvp-modal-img{width:220px;height:220px;border-radius:50%;object-fit:cover;border:4px solid var(--gold);margin:0 auto 1.5rem;display:block}
+.mvp-modal-img{width:220px;height:220px;border-radius:50%;object-fit:cover;object-position:top;border:4px solid var(--gold);margin:0 auto 1.5rem;display:block}
 .mvp-modal-img-ph{width:220px;height:220px;border-radius:50%;background:var(--card2);border:4px solid rgba(255,215,0,.3);margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-size:5rem}
 .mvp-modal-lbl{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;font-size:.8rem;text-transform:uppercase;margin-bottom:.4rem}
 .mvp-modal-name{font-family:'Anton',sans-serif;font-size:2rem;margin-bottom:.4rem}
@@ -219,7 +219,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 
 /* MVP PAGE */
 .mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
-.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover;}
+.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover; object-position:top;}
 .mvp-l{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;font-size:.7rem;text-transform:uppercase;margin-bottom:.35rem}
 .mvp-n{font-family:'Anton',sans-serif;font-size:1.8rem}
 .mvp-d{color:var(--text2);font-size:.83rem;margin-top:.2rem}
@@ -228,7 +228,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-card{background:var(--card);border:1px solid rgba(255,215,0,.1);border-radius:10px;padding:1rem;transition:all .2s;cursor:pointer}
 .mvp-card:hover{border-color:rgba(255,215,0,.35);transform:translateY(-3px)}
 .mvp-card-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.55rem}
-.mvp-thumb{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,215,0,.3);flex-shrink:0}
+.mvp-thumb{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(255,215,0,.3);flex-shrink:0}
 .mvp-thumb-ph{width:46px;height:46px;border-radius:50%;background:var(--card2);border:2px solid rgba(255,215,0,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;position:relative;}
 .mvp-card-date{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase}
 .mvp-card-name{font-weight:700;font-size:.9rem}
@@ -249,8 +249,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .tlist li{display:flex;align-items:center;gap:.4rem;font-size:.88rem;padding:.2rem 0}
 .tlist li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 .vs{font-family:'Anton',sans-serif;font-size:1.75rem;color:var(--text2);text-align:center;padding-top:2.5rem}
-.wa-section{background:var(--card2);border:1px solid rgba(37,211,102,.2);border-radius:10px;padding:1.25rem;margin-top:1.5rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap; display:none;}
-.wa-section.admin-active { display:flex !important; }
+.wa-section{background:var(--card2);border:1px solid rgba(37,211,102,.2);border-radius:10px;padding:1.25rem;margin-top:1.5rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .wa-txt{font-size:.88rem;color:var(--text2)}.wa-txt strong{color:var(--text)}
 
 /* FORUM */
@@ -270,14 +269,6 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .forum-form input::placeholder,.forum-form textarea::placeholder{color:var(--text2)}
 .forum-form input:focus,.forum-form textarea:focus{outline:none;border-color:var(--green)}
 .forum-form textarea{resize:vertical;min-height:80px}
-
-/* MAP Y FOOTER */
-.map-section{border-radius:8px;overflow:hidden;border:1px solid var(--green-dark);position:relative}
-.map-section a{display:block;position:relative}
-.map-section iframe{width:100%;border:none;display:block;filter:grayscale(30%) contrast(1.1)}
-.map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,15,13,.9));pointer-events:none}
-.map-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:#0a0f0d;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;border-radius:6px;text-decoration:none;transition:all .2s;pointer-events:all}
-.map-cta:hover{background:#fff;transform:translateY(-1px)}
 
 /* ESTADISTICAS */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem}
@@ -314,13 +305,19 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .qt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.3rem}
 .qd{color:var(--text2);font-size:.73rem;line-height:1.4}
 
-/* FOOTER */
-footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5rem 2rem 2rem;margin-top:3rem}
+/* FOOTER (Diseño PC ultra compacto) */
+footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5rem 2rem 1.5rem;margin-top:3rem}
 .fi{max-width:1200px;margin:0 auto}
-.ft{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:1.75rem}
+.ft{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1rem}
+.map-container-mobile { align-items: flex-start; margin-top: 0; }
+.map-section{border-radius:8px;overflow:hidden;border:1px solid var(--green-dark);position:relative}
+.map-section a{display:block;position:relative}
+.map-section iframe{width:100%;border:none;display:block;filter:grayscale(30%) contrast(1.1)}
+.map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,15,13,.9));pointer-events:none}
+.map-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--green);color:#0a0f0d;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;border-radius:6px;text-decoration:none;transition:all .2s;pointer-events:all}
+.map-cta:hover{background:#fff;transform:translateY(-1px)}
 .fl{font-family:'Anton',sans-serif;font-size:1.25rem;color:var(--green);letter-spacing:2px;margin-bottom:.5rem}
-.floc h4{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.76rem;color:var(--text2);margin-bottom:.6rem}
-.fb{border-top:1px solid rgba(255,255,255,.04);padding-top:1.25rem;color:var(--text2);font-size:.72rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
+.fb{border-top:1px solid rgba(255,255,255,.04);padding-top:.8rem;color:var(--text2);font-size:.72rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
 
 /* EMPTY */
 .empty-box{background:var(--card);border:1px dashed var(--green-dark);border-radius:8px;padding:2rem;text-align:center;color:var(--text2)}
@@ -350,7 +347,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
   .map-section iframe { display: none !important; }
   .map-section { border: none !important; }
   .map-overlay { position: static !important; background: transparent !important; padding: 0 !important; }
-  .map-container-mobile { align-items: center !important; flex-direction: row !important; }
+  .map-container-mobile { align-items: center !important; flex-direction: row !important; display:flex !important;}
 }
 @media(max-width:480px){
   .stats-grid{grid-template-columns:1fr}
@@ -551,7 +548,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
       <div class="np">📍 <strong>Campus El Irlandés</strong> — Campo de Deportes del Marin<br><span style="color:var(--text2);font-size:.85rem">Av. Bartolomé Mitre 1650, B1643 Béccar, Buenos Aires</span></div>
       <div class="next-edit-row">
         <div id="no-play-msg" style="display:none;background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);color:#ff8888;padding:.4rem 1rem;border-radius:20px;font-size:.82rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">⚠️ FECHA SUSPENDIDA</div>
-        <button class="btn btn-s" style="font-size:.72rem;padding:.42rem .85rem" onclick="toggleNoPlay()" id="no-play-btn">⚠️ Marcar fecha suspendida</button>
+        <button class="btn btn-s" style="font-size:.72rem;padding:.42rem .85rem; display:none;" onclick="toggleNoPlay()" id="no-play-btn">⚠️ Marcar fecha suspendida</button>
       </div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem">
@@ -586,16 +583,15 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
         </ul>
       </div>
     </div>
-    <p style="color:var(--text2);font-size:.74rem;margin-top:.75rem">✏️ Para modificar los equipos editá las listas en el HTML (buscar "team-blanco" y "team-negro").</p>
     
-    <div class="wa-section" id="admin-wa">
+    <div class="wa-section" id="admin-wa" style="display:none; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
       <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br>Solo visible para administrador.</div>
       <button class="btn btn-wa" onclick="shareWhatsApp()">WhatsApp</button>
     </div>
 
     <div class="forum-section" id="foro-section">
       <div class="forum-header">
-        <h3>😤 Foro de quejas por fecha</h3>
+        <h3>😤 Foro de quejas</h3>
         <select class="forum-select" id="forum-fecha-sel" onchange="renderForum()">
           <option value="7">Fecha 7</option>
           <option value="6">Fecha 6</option>
@@ -653,27 +649,29 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:2.5r
 
 <footer>
   <div class="fi">
-    <div class="ft">
+    <div class="ft" style="margin-bottom:1rem; gap:1.5rem;">
       <div>
-        <div class="fl" style="display:flex; align-items:center; gap:0.5rem;">
+        <div class="fl" style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem;">
           <img src="logo.png" alt="MDF" class="logo-img" style="height:35px;"> MDF
         </div>
         <p style="color:var(--text2);font-size:.82rem;line-height:1.6">Miércoles de Fútbol · Temporada 2026</p>
       </div>
       <div class="floc">
-        <h4>📍 Ubicación</h4>
-        <div style="display:flex; gap:1rem; align-items:center; margin-top:0.5rem;" class="map-container-mobile">
-          <p style="flex:2; font-size:0.75rem; margin-bottom:0;"><strong>Campus El Irlandés</strong><br>Av. Bartolomé Mitre 1650, Béccar</p>
-          <div class="map-section" style="flex:1; margin-top:0; border:none;">
+        <div style="display:flex; gap:1.5rem; align-items:flex-start;" class="map-container-mobile">
+          <div style="flex:1;">
+            <h4 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.76rem;color:var(--text2);margin-bottom:.2rem;">📍 Ubicación</h4>
+            <p style="color:var(--text2);font-size:.82rem;line-height:1.4;margin:0;"><strong>Campus El Irlandés</strong><br>Av. Bartolomé Mitre 1650<br>Béccar, Buenos Aires</p>
+          </div>
+          <div class="map-section" style="flex:1; margin-top:0;">
             <a href="https://www.google.com/maps/place/Campus+El+Irland%C3%A9s+(Campo+de+Deportes+del+Marin)/@-34.4565625,-58.5107859,597m/data=!3m2!1e3!4b1!4m6!3m5!1s0x95bcb02b9e0d76c1:0x95b8e35670a781ed!8m2!3d-34.456567!4d-58.508211!16s%2Fg%2F11bwnyb01x?entry=ttu" target="_blank" rel="noopener">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1489.4140886714!2d-58.51078586!3d-34.4565625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb02b9e0d76c1%3A0x95b8e35670a781ed!2sCampus%20El%20Irland%C3%A9s%20(Campo%20de%20Deportes%20del%20Marin)!5e0!3m2!1ses!2sar!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height:80px; border-radius:8px;"></iframe>
-              <div class="map-overlay" style="padding:0;"><span class="map-cta" style="font-size:0.65rem; padding:0.4rem 0.6rem; margin-top:0.3rem;">📍 Mapa</span></div>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1489.4140886714!2d-58.51078586!3d-34.4565625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb02b9e0d76c1%3A0x95b8e35670a781ed!2sCampus%20El%20Irland%C3%A9s%20(Campo%20de%20Deportes%20del%20Marin)!5e0!3m2!1ses!2sar!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height:90px;"></iframe>
+              <div class="map-overlay" style="padding:0.4rem;"><span class="map-cta" style="font-size:0.65rem; padding:0.3rem 0.6rem; margin-top:0;">📍 Ver mapa</span></div>
             </a>
           </div>
         </div>
       </div>
     </div>
-    <div class="fb"><span>© 2026 Miércoles de Fútbol (MDF)</span><span>Datos desde Google Sheets 📊</span></div>
+    <div class="fb" style="padding-top:0.8rem;"><span>© 2026 Miércoles de Fútbol (MDF)</span><span>Datos desde Google Sheets 📊</span></div>
   </div>
 </footer>
 
@@ -693,8 +691,9 @@ function adminLogin() {
      const pass = prompt('Modo administrador. Ingrese contraseña:');
      if(pass === ADMIN_PASS) {
         adminUnlocked = true;
-        document.getElementById('admin-wa').classList.add('admin-active');
-        alert('Modo Admin activado 😎. Ya podés ver el botón de compartir equipos.');
+        document.getElementById('admin-wa').style.display = 'flex';
+        document.getElementById('no-play-btn').style.display = 'inline-flex';
+        alert('Modo Admin activado 😎. Ya podés ver las herramientas de gestión.');
      } else {
         alert('Contraseña incorrecta.');
      }
@@ -715,19 +714,17 @@ const GC_ARQUEROS={
   'Questa, Ezequiel':{1:8,2:5,3:4,5:9,6:9}
 };
 
-// ACA EDITAS LAS FOTOS DE TUS MVPS (Subí tu foto a GitHub y poné el nombre en 'img')
 const MVP_DATA=[
-  {fecha:6,date:'25/03/2026',nombre:'Lorda, Fernando',stat:'3 goles · Blanco ganó 9-8', img:''},
-  {fecha:5,date:'18/03/2026',nombre:'Besse, Luciano',stat:'2 goles · Blanco ganó 9-4 (goleada)', img:''},
-  {fecha:4,date:'04/03/2026',nombre:'Cañete, Maxi',stat:'Capitán · Blanco ganó 2-1', img:''},
-  {fecha:3,date:'25/02/2026',nombre:'Questa, Ezequiel',stat:'MVP · Negro ganó 8-4', img:''},
-  {fecha:2,date:'18/02/2026',nombre:'Ramirez, Jere',stat:'4 goles · Negro ganó 6-5', img:''},
-  {fecha:1,date:'11/02/2026',nombre:'Natiello, Cristian',stat:'3 goles · Blanco ganó 8-7', img:''},
+  {fecha:6,date:'25/03/2026',nombre:'Lorda, Fernando',stat:'3 goles · Blanco ganó 9-8'},
+  {fecha:5,date:'18/03/2026',nombre:'Besse, Luciano',stat:'2 goles · Blanco ganó 9-4 (goleada)'},
+  {fecha:4,date:'04/03/2026',nombre:'Cañete, Maxi',stat:'Capitán · Blanco ganó 2-1'},
+  {fecha:3,date:'25/02/2026',nombre:'Questa, Ezequiel',stat:'MVP · Negro ganó 8-4'},
+  {fecha:2,date:'18/02/2026',nombre:'Ramirez, Jere',stat:'4 goles · Negro ganó 6-5'},
+  {fecha:1,date:'11/02/2026',nombre:'Natiello, Cristian',stat:'3 goles · Blanco ganó 8-7'},
 ];
 
 let _rawData=null, _allStandings=[], _golesPerFecha={};
 
-// Formatea "Apellido, Nombre" a "Nombre Apellido"
 function formatName(n) {
   if(!n) return '—';
   if(n.startsWith('Invitado')) return n;
@@ -981,16 +978,14 @@ function renderVallas(){
 }
 
 // ═══════════════════════════════════════
-// RENDER MVPs (AUTOMATIZADO)
+// RENDER MVPs (AUTOMATIZADO GITHUB)
 // ═══════════════════════════════════════
-
-// Función que agarra "Cañete, Maxi" y lo convierte en "canete-maxi"
 function getUrlFoto(nombre) {
   if(!nombre) return '';
   let formateado = nombre.toLowerCase()
-                         .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Saca tildes y ñ
-                         .replace(/,\s*/g, '-') // Cambia la coma por guion
-                         .replace(/\s+/g, '-'); // Cambia espacios por guiones
+                         .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
+                         .replace(/,\s*/g, '-') 
+                         .replace(/\s+/g, '-'); 
   return `mvp/${formateado}.png`;
 }
 
@@ -999,12 +994,10 @@ function renderMVPs(){
   const feat=document.getElementById('mvp-featured-cnt');
   if(!c || !feat) return;
   
-  // Destacado (Último MVP)
   const lastMVP = MVP_DATA[0];
   const lastUrl = getUrlFoto(lastMVP.nombre);
   
-  // El "onerror" es clave: si alguien sale MVP y todavía no subiste su foto, muestra el emoji de la estrella/lentes y no se rompe la web
-  const lastThumb = `<img class="mvp-photo-placeholder" src="${lastUrl}" alt="${lastMVP.nombre}" style="border:4px solid var(--gold); padding:0; font-size:0; object-fit:cover;" onerror="this.outerHTML='<div class=\\'mvp-photo-placeholder\\'>⭐</div>'">`;
+  const lastThumb = `<img class="mvp-photo-placeholder" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-placeholder\\'>⭐</div>'">`;
     
   feat.innerHTML = `
       ${lastThumb}
@@ -1016,7 +1009,6 @@ function renderMVPs(){
       </div>
   `;
 
-  // Grilla Histórica
   c.innerHTML=MVP_DATA.map(m=>{
     const url = getUrlFoto(m.nombre);
     const thumb = `<img class="mvp-thumb" src="${url}" alt="${m.nombre}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
