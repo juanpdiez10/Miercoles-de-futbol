@@ -103,7 +103,6 @@ table.st tbody tr.r1 td{background:#2d2408!important}
 table.st tbody tr.r2 td{background:#1e2020!important}
 table.st tbody tr.r3 td{background:#21190d!important}
 table.st tbody tr:hover td{background:#1e3322!important;transition:background .15s}
-/* Sticky cols */
 table.st th:nth-child(1),table.st td:nth-child(1){position:sticky;left:0;z-index:2}
 table.st th:nth-child(2),table.st td:nth-child(2){position:sticky;left:34px;z-index:2}
 table.st thead th:nth-child(1),table.st thead th:nth-child(2){background:#1a2e1e;z-index:3}
@@ -210,7 +209,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-modal.open{display:flex}
 .mvp-modal-inner{background:var(--card);border:2px solid var(--gold);border-radius:14px;padding:2.5rem 2rem;max-width:480px;width:100%;position:relative;text-align:center;animation:popIn .25s ease}
 .mvp-modal-close{position:absolute;top:.75rem;right:.75rem;background:rgba(255,255,255,.1);border:none;color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
-.mvp-modal-img{width:220px;height:220px;border-radius:50%;object-fit:cover;object-position: center -25px;border:4px solid var(--gold);margin:0 auto 1.5rem;display:block}
+.mvp-modal-img{width:220px;height:220px;border-radius:50%;object-fit:cover;object-position:center -25px;border:4px solid var(--gold);margin:0 auto 1.5rem;display:block}
 .mvp-modal-img-ph{width:220px;height:220px;border-radius:50%;background:var(--card2);border:4px solid rgba(255,215,0,.3);margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-size:5rem}
 .mvp-modal-lbl{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;font-size:.8rem;text-transform:uppercase;margin-bottom:.4rem}
 .mvp-modal-name{font-family:'Anton',sans-serif;font-size:2rem;margin-bottom:.4rem}
@@ -219,7 +218,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 
 /* MVP PAGE */
 .mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
-.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover; object-position: center -10px;}
+.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover; object-position:center -10px;}
 .mvp-l{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;font-size:.7rem;text-transform:uppercase;margin-bottom:.35rem}
 .mvp-n{font-family:'Anton',sans-serif;font-size:1.8rem}
 .mvp-d{color:var(--text2);font-size:.83rem;margin-top:.2rem}
@@ -228,11 +227,28 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-card{background:var(--card);border:1px solid rgba(255,215,0,.1);border-radius:10px;padding:1rem;transition:all .2s;cursor:pointer}
 .mvp-card:hover{border-color:rgba(255,215,0,.35);transform:translateY(-3px)}
 .mvp-card-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.55rem}
-.mvp-thumb{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position: center -5px;border:2px solid rgba(255,215,0,.3);flex-shrink:0}
+.mvp-thumb{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:center -5px;border:2px solid rgba(255,215,0,.3);flex-shrink:0}
 .mvp-thumb-ph{width:46px;height:46px;border-radius:50%;background:var(--card2);border:2px solid rgba(255,215,0,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;position:relative;}
 .mvp-card-date{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:1px;text-transform:uppercase}
 .mvp-card-name{font-weight:700;font-size:.9rem}
 .mvp-card-stat{color:var(--text2);font-size:.78rem}
+
+/* INSCRIPCION PAGE */
+.insc-hero { text-align:center; padding: 2rem 1rem; background: linear-gradient(to bottom, rgba(57,255,20,0.05), transparent); border-radius: 12px; border: 1px solid var(--green-dark); margin-bottom: 2rem; }
+.insc-hero h2 { font-family: 'Anton', sans-serif; font-size: 2.2rem; color: var(--green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; }
+.insc-hero p { color: var(--text2); font-size: 0.9rem; }
+.insc-clima-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.05); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem; color: var(--text); margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1); }
+.insc-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.insc-row { display: flex; align-items: center; gap: 1rem; background: var(--card); padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid rgba(57,255,20,0.1); }
+.insc-num { font-family: 'Anton', sans-serif; font-size: 1.4rem; color: var(--text2); width: 30px; text-align: center; flex-shrink: 0; }
+.insc-content { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+.insc-name { font-weight: 600; font-size: 1rem; color: var(--green); display: flex; align-items: center; gap: 0.4rem; }
+.insc-name.blocked { color: #ffaa00; }
+.insc-select { flex: 1; background: var(--bg2); border: 1px solid var(--green-dark); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 0.9rem; padding: 0.5rem; border-radius: 6px; min-width: 150px; }
+.insc-select:focus { outline: none; border-color: var(--green); }
+.btn-anotar { background: var(--green); color: #000; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; }
+.btn-admin { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text2); font-size: 0.75rem; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; }
+.admin-panel { background: rgba(255,85,85,0.05); border: 1px solid rgba(255,85,85,0.2); padding: 1.5rem; border-radius: 8px; margin-top: 2rem; display: none; flex-direction: column; gap: 1rem; }
 
 /* PRÓXIMA FECHA */
 .next-hero{background:linear-gradient(135deg,var(--card2),var(--bg2));border:2px solid var(--green-dark);border-radius:12px;padding:2.25rem;text-align:center;margin-bottom:2rem;position:relative;overflow:hidden}
@@ -249,8 +265,6 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .tlist li{display:flex;align-items:center;gap:.4rem;font-size:.88rem;padding:.2rem 0}
 .tlist li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 .vs{font-family:'Anton',sans-serif;font-size:1.75rem;color:var(--text2);text-align:center;padding-top:2.5rem}
-.wa-section{background:var(--card2);border:1px solid rgba(37,211,102,.2);border-radius:10px;padding:1.25rem;margin-top:1.5rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
-.wa-txt{font-size:.88rem;color:var(--text2)}.wa-txt strong{color:var(--text)}
 
 /* FORUM */
 .forum-section{margin-top:2.5rem}
@@ -263,14 +277,14 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .fp-meta{display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem}
 .fp-name{font-weight:600;font-size:.83rem;color:var(--green)}
 .fp-time{color:var(--text2);font-size:.7rem}
+.fp-delete { background:transparent; border:none; color:var(--red); cursor:pointer; font-size:.85rem; margin-left:auto; padding:0 .3rem; transition:transform .2s; display:flex; align-items:center; }
+.fp-delete:hover { transform:scale(1.2); }
 .fp-body{color:var(--text2);font-size:.83rem;line-height:1.5}
 .forum-form{display:flex;flex-direction:column;gap:.6rem}
 .forum-form input,.forum-form textarea{background:var(--bg2);border:1px solid var(--green-dark);border-radius:6px;color:var(--text);padding:.75rem;font-family:'Barlow',sans-serif;font-size:.88rem;transition:border-color .2s}
 .forum-form input::placeholder,.forum-form textarea::placeholder{color:var(--text2)}
 .forum-form input:focus,.forum-form textarea:focus{outline:none;border-color:var(--green)}
 .forum-form textarea{resize:vertical;min-height:80px}
-.fp-delete { background:transparent; border:none; color:var(--red); cursor:pointer; font-size:.85rem; margin-left:auto; padding:0 .3rem; transition:transform .2s; display:flex; align-items:center; }
-.fp-delete:hover { transform:scale(1.2); }
 
 /* ESTADISTICAS */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem}
@@ -387,13 +401,13 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   </div>
   <nav id="main-nav">
     <a onclick="showPage('home')" class="active">Inicio</a>
+    <a onclick="showPage('inscripcion')">Anotarse</a>
     <a onclick="showPage('tabla')">Tabla</a>
     <a onclick="showPage('partidos')">Partidos</a>
     <a onclick="showPage('goleadores')">Goleadores</a>
     <a onclick="showPage('mvp')">MVP</a>
     <a onclick="showPage('proxima')">Próxima Fecha</a>
     <a onclick="showPage('stats')">Estadísticas</a>
-    <a onclick="showPage('premios')">Premios</a>
   </nav>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </header>
@@ -405,8 +419,8 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="hero-badge">🏆 Temporada 2026 · Fecha 6 jugada</div>
       <h1><span class="gr">MIÉRCOLES</span><br>DE FÚTBOL</h1>
       <div class="hero-btns">
-        <button class="btn btn-p" onclick="showPage('tabla')">📊 Ver Tabla 2026</button>
-        <button class="btn btn-s" onclick="showPage('proxima')">📅 Próxima Fecha</button>
+        <button class="btn btn-p" onclick="showPage('inscripcion')">✍️ Anotarse al partido</button>
+        <button class="btn btn-s" onclick="showPage('tabla')">📊 Ver Tabla 2026</button>
       </div>
       <div class="hero-stats">
         <div class="stat-item"><span class="stat-num">6</span><div class="stat-label">Fechas</div></div>
@@ -427,6 +441,49 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="qcard" onclick="showPage('proxima')"><span class="qi">📅</span><div class="qt">Próxima Fecha</div><div class="qd">Fecha 7 · Miércoles</div></div>
       <div class="qcard" onclick="showPage('stats')"><span class="qi">📈</span><div class="qt">Estadísticas</div><div class="qd">Curiosidades y récords</div></div>
     </div>
+  </div>
+</div>
+
+<div id="page-inscripcion" class="page">
+  <div class="section" style="max-width: 600px;">
+    <div class="insc-hero">
+      <h2>Anotarse al Partido</h2>
+      <p>Cupos limitados: 16 jugadores. Por orden de llegada.</p>
+      <div class="insc-clima-badge" id="insc-clima-display" style="display:none;">☁️ Cargando pronóstico...</div>
+    </div>
+    
+    <div id="inscripcion-cerrada" style="display:none;" class="empty-box">
+      <span style="font-size: 2rem; display:block; margin-bottom:1rem;">⏳</span>
+      <h3 style="color:var(--text); margin-bottom:0.5rem; font-family:'Anton', sans-serif; letter-spacing:1px;">LA LISTA ESTÁ CERRADA</h3>
+      <p>Se habilita automáticamente los <strong>Martes a las 13:00 hs</strong>.</p>
+    </div>
+
+    <div id="inscripcion-lista" style="display:block;">
+      <div class="insc-list" id="insc-slots">
+        </div>
+      
+      <div style="margin-top: 2rem; text-align:center;">
+        <button id="btn-share-insc" class="btn btn-wa" style="display:none; font-size:0.9rem; padding: 0.8rem 2rem;" onclick="shareInscripcionWA()">📲 COMPARTIR LISTA EN WHATSAPP</button>
+      </div>
+    </div>
+
+    <div class="admin-panel" id="admin-inscripcion-panel">
+      <h4 style="color:var(--text); font-family:'Anton',sans-serif; letter-spacing:1px; margin-bottom:0.5rem;">⚙️ PANEL DE ADMINISTRADOR</h4>
+      
+      <div>
+        <label style="font-size:0.8rem; color:var(--text2); display:block; margin-bottom:0.3rem;">Actualizar pronóstico del clima:</label>
+        <div style="display:flex; gap:0.5rem;">
+          <input type="text" id="admin-clima-input" placeholder="Ej: despejado 🌛 / 20°C" style="flex:1; background:var(--bg); border:1px solid rgba(255,255,255,0.2); color:var(--text); padding:0.5rem; border-radius:4px; font-family:'Barlow',sans-serif;">
+          <button class="btn btn-p" style="padding:0.5rem 1rem;" onclick="adminUpdateClima()">Guardar</button>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 0.5rem;">
+        <p style="font-size:0.8rem; color:var(--red); margin-bottom:0.5rem;">Opciones de reseteo para nueva fecha:</p>
+        <button class="btn" style="background:transparent; border:1px solid var(--red); color:var(--red); font-size:0.75rem;" onclick="adminResetLista()">🗑️ BORRAR TODA LA LISTA</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -547,6 +604,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div style="display:inline-block;background:rgba(57,255,20,.07);border:1px solid var(--green-dark);padding:.28rem .9rem;border-radius:2px;font-size:.7rem;letter-spacing:3px;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:1.2rem" id="fecha-num-label">📅 Fecha 7 · Temporada 2026</div>
       <div class="nd" id="next-date-display">MIÉRCOLES 1 DE ABRIL</div>
       <div class="nt" id="next-time-display">⏰ 20:00 hs</div>
+      <div class="nt" id="next-clima-display" style="font-weight:600; color:var(--text); display:none;">☁️ Cargando clima...</div>
       <div class="np">📍 <strong>Campus El Irlandés</strong> — Campo de Deportes del Marin<br><span style="color:var(--text2);font-size:.85rem">Av. Bartolomé Mitre 1650, B1643 Béccar, Buenos Aires</span></div>
       <div class="next-edit-row">
         <div id="no-play-msg" style="display:none;background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);color:#ff8888;padding:.4rem 1rem;border-radius:20px;font-size:.82rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">⚠️ FECHA SUSPENDIDA</div>
@@ -559,36 +617,18 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="tgrid">
       <div class="tlist">
         <h3>⚪ Equipo Blanco</h3>
-        <ul id="team-blanco">
-          <li>Ramirez, Jere</li>
-          <li>Natiello, Cristian</li>
-          <li>Lorda, Fernando</li>
-          <li>Cañete, Maxi</li>
-          <li>Reggi, Tomas</li>
-          <li>Besse, Luciano</li>
-          <li>Espul, Lucas</li>
-          <li>Valdez, Lucas</li>
-        </ul>
+        <ul id="team-blanco"></ul>
       </div>
       <div class="vs">VS</div>
       <div class="tlist">
         <h3>⚫ Equipo Negro</h3>
-        <ul id="team-negro">
-          <li>Questa, Ezequiel</li>
-          <li>Mendoza, Guillermo</li>
-          <li>Del Rio, Pipa</li>
-          <li>Diez, Juan Pablo</li>
-          <li>Gonzalez, Matias</li>
-          <li>Vissani, Matias</li>
-          <li>Florio, Tomas</li>
-          <li>Questa, Sebastian</li>
-        </ul>
+        <ul id="team-negro"></ul>
       </div>
     </div>
     
     <div class="wa-section" id="admin-wa" style="display:none; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
       <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br>Solo visible para administrador.</div>
-      <button class="btn btn-wa" onclick="shareWhatsApp()">WhatsApp</button>
+      <button class="btn btn-wa" onclick="shareEquiposWhatsApp()">WhatsApp Equipos</button>
     </div>
 
     <div class="forum-section" id="foro-section">
@@ -684,9 +724,16 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 const SHEET_ID = '1GIcSZ6cIWOaAwi6P2cPXTd3LYvgUoFDJ0N6auLWJ4ZQ'; 
 const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
 const EQUIPOS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=607354519`;
+const API_URL = 'https://script.google.com/macros/s/AKfycbz3lNZKZn_vViL9s6PGaCqDQAyFOBkAo_jAZ4aUIponphGmOPR-0xvyBGzL7LuAjPmK/exec';
+
 const ADMIN_PASS='mdf2026';
 let adminUnlocked=false;
 let adminClicks = 0;
+
+let _forumPosts = [];
+let _inscripcionData = [];
+let _clima = "";
+let _allPlayersList = [];
 
 function adminLogin() {
   adminClicks++;
@@ -696,8 +743,12 @@ function adminLogin() {
         adminUnlocked = true;
         document.getElementById('admin-wa').style.display = 'flex';
         document.getElementById('no-play-btn').style.display = 'inline-flex';
-        renderForum(); // Recarga el foro para mostrar los botones de borrar
-        alert('Modo Admin activado 😎. Ya podés ver las herramientas de gestión.');
+        document.getElementById('admin-inscripcion-panel').style.display = 'flex';
+        
+        renderForum(); 
+        renderInscripcion(); 
+        
+        alert('Modo Admin activado 😎. Ya podés gestionar todo.');
      } else {
         alert('Contraseña incorrecta.');
      }
@@ -738,7 +789,185 @@ function formatName(n) {
 }
 
 // ═══════════════════════════════════════
-// COMPUTE
+// LOGICA DE INSCRIPCIÓN Y API GITHUB
+// ═══════════════════════════════════════
+async function loadApiData() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    _forumPosts = data.posts || [];
+    _inscripcionData = data.inscripcion || [];
+    _clima = data.clima || "";
+    
+    if(_clima !== "") {
+      const climasEl = document.querySelectorAll('#next-clima-display, #insc-clima-display');
+      climasEl.forEach(el => { el.style.display = 'inline-flex'; el.textContent = '☁️ ' + _clima; });
+      if(document.getElementById('admin-clima-input')) document.getElementById('admin-clima-input').value = _clima;
+    }
+    
+    renderForum();
+    renderInscripcion();
+  } catch (e) {
+    console.error("Error al cargar la base de datos externa.", e);
+  }
+}
+
+function isListaAbierta() {
+  if (adminUnlocked) return true; 
+  const now = new Date();
+  const day = now.getDay(); 
+  const hour = now.getHours();
+  if (day === 2 && hour >= 13) return true;
+  if (day === 3 && hour < 20) return true;
+  return false;
+}
+
+function renderInscripcion() {
+  const container = document.getElementById('insc-slots');
+  const divCerrada = document.getElementById('inscripcion-cerrada');
+  const divAbierta = document.getElementById('inscripcion-lista');
+  const btnShare = document.getElementById('btn-share-insc');
+  
+  if(!isListaAbierta()) {
+    divAbierta.style.display = 'none';
+    divCerrada.style.display = 'block';
+    return;
+  }
+  
+  divAbierta.style.display = 'block';
+  divCerrada.style.display = 'none';
+  
+  const anotados = _inscripcionData.map(s => s.jugador).filter(j => j !== '');
+  const disponibles = _allPlayersList.filter(p => !anotados.includes(p));
+  const optionsHtml = `<option value="">Seleccioná tu nombre...</option>` + disponibles.map(p => `<option value="${p}">${p}</option>`).join('');
+  
+  let ocupadosCont = 0;
+  
+  container.innerHTML = _inscripcionData.map(slot => {
+    const isLibre = slot.estado === 'Libre';
+    const isBloqueado = slot.estado && slot.estado.startsWith('Bloqueado');
+    if(!isLibre && !isBloqueado) ocupadosCont++;
+    
+    let contenido = '';
+    
+    if (isLibre) {
+      const selectHtml = `<select id="select-slot-${slot.slot}" class="insc-select">${optionsHtml}</select>`;
+      const btnAnotar = `<button class="btn-anotar" onclick="inscribirJugador(${slot.slot})">Anotarme</button>`;
+      const btnAdminBloq = adminUnlocked ? `<button class="btn-admin" onclick="adminBloquear(${slot.slot})">🔒 Bloquear</button>` : '';
+      contenido = `${selectHtml} <div style="display:flex; gap:0.5rem; align-items:center;">${btnAnotar} ${btnAdminBloq}</div>`;
+    } 
+    else if (isBloqueado) {
+      const btnAdminDesbloq = adminUnlocked ? `<button class="btn-admin" style="color:var(--green);" onclick="adminLiberar(${slot.slot})">🔓 Desbloquear</button>` : '';
+      contenido = `<span class="insc-name blocked">${slot.jugador}</span> ${btnAdminDesbloq}`;
+    }
+    else {
+      const urlFoto = getUrlFoto(slot.jugador); 
+      const carita = `<img src="${urlFoto}" style="width:24px; height:24px; border-radius:50%; object-fit:cover; object-position:top;" onerror="this.style.display='none'">`;
+      const btnBajar = adminUnlocked ? `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>` : '';
+      contenido = `<span class="insc-name">${carita} ${slot.jugador}</span> ${btnBajar}`;
+    }
+    
+    return `<div class="insc-row">
+      <div class="insc-num">${slot.slot}.</div>
+      <div class="insc-content">${contenido}</div>
+    </div>`;
+  }).join('');
+  
+  if (ocupadosCont + _inscripcionData.filter(s=>s.estado.startsWith('Bloqueado')).length >= 16 || adminUnlocked) {
+    btnShare.style.display = 'inline-block';
+  } else {
+    btnShare.style.display = 'none';
+  }
+}
+
+async function updateSlotApi(slotNum, estado, jugador) {
+  const payload = { action: 'update_inscripcion', slot: slotNum, estado: estado, jugador: jugador };
+  try {
+    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    const i = _inscripcionData.findIndex(s => s.slot === slotNum);
+    if(i !== -1) { _inscripcionData[i].estado = estado; _inscripcionData[i].jugador = jugador; }
+    renderInscripcion();
+  } catch(e) {
+    alert('Error al actualizar. Intentá de nuevo.');
+  }
+}
+
+function inscribirJugador(slotNum) {
+  const sel = document.getElementById('select-slot-'+slotNum);
+  const nombre = sel.value;
+  if(!nombre) { alert("Elegí un nombre primero."); return; }
+  sel.disabled = true; 
+  updateSlotApi(slotNum, 'Ocupado', nombre);
+}
+
+function adminBloquear(slotNum) {
+  const motivo = prompt("Motivo del bloqueo (Ej: 🧤 Arqueros):");
+  if(motivo) {
+    updateSlotApi(slotNum, 'Bloqueado', motivo);
+  }
+}
+
+function adminLiberar(slotNum) {
+  if(confirm('¿Seguro que querés liberar este lugar?')) {
+    updateSlotApi(slotNum, 'Libre', '');
+  }
+}
+
+async function adminUpdateClima() {
+  const c = document.getElementById('admin-clima-input').value;
+  const payload = { action: 'update_clima', clima: c };
+  try {
+    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    _clima = c;
+    alert("Clima guardado.");
+    loadApiData(); 
+  } catch(e) {
+    alert('Error al guardar clima.');
+  }
+}
+
+async function adminResetLista() {
+  if(!confirm("⚠️ ESTÁS POR BORRAR A TODOS LOS ANOTADOS.\n¿Seguro que querés vaciar la lista para arrancar una fecha nueva?")) return;
+  try {
+    const payload = { action: 'reset_inscripcion' };
+    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    alert("Lista reseteada impecable para el próximo martes.");
+    loadApiData();
+  } catch(e) {
+    alert('Error al limpiar lista.');
+  }
+}
+
+function shareInscripcionWA() {
+  const nw = getNextWednesday();
+  const fechaNum = MAX_FECHA+1;
+  const dateStr = `${nw.getDate().toString().padStart(2, '0')}/${(nw.getMonth()+1).toString().padStart(2, '0')}`;
+  
+  let msg = `LISTA MIERCOLES 20HS – CANCHA MARIN ⚽\n\n`;
+  msg += `Valor: $11.000 C/U\n\n`;
+  msg += `FECHA ${fechaNum} ‼️\n\n`;
+  msg += `Clima Miercoles ${dateStr}: ${_clima}\n\n`;
+  msg += `Lista:\n`;
+  
+  for(let i=1; i<=16; i++) {
+    let slotInfo = _inscripcionData.find(s => s.slot === i);
+    let textoFila = "";
+    if(slotInfo) {
+       if(slotInfo.estado.startsWith("Bloqueado")) {
+          textoFila = slotInfo.jugador; 
+       } else if(slotInfo.estado === "Ocupado") {
+          textoFila = slotInfo.jugador;
+       }
+    }
+    msg += `${i}. ${textoFila}\n`;
+  }
+  
+  msg += `\n👇 *Anotarse / Ver datos:*\njuanpdiez10.github.io/Miercoles-de-futbol/#inscripcion 👈`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+  // ═══════════════════════════════════════
+// COMPUTE Y ESTADÍSTICAS
 // ═══════════════════════════════════════
 function computeStandings(data){
   const p={};
@@ -795,9 +1024,6 @@ function rachaHTML(hist,n=7){
   ).join('');
 }
 
-// ═══════════════════════════════════════
-// RENDER STANDINGS
-// ═══════════════════════════════════════
 function renderStandings(standings){
   const tb=document.getElementById('tb26');if(!tb)return;
   const cls=['r1','r2','r3'];
@@ -841,9 +1067,6 @@ function filterFecha(maxF,btn){
   if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
 }
 
-// ═══════════════════════════════════════
-// RENDER MATCHES
-// ═══════════════════════════════════════
 function renderMatches(ms){
   const c=document.getElementById('par-p2026');if(!c)return;
   c.innerHTML=[...ms].reverse().map(m=>{
@@ -891,9 +1114,6 @@ function renderMatches(ms){
   }).join('');
 }
 
-// ═══════════════════════════════════════
-// RENDER SCORERS & VALLAS
-// ═══════════════════════════════════════
 function openScoreModal(nombre,isValla){
   const modal=document.getElementById('score-modal');
   document.getElementById('sm-name').textContent=nombre;
@@ -981,9 +1201,6 @@ function renderVallas(){
   cp.innerHTML=vallasProm.map(makeVallaProm).join('');
 }
 
-// ═══════════════════════════════════════
-// RENDER MVPs (AUTOMATIZADO GITHUB)
-// ═══════════════════════════════════════
 function getUrlFoto(nombre) {
   if(!nombre) return '';
   let formateado = nombre.toLowerCase()
@@ -1035,9 +1252,6 @@ function openMvpModal(imgSrc,name,date,stat){
   document.getElementById('mvp-modal').classList.add('open');
 }
 
-// ═══════════════════════════════════════
-// ESTADÍSTICAS Y CURIOSIDADES DINÁMICAS
-// ═══════════════════════════════════════
 function renderEstadisticas(data){
   const st=_allStandings.length?_allStandings:computeStandings(data);
   const matches=computeMatches(data);
@@ -1077,7 +1291,6 @@ function renderEstadisticas(data){
       <div class="stat-card-sub">${c.sub}</div>
     </div>`).join('');
 
-  // 1. Racha
   let maxStreak = 0;
   let streakPlayers = [];
   st.forEach(p => {
@@ -1096,7 +1309,6 @@ function renderEstadisticas(data){
     ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
     : 'Aún no hay rachas de victorias registradas.';
 
-  // 2. Goles
   let maxGolesP = 0;
   let golesEventos = [];
   data.forEach(r => {
@@ -1111,37 +1323,31 @@ function renderEstadisticas(data){
     ? `El récord de goles en un solo partido es de <strong>${maxGolesP} goles</strong>, logrado por ` + golesEventos.map(e => `<strong>${e.n}</strong> (Fecha ${e.f})`).join(' y ') + `.`
     : 'Aún no hay goles registrados.';
 
-  // 3. Dominio
   let domTeamTxt = '';
   if (blancoWins > negroWins) domTeamTxt = `El <strong>Equipo Blanco</strong> domina: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro (con ${negroWins}) todavía busca equilibrar la balanza.`;
   else if (negroWins > blancoWins) domTeamTxt = `El <strong>Equipo Negro</strong> domina: ganó <strong>${negroWins} de ${matches.length}</strong> partidos. El Blanco (con ${blancoWins}) todavía busca equilibrar la balanza.`;
   else domTeamTxt = `¡Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos de los ${matches.length} jugados.`;
 
-  // 4. Fechas goleadoras
   const maxTotalGoles = Math.max(...matches.map(m => m.gfB + m.gfN));
   const fechasGoleadoras = matches.filter(m => m.gfB + m.gfN === maxTotalGoles);
   const txtFechaGoles = matches.length > 0
     ? `La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`
     : 'Todavía no hay partidos jugados.';
 
-  // 5. Fechas ajustadas
   const minDiff = Math.min(...matches.map(m => Math.abs(m.gfB - m.gfN)));
   const ajustadas = matches.filter(m => Math.abs(m.gfB - m.gfN) === minDiff);
   const txtAjustadas = matches.length > 0
     ? `La ${ajustadas.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${ajustadas.length>1?'fueron las más ajustadas':'fue la más ajustada'} — separada${ajustadas.length>1?'s':''} por <strong>solo ${minDiff} gol${minDiff!==1?'es':''}</strong> de diferencia.`
     : 'Todavía no hay partidos jugados.';
 
-  // 6. Lavandería
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
   const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => formatName(p.nombre));
   const txtCamisetas = maxCamisetas > 0
     ? `<strong>${lavaPlayers.join(' y ')}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
     : 'Todavía nadie se llevó las camisetas a lavar (o no lo anotaron).';
 
-  // 7. Promedio
   const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
 
-  // 8. Random
   const winsBlanco = {}, winsNegro = {};
   data.forEach(r => {
       if(r.resultado === 'G') {
@@ -1187,9 +1393,6 @@ function renderEstadisticas(data){
     </div>`).join('');
 }
 
-// ═══════════════════════════════════════
-// PRÓXIMA FECHA
-// ═══════════════════════════════════════
 function getNextWednesday(){
   const now=new Date();const day=now.getDay();let diff=3-day;
   if(diff<=0)diff+=7;const nw=new Date(now);nw.setDate(now.getDate()+diff);return nw;
@@ -1201,76 +1404,45 @@ function setupNextDate(){
   document.getElementById('next-date-display').textContent=`${days[nw.getDay()]} ${nw.getDate()} DE ${months[nw.getMonth()]}`;
   document.getElementById('fecha-num-label').textContent=`📅 Fecha ${MAX_FECHA+1} · Temporada 2026`;
 }
-let noPlayActive=false;
+
 function toggleNoPlay(){
   noPlayActive=!noPlayActive;
   document.getElementById('no-play-msg').style.display=noPlayActive?'block':'none';
   document.getElementById('no-play-btn').textContent=noPlayActive?'✅ Cancelar suspensión':'⚠️ Marcar fecha suspendida';
 }
 
-function shareWhatsApp(){
-  if(!adminUnlocked){
-    alert('Solo el administrador puede usar esta función.');
-    return;
-  }
-  
+function shareEquiposWhatsApp(){
+  const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
+  const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
   const nw=getNextWednesday();
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fechaNum=MAX_FECHA+1;
-  const dateStr=`${nw.getDate()} de ${months[nw.getMonth()]} de ${nw.getFullYear()}`;
+  const dateStr=`${nw.getDate()}/${(nw.getMonth()+1).toString().padStart(2, '0')}`;
 
   let msg = '';
-
   if(noPlayActive) {
-    // MENSAJE SI EL PARTIDO ESTÁ SUSPENDIDO
     msg = `⚠️ *FECHA ${fechaNum} SUSPENDIDA* ⚠️\n\n`;
-    msg += `El partido de este miércoles ${dateStr} está suspendido. ❌\n\n`;
-    msg += `Nos vemos la semana que viene. 💪`;
+    msg += `Muchachos, el partido de este miércoles ${nw.getDate()} de ${months[nw.getMonth()]} está suspendido. 🌧️❌\n\n`;
+    msg += `Nos vemos la semana que viene para la revancha. ¡A guardar las piernas! ⚽🦵💪`;
   } else {
-    // MENSAJE NORMAL DE EQUIPOS
-    const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
-    const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
-
     msg=`*FECHA ${fechaNum}*\n`;
-    msg+=`Miercoles ${dateStr}\n`;
+    msg+=`Miercoles ${nw.getDate()} de ${months[nw.getMonth()]}\n`;
     msg+=`Horario: 20:00 hs\n`;
+    if(_clima) msg+=`Clima: ${_clima}\n`;
     msg+=`Llegar temprano ⏰\n`;
     msg+=`Llevar efectivo 💵\n\n`;
     msg+=`*EQUIPO BLANCO* ⚪\n`;
     bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
     msg+=`\n*EQUIPO NEGRO* ⚫\n`;
     ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
-    
-    // Le sacamos el https:// para que WhatsApp no arme la miniatura gigante
     msg+=`\n👇 *Foro de quejas y opiniones:*\njuanpdiez10.github.io/Miercoles-de-futbol/#foro 👈\n`;
   }
-
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-// ═══════════════════════════════════════
-// FORO GLOBAL VINCULADO A GOOGLE SHEETS
-// ═══════════════════════════════════════
-// PEGA ACA ADENTRO LA URL QUE TE DIO GOOGLE APPS SCRIPT:
-const FORO_URL = 'https://script.google.com/macros/s/AKfycbybbieDB119Tun6A2dnQRBcwinikYYYI0PwjPTjPbA6H2qhOuaZzpjLVQBXZDM72E1L/exec';
-
-let _forumPosts = [];
-
-// Descarga los mensajes de internet
-async function loadForumData() {
-  try {
-    const res = await fetch(FORO_URL);
-    _forumPosts = await res.json();
-    renderForum();
-  } catch (e) {
-    console.error("Error al cargar el foro desde la base de datos.", e);
-  }
-}
-
-// Dibuja los mensajes en pantalla
 function renderForum(){
-  const f = document.getElementById('forum-fecha-sel').value;
-  const container = document.getElementById('forum-posts');
+  const f=document.getElementById('forum-fecha-sel').value;
+  const container=document.getElementById('forum-posts');
   const posts = _forumPosts.filter(p => p.fecha === f);
 
   if(!posts.length){
@@ -1288,7 +1460,6 @@ function renderForum(){
   container.scrollTop=container.scrollHeight;
 }
 
-// Envía un mensaje nuevo a Google Sheets
 async function postForum(){
   const name=document.getElementById('forum-name').value.trim();
   const msg=document.getElementById('forum-msg').value.trim();
@@ -1302,59 +1473,37 @@ async function postForum(){
   btn.textContent = 'Enviando...';
   btn.disabled = true;
 
-  const payload = { action: 'add', fecha: f, name: name, msg: msg, time: time };
+  const payload = { action: 'add_foro', fecha: f, name: name, msg: msg, time: time };
 
   try {
-    // Lo guardamos en Sheets (usamos text/plain para evitar bloqueos de seguridad del navegador)
-    await fetch(FORO_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-    
-    // Lo mostramos al instante en la pantalla
+    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
     _forumPosts.push({ id: new Date().getTime().toString(), fecha: f, name: name, msg: msg, time: time });
     document.getElementById('forum-msg').value = '';
     renderForum();
   } catch(e) {
-    alert('Hubo un error de conexión al enviar el mensaje. Intentalo de nuevo.');
+    alert('Error de conexión al enviar el mensaje.');
   }
   
   btn.textContent = '📤 Publicar';
   btn.disabled = false;
 }
 
-// Borra un mensaje de la base de datos (Solo Admin)
 async function deletePost(id) {
-  if(!confirm('¿Seguro que querés borrar este mensaje permanentemente?')) return;
-
-  // Lo borramos de la pantalla al instante
+  if(!confirm('¿Seguro que querés borrar este mensaje?')) return;
   _forumPosts = _forumPosts.filter(p => p.id !== id);
   renderForum();
-
-  // Le avisamos a Google Sheets que borre esa fila
-  const payload = { action: 'delete', id: id };
+  const payload = { action: 'delete_foro', id: id };
   try {
-    await fetch(FORO_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-  } catch(e) {
-    console.error('Error al borrar en la base de datos', e);
-  }
+    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+  } catch(e) { console.error('Error al borrar', e); }
 }
 
 function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
-// ═══════════════════════════════════════
-// SHEETS PARSER + INIT
-// ═══════════════════════════════════════
 function parseCSV(csv){
   const lines=csv.split('\n').filter(l=>l.trim());const out=[];
   for(let i=1;i<lines.length;i++){
     const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
-    
     const f=parseFloat(v[0]);if(!isFinite(f)||f<=0)continue;
     const j=v[1];if(!j||j==='JUGADOR')continue;
     const g=parseFloat(v[6]);
@@ -1364,33 +1513,7 @@ function parseCSV(csv){
       camiseta:v[10]&&v[10].includes('👕')?1:0});
   }return out;
 }
-// Función para cargar el armado de equipos desde Sheets
-async function loadEquipos(){
-  try{
-    const r=await fetch(EQUIPOS_URL + '&_=' + Math.random(), { cache: 'no-store' });
-    if(!r.ok) throw new Error('Error al conectar con la pestaña de equipos');
-    const csv=await r.text();
-    
-    const lines=csv.split('\n').filter(l=>l.trim());
-    const blanco=[];
-    const negro=[];
-    
-    // Saltamos la fila 0 que es "EQUIPO BLANCO" / "EQUIPO NEGRO"
-    for(let i=1; i<lines.length; i++){
-      // Esta línea mágica separa por comas pero ignora las comas adentro de los nombres (ej: "Besse, Luciano")
-      const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
-      if(v[0] && v[0] !== '') blanco.push(v[0]);
-      if(v[1] && v[1] !== '') negro.push(v[1]);
-    }
-    
-    // Escribimos los equipos en la página
-    if(blanco.length > 0) document.getElementById('team-blanco').innerHTML = blanco.map(p => `<li>${p}</li>`).join('');
-    if(negro.length > 0) document.getElementById('team-negro').innerHTML = negro.map(p => `<li>${p}</li>`).join('');
-    
-  }catch(e){
-    console.error("Falló la carga de equipos, mostrando los guardados de respaldo:", e);
-  }
-}
+
 async function loadData(){
   try{
     const r=await fetch(GVIZ_URL + '&_=' + Math.random(), { cache: 'no-store' });
@@ -1399,9 +1522,26 @@ async function loadData(){
     const rows=parseCSV(csv);
     if(rows.length>0){renderAll(rows);return;}
   }catch(e){
-    console.error("Falló la carga de Sheets, usando respaldo:", e);
+    console.error("Falló la carga, usando respaldo:", e);
   }
   renderAll(D);
+}
+
+async function loadEquipos(){
+  try{
+    const r=await fetch(EQUIPOS_URL + '&_=' + Math.random(), { cache: 'no-store' });
+    if(!r.ok) throw new Error('Error en equipos');
+    const csv=await r.text();
+    const lines=csv.split('\n').filter(l=>l.trim());
+    const blanco=[]; const negro=[];
+    for(let i=1; i<lines.length; i++){
+      const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
+      if(v[0] && v[0] !== '') blanco.push(v[0]);
+      if(v[1] && v[1] !== '') negro.push(v[1]);
+    }
+    if(blanco.length > 0) document.getElementById('team-blanco').innerHTML = blanco.map(p => `<li>${p}</li>`).join('');
+    if(negro.length > 0) document.getElementById('team-negro').innerHTML = negro.map(p => `<li>${p}</li>`).join('');
+  }catch(e){}
 }
 
 function renderAll(data){
@@ -1409,6 +1549,9 @@ function renderAll(data){
   buildGolesPerFecha(data);
   const st=computeStandings(data);
   _allStandings=st;
+  
+  _allPlayersList = [...new Set((_rawData||D).map(r=>formatName(r.jugador)))].sort();
+  
   renderFechaFilter();
   renderStandings(st);
   renderMatches(computeMatches(data));
@@ -1423,9 +1566,6 @@ function renderAll(data){
   if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
 }
 
-// ═══════════════════════════════════════
-// NAVEGACIÓN
-// ═══════════════════════════════════════
 function showPage(id, updateUrl = true){
   let targetId = id;
   if(id === 'foro') targetId = 'proxima';
@@ -1436,7 +1576,7 @@ function showPage(id, updateUrl = true){
   let pageEl = document.getElementById('page-'+targetId);
   if(pageEl) pageEl.classList.add('active');
   
-  const idx={home:0,tabla:1,partidos:2,goleadores:3,mvp:4,proxima:5,stats:6,premios:7};
+  const idx={home:0,inscripcion:1,tabla:2,partidos:3,goleadores:4,mvp:5,proxima:6,stats:7,premios:8};
   const links=document.querySelectorAll('nav a');
   if(idx[targetId]!==undefined && links[idx[targetId]]) links[idx[targetId]].classList.add('active');
   
@@ -1453,8 +1593,8 @@ function showPage(id, updateUrl = true){
   }
   
   if(targetId==='proxima')renderForum();
+  if(targetId==='inscripcion')renderInscripcion();
 
-  // Guarda el movimiento en el historial del celular
   if(updateUrl) {
     history.pushState(null, null, '#' + id);
   }
@@ -1472,14 +1612,17 @@ function switchTab(g,id,btn){
   document.getElementById(g+'-'+id).classList.add('active');
 }
 
-// Detecta cuando el usuario aprieta la flecha de "Atrás" en el celular
 window.addEventListener('popstate', () => {
   const hash = window.location.hash.substring(1) || 'home';
-  showPage(hash, false); // false evita que se haga un bucle infinito
+  showPage(hash, false); 
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
-  loadData();loadEquipos();loadForumData();setupNextDate();renderForum();
+  loadData();
+  loadEquipos();
+  loadApiData(); 
+  setupNextDate();
+  
   const hash = window.location.hash.substring(1);
   if(hash) showPage(hash, false);
 });
