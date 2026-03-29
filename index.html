@@ -459,6 +459,14 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     </div>
 
     <div id="inscripcion-lista" style="display:block;">
+      
+      <div id="caja-anotador" style="background: var(--card2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid var(--green-dark); text-align: center;">
+        <h3 style="margin-bottom: 1rem; color: var(--green); font-family: 'Anton', sans-serif; letter-spacing: 1px;">¿VAS A JUGAR ESTE MIÉRCOLES?</h3>
+        <select id="select-jugador-global" class="insc-select" style="width: 100%; margin-bottom: 1rem; font-size: 1rem; padding: 0.8rem;"></select>
+        <button id="btn-anotar-global" class="btn btn-p" style="width: 100%; font-size: 1.2rem; padding: 1rem; justify-content: center;" onclick="anotarmeAuto()">¡QUIERO JUGAR! ⚽</button>
+        <div id="msg-cupos-llenos" style="display:none; color: var(--red); font-size: 1.2rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px;">⚠️ CUPOS LLENOS</div>
+      </div>
+
       <div class="insc-list" id="insc-slots">
         </div>
       
@@ -836,6 +844,10 @@ function renderInscripcion() {
   const divAbierta = document.getElementById('inscripcion-lista');
   const btnShare = document.getElementById('btn-share-insc');
   
+  const selectGlobal = document.getElementById('select-jugador-global');
+  const btnGlobal = document.getElementById('btn-anotar-global');
+  const msgLlenos = document.getElementById('msg-cupos-llenos');
+  
   if(!isListaAbierta()) {
     divAbierta.style.display = 'none';
     divCerrada.style.display = 'block';
@@ -845,24 +857,25 @@ function renderInscripcion() {
   divAbierta.style.display = 'block';
   divCerrada.style.display = 'none';
   
+  // Nombres disponibles para el combo gigante
   const anotados = _inscripcionData.map(s => s.jugador).filter(j => j !== '');
   const disponibles = _allPlayersList.filter(p => !anotados.includes(p));
-  const optionsHtml = `<option value="">Seleccioná tu nombre...</option>` + disponibles.map(p => `<option value="${p}">${p}</option>`).join('');
+  selectGlobal.innerHTML = `<option value="">Seleccioná tu nombre...</option>` + disponibles.map(p => `<option value="${p}">${p}</option>`).join('');
   
   let ocupadosCont = 0;
+  let hayLibres = false;
   
   container.innerHTML = _inscripcionData.map(slot => {
     const isLibre = slot.estado === 'Libre';
     const isBloqueado = slot.estado && slot.estado.startsWith('Bloqueado');
     if(!isLibre && !isBloqueado) ocupadosCont++;
+    if(isLibre) hayLibres = true;
     
     let contenido = '';
     
     if (isLibre) {
-      const selectHtml = `<select id="select-slot-${slot.slot}" class="insc-select">${optionsHtml}</select>`;
-      const btnAnotar = `<button class="btn-anotar" onclick="inscribirJugador(${slot.slot})">Anotarme</button>`;
       const btnAdminBloq = adminUnlocked ? `<button class="btn-admin" onclick="adminBloquear(${slot.slot})">🔒 Bloquear</button>` : '';
-      contenido = `${selectHtml} <div style="display:flex; gap:0.5rem; align-items:center;">${btnAnotar} ${btnAdminBloq}</div>`;
+      contenido = `<span class="insc-name" style="color:var(--text2); font-weight:normal; font-size: 0.85rem;">(Lugar disponible)</span> ${btnAdminBloq}`;
     } 
     else if (isBloqueado) {
       const btnAdminDesbloq = adminUnlocked ? `<button class="btn-admin" style="color:var(--green);" onclick="adminLiberar(${slot.slot})">🔓 Desbloquear</button>` : '';
@@ -881,6 +894,18 @@ function renderInscripcion() {
     </div>`;
   }).join('');
   
+  // Apaga o prende el botón gigante si hay lugares libres
+  if(hayLibres) {
+     selectGlobal.style.display = 'block';
+     btnGlobal.style.display = 'flex';
+     msgLlenos.style.display = 'none';
+  } else {
+     selectGlobal.style.display = 'none';
+     btnGlobal.style.display = 'none';
+     msgLlenos.style.display = 'block';
+  }
+
+  // Botón de WhatsApp
   if (ocupadosCont + _inscripcionData.filter(s=>s.estado.startsWith('Bloqueado')).length >= 16 || adminUnlocked) {
     btnShare.style.display = 'inline-block';
   } else {
@@ -888,39 +913,65 @@ function renderInscripcion() {
   }
 }
 
-async function updateSlotApi(slotNum, estado, jugador) {
-  const payload = { action: 'update_inscripcion', slot: slotNum, estado: estado, jugador: jugador };
+// Nueva función de Anotado Automático (Anti-choques)
+async function anotarmeAuto() {
+  const sel = document.getElementById('select-jugador-global');
+  const btn = document.getElementById('btn-anotar-global');
+  const nombre = sel.value;
+  
+  if(!nombre) { alert("¡Elegí tu nombre en la lista primero!"); return; }
+  
+  btn.innerHTML = '⏳ Anotando...';
+  btn.disabled = true;
+  sel.disabled = true;
+  
+  const payload = { action: 'anotar_auto', jugador: nombre };
   try {
-    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-    const i = _inscripcionData.findIndex(s => s.slot === slotNum);
-    if(i !== -1) { _inscripcionData[i].estado = estado; _inscripcionData[i].jugador = jugador; }
-    renderInscripcion();
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    
+    // Leemos la respuesta inteligente de Google
+    if (data.status === 'ok') {
+       alert("¡Adentro! ⚽ Quedaste anotado en el lugar " + data.slot + ".");
+    } else if (data.status === 'lleno') {
+       alert("¡Uy! Llegaste un segundo tarde, se acaban de llenar los cupos. 😭");
+    } else if (data.status === 'ya_anotado') {
+       alert("¡Ey, ya estás anotado en la lista! No ocupes dos lugares.");
+    }
   } catch(e) {
-    alert('Error al actualizar. Intentá de nuevo.');
+     console.error(e);
   }
+  
+  // Recargamos los datos visuales para todos
+  await loadApiData(); 
+  btn.innerHTML = '¡QUIERO JUGAR! ⚽';
+  btn.disabled = false;
+  sel.disabled = false;
 }
 
-function inscribirJugador(slotNum) {
-  const sel = document.getElementById('select-slot-'+slotNum);
-  const nombre = sel.value;
-  if(!nombre) { alert("Elegí un nombre primero."); return; }
-  sel.disabled = true; 
-  updateSlotApi(slotNum, 'Ocupado', nombre);
+// Actualizaciones de Administrador (para Bloquear/Bajar)
+async function adminUpdateSlot(slotNum, estado, jugador) {
+  const payload = { action: 'admin_update_slot', slot: slotNum, estado: estado, jugador: jugador };
+  try {
+    await fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    setTimeout(loadApiData, 1000); // Recarga después de 1 segundo para mostrar el cambio
+  } catch(e) {
+    alert('Error de red.');
+  }
 }
 
 function adminBloquear(slotNum) {
   const motivo = prompt("Motivo del bloqueo (Ej: 🧤 Arqueros):");
   if(motivo) {
-    updateSlotApi(slotNum, 'Bloqueado', motivo);
+    adminUpdateSlot(slotNum, 'Bloqueado', motivo);
   }
 }
 
 function adminLiberar(slotNum) {
   if(confirm('¿Seguro que querés liberar este lugar?')) {
-    updateSlotApi(slotNum, 'Libre', '');
+    adminUpdateSlot(slotNum, 'Libre', '');
   }
 }
-
   
 // Función para escribir el emoji rápido
 function addEmojiToClima(emoji) {
