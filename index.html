@@ -269,6 +269,8 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .forum-form input::placeholder,.forum-form textarea::placeholder{color:var(--text2)}
 .forum-form input:focus,.forum-form textarea:focus{outline:none;border-color:var(--green)}
 .forum-form textarea{resize:vertical;min-height:80px}
+.fp-delete { background:transparent; border:none; color:var(--red); cursor:pointer; font-size:.85rem; margin-left:auto; padding:0 .3rem; transition:transform .2s; display:flex; align-items:center; }
+.fp-delete:hover { transform:scale(1.2); }
 
 /* ESTADISTICAS */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem}
@@ -694,6 +696,7 @@ function adminLogin() {
         adminUnlocked = true;
         document.getElementById('admin-wa').style.display = 'flex';
         document.getElementById('no-play-btn').style.display = 'inline-flex';
+        renderForum(); // Recarga el foro para mostrar los botones de borrar
         alert('Modo Admin activado 😎. Ya podés ver las herramientas de gestión.');
      } else {
         alert('Contraseña incorrecta.');
@@ -1206,23 +1209,41 @@ function toggleNoPlay(){
 }
 
 function shareWhatsApp(){
-  const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
-  const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
+  if(!adminUnlocked){
+    alert('Solo el administrador puede usar esta función.');
+    return;
+  }
+  
   const nw=getNextWednesday();
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fechaNum=MAX_FECHA+1;
   const dateStr=`${nw.getDate()} de ${months[nw.getMonth()]} de ${nw.getFullYear()}`;
 
-  let msg=`*FECHA ${fechaNum}*\n`;
-  msg+=`Miercoles ${dateStr}\n`;
-  msg+=`Horario: 20:00 hs\n`;
-  msg+=`Llegar temprano ⏰\n`;
-  msg+=`Llevar efectivo 💵\n\n`;
-  msg+=`*EQUIPO BLANCO* ⚪\n`;
-  bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
-  msg+=`\n*EQUIPO NEGRO* ⚫\n`;
-  ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
-  msg+=`\n👇 *Foro de quejas y opiniones:*\nhttps://juanpdiez10.github.io/Miercoles-de-futbol/#foro\n`;
+  let msg = '';
+
+  if(noPlayActive) {
+    // MENSAJE SI EL PARTIDO ESTÁ SUSPENDIDO
+    msg = `⚠️ *FECHA ${fechaNum} SUSPENDIDA* ⚠️\n\n`;
+    msg += `El partido de este miércoles ${dateStr} está suspendido. ❌\n\n`;
+    msg += `Nos vemos la semana que viene. 💪`;
+  } else {
+    // MENSAJE NORMAL DE EQUIPOS
+    const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
+    const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
+
+    msg=`*FECHA ${fechaNum}*\n`;
+    msg+=`Miercoles ${dateStr}\n`;
+    msg+=`Horario: 20:00 hs\n`;
+    msg+=`Llegar temprano ⏰\n`;
+    msg+=`Llevar efectivo 💵\n\n`;
+    msg+=`*EQUIPO BLANCO* ⚪\n`;
+    bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+    msg+=`\n*EQUIPO NEGRO* ⚫\n`;
+    ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+    
+    // Le sacamos el https:// para que WhatsApp no arme la miniatura gigante
+    msg+=`\n👇 *Foro de quejas y opiniones:*\njuanpdiez10.github.io/Miercoles-de-futbol/#foro 👈\n`;
+  }
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
@@ -1230,17 +1251,34 @@ function shareWhatsApp(){
 function forumKey(f){return`mdf_forum_f${f}`;}
 function getPosts(f){try{return JSON.parse(localStorage.getItem(forumKey(f)))||[];}catch{return[];}}
 function savePosts(f,posts){localStorage.setItem(forumKey(f),JSON.stringify(posts));}
+
 function renderForum(){
   const f=document.getElementById('forum-fecha-sel').value;
   const posts=getPosts(f);
   const container=document.getElementById('forum-posts');
   if(!posts.length){container.innerHTML=`<div style="color:var(--text2);font-size:.83rem;text-align:center;padding:1rem">Nadie se quejó todavía para esta fecha... 🤐</div>`;return;}
-  container.innerHTML=posts.map(p=>`<div class="forum-post">
-    <div class="fp-meta"><span class="fp-name">${esc(p.name)}</span><span class="fp-time">· ${p.time}</span></div>
-    <div class="fp-body">${esc(p.msg)}</div>
-  </div>`).join('');
+  
+  container.innerHTML=posts.map((p, index)=>{
+    // Solo dibuja el tachito de basura si estás logueado como Admin
+    const delBtn = adminUnlocked ? `<button class="fp-delete" onclick="deletePost('${f}', ${index})" title="Borrar mensaje">🗑️</button>` : '';
+    return `<div class="forum-post">
+      <div class="fp-meta"><span class="fp-name">${esc(p.name)}</span><span class="fp-time">· ${p.time}</span>${delBtn}</div>
+      <div class="fp-body">${esc(p.msg)}</div>
+    </div>`;
+  }).join('');
   container.scrollTop=container.scrollHeight;
 }
+
+// Nueva función para borrar mensajes siendo admin
+function deletePost(f, index) {
+  if(confirm('¿Seguro que querés borrar este mensaje?')) {
+    const posts = getPosts(f);
+    posts.splice(index, 1);
+    savePosts(f, posts);
+    renderForum();
+  }
+}
+
 function postForum(){
   const name=document.getElementById('forum-name').value.trim();
   const msg=document.getElementById('forum-msg').value.trim();
