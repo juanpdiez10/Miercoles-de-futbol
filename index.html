@@ -681,6 +681,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 // ═══════════════════════════════════════
 const SHEET_ID = '1GIcSZ6cIWOaAwi6P2cPXTd3LYvgUoFDJ0N6auLWJ4ZQ'; 
 const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
+const EQUIPOS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=607354519`;
 const ADMIN_PASS='mdf2026';
 let adminUnlocked=false;
 let adminClicks = 0;
@@ -1270,7 +1271,33 @@ function parseCSV(csv){
       camiseta:v[10]&&v[10].includes('👕')?1:0});
   }return out;
 }
-
+// Función para cargar el armado de equipos desde Sheets
+async function loadEquipos(){
+  try{
+    const r=await fetch(EQUIPOS_URL + '&_=' + Math.random(), { cache: 'no-store' });
+    if(!r.ok) throw new Error('Error al conectar con la pestaña de equipos');
+    const csv=await r.text();
+    
+    const lines=csv.split('\n').filter(l=>l.trim());
+    const blanco=[];
+    const negro=[];
+    
+    // Saltamos la fila 0 que es "EQUIPO BLANCO" / "EQUIPO NEGRO"
+    for(let i=1; i<lines.length; i++){
+      // Esta línea mágica separa por comas pero ignora las comas adentro de los nombres (ej: "Besse, Luciano")
+      const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
+      if(v[0] && v[0] !== '') blanco.push(v[0]);
+      if(v[1] && v[1] !== '') negro.push(v[1]);
+    }
+    
+    // Escribimos los equipos en la página
+    if(blanco.length > 0) document.getElementById('team-blanco').innerHTML = blanco.map(p => `<li>${p}</li>`).join('');
+    if(negro.length > 0) document.getElementById('team-negro').innerHTML = negro.map(p => `<li>${p}</li>`).join('');
+    
+  }catch(e){
+    console.error("Falló la carga de equipos, mostrando los guardados de respaldo:", e);
+  }
+}
 async function loadData(){
   try{
     const r=await fetch(GVIZ_URL + '&_=' + Math.random(), { cache: 'no-store' });
@@ -1359,7 +1386,7 @@ window.addEventListener('popstate', () => {
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
-  loadData();setupNextDate();renderForum();
+  loadData();loadEquipos();setupNextDate();renderForum();
   const hash = window.location.hash.substring(1);
   if(hash) showPage(hash, false);
 });
