@@ -507,18 +507,18 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="section">
     <h2 class="stitle">Tabla de <span class="acc">Posiciones</span></h2>
     <div class="divider"></div>
+    <div class="live-badge"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
     <div class="tabs">
       <button class="tab-btn" onclick="switchTab('tabla','2023',this)">2023</button>
       <button class="tab-btn" onclick="switchTab('tabla','2024',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('tabla','2025',this)">2025</button>
       <button class="tab-btn active" onclick="switchTab('tabla','2026',this)">⚡ 2026 Actual</button>
-      <button class="tab-btn" onclick="switchTab('tabla','historica',this)">🏆 Histórica</button>
     </div>
 
     <div id="tabla-2026" class="tab-content active">
-      <div class="live-badge" style="margin-top:1rem;"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
       <div class="tabla-top">
-        <div class="fecha-filter" id="fecha-filter-wrap"></div>
+        <div class="fecha-filter" id="fecha-filter-wrap">
+          </div>
         <div class="updated-lbl">Actualizado a fecha: <strong id="updated-fecha-lbl">F6 · 25/03/2026</strong></div>
       </div>
       <div class="tbl-wrap">
@@ -540,11 +540,9 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         <span><strong>👕</strong> = se llevó las camisetas para lavar</span>
       </div>
     </div>
-    
-    <div id="tabla-2023" class="tab-content"><div class="empty-box">📌 Para ver 2023, vinculá el CSV de ese año aquí.</div></div>
-    <div id="tabla-2024" class="tab-content"><div class="empty-box">📌 Para ver 2024, vinculá el CSV de ese año aquí.</div></div>
-    <div id="tabla-2025" class="tab-content"><div class="empty-box">📌 Para ver 2025, vinculá el CSV de ese año aquí.</div></div>
-    <div id="tabla-historica" class="tab-content"><div class="empty-box">🏆 Para ver la Tabla Histórica acumulada, vinculá tu CSV aquí.</div></div>
+    <div id="tabla-2023" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá una hoja "BASE_DATOS_2023" en tu Sheets.</div></div>
+    <div id="tabla-2024" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá "BASE_DATOS_2024" en tu Sheets.</div></div>
+    <div id="tabla-2025" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá "BASE_DATOS_2025" en tu Sheets.</div></div>
   </div>
 </div>
 
@@ -557,14 +555,11 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('par','p2024',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('par','p2025',this)">2025</button>
       <button class="tab-btn active" onclick="switchTab('par','p2026',this)">⚡ 2026</button>
-      <button class="tab-btn" onclick="switchTab('par','phist',this)">🏆 Histórico</button>
     </div>
-    
     <div id="par-p2026" class="tab-content active"></div>
-    <div id="par-p2025" class="tab-content"><div class="empty-box">📌 Agregá datos de 2025 en tu Sheets.</div></div>
-    <div id="par-p2024" class="tab-content"><div class="empty-box">📌 Agregá datos de 2024 en tu Sheets.</div></div>
-    <div id="par-p2023" class="tab-content"><div class="empty-box">📌 Agregá datos de 2023 en tu Sheets.</div></div>
-    <div id="par-phist" class="tab-content"><div class="empty-box">🏆 Agregá datos históricos en tu Sheets.</div></div>
+    <div id="par-p2025" class="tab-content"><div class="empty-box">Agregá datos de 2025 en tu Sheets.</div></div>
+    <div id="par-p2024" class="tab-content"><div class="empty-box">Agregá datos de 2024 en tu Sheets.</div></div>
+    <div id="par-p2023" class="tab-content"><div class="empty-box">Agregá datos de 2023 en tu Sheets.</div></div>
   </div>
 </div>
 
@@ -573,17 +568,12 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <h2 class="stitle">Goleadores y <span class="acc">Vallas</span></h2>
     <div class="divider"></div>
     <div class="tabs">
-      <button class="tab-btn" onclick="switchTab('gol','g23',this)">2023</button>
-      <button class="tab-btn" onclick="switchTab('gol','g24',this)">2024</button>
-      <button class="tab-btn" onclick="switchTab('gol','g25',this)">2025</button>
-      <button class="tab-btn active" onclick="switchTab('gol','g26',this)">⚡ 2026</button>
-      <button class="tab-btn" onclick="switchTab('gol','ghist',this)">🏆 Histórico</button>
+      <button class="tab-btn active" onclick="switchTab('gol','g26',this)">⚽ Goleadores 2026</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida</button>
     </div>
-    
     <div id="gol-g26" class="tab-content active">
-      <h3 style="color:var(--green);font-family:'Anton',sans-serif;margin-bottom:0.5rem;letter-spacing:1px;">⚽ GOLEADORES 2026</h3>
-      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
-      <div class="rank-section" style="margin-bottom: 2rem;">
+      <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
+      <div class="rank-section">
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por goles totales</div>
           <div class="rank-list" id="scorers-cnt"></div>
@@ -593,11 +583,9 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
           <div class="rank-list" id="scorers-prom-cnt"></div>
         </div>
       </div>
-
-      <div class="divider" style="margin: 2rem 0; width: 100%; background:rgba(57,255,20,0.1); height: 1px;"></div>
-
-      <h3 style="color:var(--green);font-family:'Anton',sans-serif;margin-bottom:0.5rem;letter-spacing:1px;">🧤 VALLA MENOS VENCIDA 2026</h3>
-      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">Arqueros 2026 · Toca un nombre para ver goles recibidos por fecha</p>
+    </div>
+    <div id="gol-gv" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🧤 Arqueros 2026 · Toca un nombre para ver goles recibidos por fecha</p>
       <div class="rank-section">
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por goles recibidos (menor = mejor)</div>
@@ -609,11 +597,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         </div>
       </div>
     </div>
-    
-    <div id="gol-g25" class="tab-content"><div class="empty-box">📌 Agregá datos de 2025 en tu Sheets.</div></div>
-    <div id="gol-g24" class="tab-content"><div class="empty-box">📌 Agregá datos de 2024 en tu Sheets.</div></div>
-    <div id="gol-g23" class="tab-content"><div class="empty-box">📌 Agregá datos de 2023 en tu Sheets.</div></div>
-    <div id="gol-ghist" class="tab-content"><div class="empty-box">🏆 Agregá datos históricos en tu Sheets.</div></div>
   </div>
 </div>
 
@@ -700,7 +683,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="curiosidad-list" id="curiosidades"></div>
   </div>
 </div>
-  
+
 <div id="page-premios" class="page">
   <div class="section">
     <h2 class="stitle">Premios y <span class="acc">Campeones</span></h2>
@@ -1064,7 +1047,7 @@ function shareInscripcionWA() {
   msg += `\n👇 *Ver lista jugadores / Darme de baja:*\njuanpdiez10.github.io/Miercoles-de-futbol/#inscripcion 👈`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
-  
+
   // ═══════════════════════════════════════
 // COMPUTE Y ESTADÍSTICAS
 // ═══════════════════════════════════════
@@ -1341,6 +1324,14 @@ function renderMVPs(){
       <div class="mvp-card-stat">${m.stat}</div>
     </div>`;
   }).join('');
+}
+
+function openMvpModal(imgSrc,name,date,stat){
+  document.getElementById('modal-img-wrap').innerHTML = `<img class="mvp-modal-img" src="${imgSrc}" alt="${name}" onerror="this.outerHTML='<div class=\\'mvp-modal-img-ph\\'>😎</div>'">`;
+  document.getElementById('modal-name').textContent=name;
+  document.getElementById('modal-date').textContent=date;
+  document.getElementById('modal-stat').textContent=stat;
+  document.getElementById('mvp-modal').classList.add('open');
 }
 
 function renderEstadisticas(data){
