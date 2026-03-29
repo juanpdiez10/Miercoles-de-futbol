@@ -408,6 +408,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <a onclick="showPage('mvp')">MVP</a>
     <a onclick="showPage('proxima')">Próxima Fecha</a>
     <a onclick="showPage('stats')">Estadísticas</a>
+    <a onclick="showPage('historial')">Historial</a>  
   </nav>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </header>
@@ -683,7 +684,38 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="curiosidad-list" id="curiosidades"></div>
   </div>
 </div>
-
+  
+<div id="page-historial" class="page">
+  <div class="section">
+    <h2 class="stitle">Tabla Histórica <span class="acc">23-25</span></h2>
+    <div class="divider"></div>
+    <p class="ssub">Estadísticas acumuladas de las temporadas 2023, 2024 y 2025.</p>
+    
+    <div class="tbl-wrap" style="overflow-x: auto;">
+      <table class="st">
+        <thead>
+          <tr>
+            <th>POS</th>
+            <th class="lft">JUGADOR</th>
+            <th>PJ</th>
+            <th>PG</th>
+            <th>PE</th>
+            <th>PP</th>
+            <th>GOL</th>
+            <th>+/-</th>
+            <th>MVP</th>
+            <th>% VIC</th>
+            <th>PROM</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-historial-body">
+          <tr><td colspan="11" style="padding: 1rem; color: var(--text2);">Cargando historial...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+  
 <div id="page-premios" class="page">
   <div class="section">
     <h2 class="stitle">Premios y <span class="acc">Campeones</span></h2>
@@ -750,6 +782,7 @@ let _forumPosts = [];
 let _inscripcionData = [];
 let _clima = "";
 let _allPlayersList = [];
+let _historialData = [];
 
 function adminLogin() {
   adminClicks++;
@@ -814,6 +847,7 @@ async function loadApiData() {
     _forumPosts = data.posts || [];
     _inscripcionData = data.inscripcion || [];
     _clima = data.clima || "";
+    _historialData = data.historial || [];
     
     if(_clima !== "") {
       const climasEl = document.querySelectorAll('#next-clima-display, #insc-clima-display');
@@ -823,6 +857,7 @@ async function loadApiData() {
     
     renderForum();
     renderInscripcion();
+    renderHistorial();
   } catch (e) {
     console.error("Error al cargar la base de datos externa.", e);
   }
@@ -1048,6 +1083,38 @@ function shareInscripcionWA() {
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
+function renderHistorial() {
+  const tbody = document.getElementById('tabla-historial-body');
+  if (!tbody) return;
+  
+  if (_historialData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11" style="padding: 1rem; color: var(--text2);">No hay datos históricos cargados o hubo un error al leerlos.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = _historialData.map((fila, index) => {
+    const isTop3 = index < 3;
+    const posClass = index === 0 ? 'p1' : index === 1 ? 'p2' : index === 2 ? 'p3' : 'pn';
+    const posHtml = `<span class="pb ${posClass}">${fila.pos || (index+1)}</span>`;
+    
+    return `
+      <tr class="${isTop3 ? 'r' + (index + 1) : ''}">
+        <td>${posHtml}</td>
+        <td class="lft"><div class="name-wrap"><span>${fila.jugador}</span></div></td>
+        <td>${fila.pj}</td>
+        <td style="color:#7dd87d">${fila.pg}</td>
+        <td>${fila.pe}</td>
+        <td style="color:#ff7777">${fila.pp}</td>
+        <td style="color:#7dd87d; font-weight:bold;">${fila.gol}</td>
+        <td class="${fila.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${fila.dif >= 0 ? '+'+fila.dif : fila.dif}</td>
+        <td style="color:var(--gold);">${fila.mvp > 0 ? fila.mvp : '—'}</td>
+        <td>${fila.pct}</td>
+        <td>${fila.prom}</td>
+      </tr>
+    `;
+  }).join('');
+}
+  
   // ═══════════════════════════════════════
 // COMPUTE Y ESTADÍSTICAS
 // ═══════════════════════════════════════
@@ -1658,7 +1725,7 @@ function showPage(id, updateUrl = true){
   let pageEl = document.getElementById('page-'+targetId);
   if(pageEl) pageEl.classList.add('active');
   
-  const idx={home:0,inscripcion:1,tabla:2,partidos:3,goleadores:4,mvp:5,proxima:6,stats:7,premios:8};
+  const idx={home:0,inscripcion:1,tabla:2,partidos:3,goleadores:4,mvp:5,proxima:6,stats:7,historial:8,premios:9};
   const links=document.querySelectorAll('nav a');
   if(idx[targetId]!==undefined && links[idx[targetId]]) links[idx[targetId]].classList.add('active');
   
