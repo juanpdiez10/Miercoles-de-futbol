@@ -893,7 +893,7 @@ function renderInscripcion() {
       } else {
         // Vista jugador (Abre WhatsApp)
         const miNumero = "5491164666436"; // <--- PONÉ TU NÚMERO ACÁ (ej: 5491155554444)
-        const msj = encodeURIComponent(`Hola Juan, bajame del partido de este miércoles por favor. Soy ${slot.jugador}.`);
+        const msj = encodeURIComponent(`Hola, dame de baja del partido de este miércoles por favor. Soy ${slot.jugador}.`);
         btnBajar = `<a href="https://wa.me/${miNumero}?text=${msj}" target="_blank" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); text-decoration:none;">❌ Darme de baja</a>`;
       }
       
