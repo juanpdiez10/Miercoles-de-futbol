@@ -467,13 +467,21 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       </div>
     </div>
 
-    <div class="admin-panel" id="admin-inscripcion-panel">
+<div class="admin-panel" id="admin-inscripcion-panel">
       <h4 style="color:var(--text); font-family:'Anton',sans-serif; letter-spacing:1px; margin-bottom:0.5rem;">⚙️ PANEL DE ADMINISTRADOR</h4>
       
       <div>
         <label style="font-size:0.8rem; color:var(--text2); display:block; margin-bottom:0.3rem;">Actualizar pronóstico del clima:</label>
+        
+        <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem;">
+          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('☀️')">☀️</button>
+          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('☁️')">☁️</button>
+          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('🌧️')">🌧️</button>
+          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('🌛')">🌛</button>
+        </div>
+
         <div style="display:flex; gap:0.5rem;">
-          <input type="text" id="admin-clima-input" placeholder="Ej: despejado 🌛 / 20°C" style="flex:1; background:var(--bg); border:1px solid rgba(255,255,255,0.2); color:var(--text); padding:0.5rem; border-radius:4px; font-family:'Barlow',sans-serif;">
+          <input type="text" id="admin-clima-input" placeholder="Ej: despejado / 20°C" style="flex:1; background:var(--bg); border:1px solid rgba(255,255,255,0.2); color:var(--text); padding:0.5rem; border-radius:4px; font-family:'Barlow',sans-serif;">
           <button class="btn btn-p" style="padding:0.5rem 1rem;" onclick="adminUpdateClima()">Guardar</button>
         </div>
       </div>
@@ -913,16 +921,27 @@ function adminLiberar(slotNum) {
   }
 }
 
+  
+// Función para escribir el emoji rápido
+function addEmojiToClima(emoji) {
+  const input = document.getElementById('admin-clima-input');
+  input.value += emoji;
+  input.focus(); // Deja el cursor titilando para que sigas escribiendo
+}
+
+// Reemplazá también tu adminUpdateClima por esta versión que te tira más info si hay error
 async function adminUpdateClima() {
   const c = document.getElementById('admin-clima-input').value;
   const payload = { action: 'update_clima', clima: c };
   try {
-    await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    if(!res.ok) throw new Error('Error de red al conectar con Google');
     _clima = c;
-    alert("Clima guardado.");
+    alert("Clima guardado 🌤️.");
     loadApiData(); 
   } catch(e) {
-    alert('Error al guardar clima.');
+    console.error(e);
+    alert('Error al guardar clima. ¡Asegurate de haber implementado la "Nueva versión" en Apps Script!');
   }
 }
 
