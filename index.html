@@ -1306,7 +1306,7 @@ function renderAll(data){
 // ═══════════════════════════════════════
 // NAVEGACIÓN
 // ═══════════════════════════════════════
-function showPage(id){
+function showPage(id, updateUrl = true){
   let targetId = id;
   if(id === 'foro') targetId = 'proxima';
 
@@ -1333,6 +1333,11 @@ function showPage(id){
   }
   
   if(targetId==='proxima')renderForum();
+
+  // Guarda el movimiento en el historial del celular
+  if(updateUrl) {
+    history.pushState(null, null, '#' + id);
+  }
 }
 
 function toggleMenu(){
@@ -1347,15 +1352,16 @@ function switchTab(g,id,btn){
   document.getElementById(g+'-'+id).classList.add('active');
 }
 
+// Detecta cuando el usuario aprieta la flecha de "Atrás" en el celular
 window.addEventListener('popstate', () => {
   const hash = window.location.hash.substring(1) || 'home';
-  showPage(hash);
+  showPage(hash, false); // false evita que se haga un bucle infinito
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
   loadData();setupNextDate();renderForum();
   const hash = window.location.hash.substring(1);
-  if(hash) showPage(hash);
+  if(hash) showPage(hash, false);
 });
 </script>
 </body>
