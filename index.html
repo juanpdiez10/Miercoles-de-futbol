@@ -829,7 +829,6 @@ async function loadApiData() {
 }
 
 function isListaAbierta() {
-  return true; // ⚠️ HACK DE PRUEBA: Obliga a que la lista esté siempre abierta.
   if (adminUnlocked) return true; 
   const now = new Date();
   const day = now.getDay(); 
