@@ -881,10 +881,21 @@ function renderInscripcion() {
       const btnAdminDesbloq = adminUnlocked ? `<button class="btn-admin" style="color:var(--green);" onclick="adminLiberar(${slot.slot})">🔓 Desbloquear</button>` : '';
       contenido = `<span class="insc-name blocked">${slot.jugador}</span> ${btnAdminDesbloq}`;
     }
-    else {
+   else {
       const urlFoto = getUrlFoto(slot.jugador); 
       const carita = `<img src="${urlFoto}" style="width:24px; height:24px; border-radius:50%; object-fit:cover; object-position:top;" onerror="this.style.display='none'">`;
-      const btnBajar = adminUnlocked ? `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>` : '';
+      
+      let btnBajar = '';
+      if (adminUnlocked) {
+        // Vista de Admin
+        btnBajar = `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>`;
+      } else {
+        // Vista jugador (Abre WhatsApp)
+        const miNumero = "5491164666436"; // <--- PONÉ TU NÚMERO ACÁ (ej: 5491155554444)
+        const msj = encodeURIComponent(`Hola Juan, bajame del partido de este miércoles por favor. Soy ${slot.jugador}.`);
+        btnBajar = `<a href="https://wa.me/${miNumero}?text=${msj}" target="_blank" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); text-decoration:none;">❌ Darme de baja</a>`;
+      }
+      
       contenido = `<span class="insc-name">${carita} ${slot.jugador}</span> ${btnBajar}`;
     }
     
@@ -1032,7 +1043,7 @@ function shareInscripcionWA() {
     msg += `${i}. ${textoFila}\n`;
   }
   
-  msg += `\n👇 *Anotarse / Ver datos:*\njuanpdiez10.github.io/Miercoles-de-futbol/#inscripcion 👈`;
+  msg += `\n👇 *Ver lista jugadores / Darme de baja:*\njuanpdiez10.github.io/Miercoles-de-futbol/#inscripcion 👈`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
