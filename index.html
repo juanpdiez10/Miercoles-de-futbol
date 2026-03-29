@@ -461,7 +461,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div id="inscripcion-lista" style="display:block;">
       
       <div id="caja-anotador" style="background: var(--card2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid var(--green-dark); text-align: center;">
-        <h3 style="margin-bottom: 1rem; color: var(--green); font-family: 'Anton', sans-serif; letter-spacing: 1px;">¿VAS A JUGAR ESTE MIÉRCOLES?</h3>
+        <h3 id="titulo-anotador" style="margin-bottom: 1rem; color: var(--green); font-family: 'Anton', sans-serif; letter-spacing: 1px;">¿VAS A JUGAR ESTE MIÉRCOLES?</h3>
         <select id="select-jugador-global" class="insc-select" style="width: 100%; margin-bottom: 1rem; font-size: 1rem; padding: 0.8rem;"></select>
         <button id="btn-anotar-global" class="btn btn-p" style="width: 100%; font-size: 1.2rem; padding: 1rem; justify-content: center;" onclick="anotarmeAuto()">¡QUIERO JUGAR! ⚽</button>
         <div id="msg-cupos-llenos" style="display:none; color: var(--red); font-size: 1.2rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px;">⚠️ CUPOS LLENOS</div>
@@ -507,7 +507,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="section">
     <h2 class="stitle">Tabla de <span class="acc">Posiciones</span></h2>
     <div class="divider"></div>
-    <div class="live-badge"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
     <div class="tabs">
       <button class="tab-btn" onclick="switchTab('tabla','2023',this)">2023</button>
       <button class="tab-btn" onclick="switchTab('tabla','2024',this)">2024</button>
@@ -516,6 +515,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     </div>
 
     <div id="tabla-2026" class="tab-content active">
+      <div class="live-badge" style="margin-top:1rem;"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
       <div class="tabla-top">
         <div class="fecha-filter" id="fecha-filter-wrap">
           </div>
@@ -620,7 +620,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div style="display:inline-block;background:rgba(57,255,20,.07);border:1px solid var(--green-dark);padding:.28rem .9rem;border-radius:2px;font-size:.7rem;letter-spacing:3px;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:1.2rem" id="fecha-num-label">📅 Fecha 7 · Temporada 2026</div>
       <div class="nd" id="next-date-display">MIÉRCOLES 1 DE ABRIL</div>
       <div class="nt" id="next-time-display">⏰ 20:00 hs</div>
-      <div class="nt" id="next-clima-display" style="font-weight:600; color:var(--text); display:none;">☁️ Cargando clima...</div>
+      <div class="nt" id="next-clima-display" style="font-weight:600; color:var(--text); display:none;"></div>
       <div class="np">📍 <strong>Campus El Irlandés</strong> — Campo de Deportes del Marin<br><span style="color:var(--text2);font-size:.85rem">Av. Bartolomé Mitre 1650, B1643 Béccar, Buenos Aires</span></div>
       <div class="next-edit-row">
         <div id="no-play-msg" style="display:none;background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);color:#ff8888;padding:.4rem 1rem;border-radius:20px;font-size:.82rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">⚠️ FECHA SUSPENDIDA</div>
@@ -642,8 +642,8 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       </div>
     </div>
     
-    <div class="wa-section" id="admin-wa" style="display:none; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
-      <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br>Solo visible para administrador.</div>
+    <div class="wa-section" id="admin-wa" style="display:none; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-top:2rem;">
+      <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br><span style="color:var(--text2);font-size:0.8rem;">Solo visible para administrador.</span></div>
       <button class="btn btn-wa" onclick="shareEquiposWhatsApp()">WhatsApp Equipos</button>
     </div>
 
@@ -674,13 +674,26 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="section">
     <h2 class="stitle">Estadísticas y <span class="acc">Curiosidades</span></h2>
     <div class="divider"></div>
-    <p class="ssub">Datos acumulados de las 6 fechas disputadas en la Temporada 2026</p>
+    
+    <div class="tabs">
+      <button class="tab-btn" onclick="switchTab('stats','2023',this)">2023</button>
+      <button class="tab-btn" onclick="switchTab('stats','2024',this)">2024</button>
+      <button class="tab-btn" onclick="switchTab('stats','2025',this)">2025</button>
+      <button class="tab-btn active" onclick="switchTab('stats','2026',this)">⚡ 2026 Actual</button>
+    </div>
 
-    <div class="stats-grid" id="stats-cards"></div>
+    <div id="stats-2026" class="tab-content active">
+      <p class="ssub">Datos acumulados de las fechas disputadas en la Temporada 2026</p>
+      <div class="stats-grid" id="stats-cards"></div>
 
-    <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
-    <div class="divider"></div>
-    <div class="curiosidad-list" id="curiosidades"></div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
+      <div class="divider"></div>
+      <div class="curiosidad-list" id="curiosidades"></div>
+    </div>
+    
+    <div id="stats-2023" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Conectar datos de 2023.</div></div>
+    <div id="stats-2024" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Conectar datos de 2024.</div></div>
+    <div id="stats-2025" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Conectar datos de 2025.</div></div>
   </div>
 </div>
 
@@ -745,6 +758,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbz3lNZKZn_vViL9s6PGaCqD
 const ADMIN_PASS='mdf2026';
 let adminUnlocked=false;
 let adminClicks = 0;
+let noPlayActive=false;
 
 let _forumPosts = [];
 let _inscripcionData = [];
@@ -817,7 +831,7 @@ async function loadApiData() {
     
     if(_clima !== "") {
       const climasEl = document.querySelectorAll('#next-clima-display, #insc-clima-display');
-      climasEl.forEach(el => { el.style.display = 'inline-flex'; el.textContent = '☁️ ' + _clima; });
+      climasEl.forEach(el => { el.style.display = 'inline-flex'; el.textContent = _clima; });
       if(document.getElementById('admin-clima-input')) document.getElementById('admin-clima-input').value = _clima;
     }
     
@@ -847,6 +861,7 @@ function renderInscripcion() {
   const selectGlobal = document.getElementById('select-jugador-global');
   const btnGlobal = document.getElementById('btn-anotar-global');
   const msgLlenos = document.getElementById('msg-cupos-llenos');
+  const tituloAnotador = document.getElementById('titulo-anotador');
   
   if(!isListaAbierta()) {
     divAbierta.style.display = 'none';
@@ -909,10 +924,12 @@ function renderInscripcion() {
   if(hayLibres) {
      selectGlobal.style.display = 'block';
      btnGlobal.style.display = 'flex';
+     tituloAnotador.style.display = 'block';
      msgLlenos.style.display = 'none';
   } else {
      selectGlobal.style.display = 'none';
      btnGlobal.style.display = 'none';
+     tituloAnotador.style.display = 'none';
      msgLlenos.style.display = 'block';
   }
 
@@ -1316,7 +1333,8 @@ function renderMVPs(){
     const url = getUrlFoto(m.nombre);
     const thumb = `<img class="mvp-thumb" src="${url}" alt="${m.nombre}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
     
-    return`<div class="mvp-card" onclick="openMvpModal('${url}','${m.nombre}','Fecha ${m.fecha} · ${m.date}','${m.stat}')">
+    // CORRECCIÓN ACA (Escapando bien las comillas para el HTML)
+    return`<div class="mvp-card" onclick="openMvpModal('${url}', '${m.nombre.replace(/'/g,"\\'")}', 'Fecha ${m.fecha} · ${m.date}', '${m.stat.replace(/'/g,"\\'")}')">
       <div class="mvp-card-top">${thumb}<div>
         <div class="mvp-card-date">Fecha ${m.fecha} · ${m.date}</div>
         <div class="mvp-card-name">${m.nombre}</div>
@@ -1416,12 +1434,6 @@ function renderEstadisticas(data){
     ? `La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`
     : 'Todavía no hay partidos jugados.';
 
-  const minDiff = Math.min(...matches.map(m => Math.abs(m.gfB - m.gfN)));
-  const ajustadas = matches.filter(m => Math.abs(m.gfB - m.gfN) === minDiff);
-  const txtAjustadas = matches.length > 0
-    ? `La ${ajustadas.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${ajustadas.length>1?'fueron las más ajustadas':'fue la más ajustada'} — separada${ajustadas.length>1?'s':''} por <strong>solo ${minDiff} gol${minDiff!==1?'es':''}</strong> de diferencia.`
-    : 'Todavía no hay partidos jugados.';
-
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
   const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => formatName(p.nombre));
   const txtCamisetas = maxCamisetas > 0
@@ -1431,12 +1443,30 @@ function renderEstadisticas(data){
   const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
 
   const winsBlanco = {}, winsNegro = {};
+  let totalGolesBlanco = 0; let totalGolesNegro = 0; // NUEVO: Contador de goles por equipo
+  
   data.forEach(r => {
+      if(r.equipo === 'BLANCO') totalGolesBlanco += (r.gf || 0); // Ojo: r.gf es los goles a favor del equipo en ese partido.
+      if(r.equipo === 'NEGRO') totalGolesNegro += (r.gf || 0);
+      
       if(r.resultado === 'G') {
          if(r.equipo === 'BLANCO') winsBlanco[r.jugador] = (winsBlanco[r.jugador]||0)+1;
          if(r.equipo === 'NEGRO') winsNegro[r.jugador] = (winsNegro[r.jugador]||0)+1;
       }
   });
+
+  // CORRECCIÓN DE LA LÓGICA DE GOLES POR EQUIPO (Para no duplicar sumar los goles en cada jugador)
+  let realGolesBlanco = matches.reduce((acc, m) => acc + m.gfB, 0);
+  let realGolesNegro = matches.reduce((acc, m) => acc + m.gfN, 0);
+  let txtEquipoGoleador = '';
+  if(realGolesBlanco > realGolesNegro) {
+    txtEquipoGoleador = `El <strong>Equipo Blanco</strong> es el más letal frente al arco: lleva anotados <strong>${realGolesBlanco} goles</strong>, contra los ${realGolesNegro} del Equipo Negro.`;
+  } else if (realGolesNegro > realGolesBlanco) {
+    txtEquipoGoleador = `El <strong>Equipo Negro</strong> es el más letal frente al arco: lleva anotados <strong>${realGolesNegro} goles</strong>, contra los ${realGolesBlanco} del Equipo Blanco.`;
+  } else {
+    txtEquipoGoleador = `¡Pólvora repartida! Tanto el Equipo Blanco como el Negro han anotado exactamente <strong>${realGolesBlanco} goles</strong> en total.`;
+  }
+
   let maxWB = 0, pWB = [];
   for(let j in winsBlanco) {
       if(winsBlanco[j] > maxWB) { maxWB = winsBlanco[j]; pWB = [formatName(j)]; }
@@ -1462,7 +1492,7 @@ function renderEstadisticas(data){
     {e:'🎯',t: txtGoles},
     {e:'⚪',t: domTeamTxt},
     {e:'⚽',t: txtFechaGoles},
-    {e:'😅',t: txtAjustadas},
+    {e:'🥅',t: txtEquipoGoleador}, // NUEVA CURIOSIDAD DE EQUIPO GOLEADOR
     {e:'👕',t: txtCamisetas},
     {e:'📊',t: txtPromedio},
     {e:'🍀',t: txtRandom},
