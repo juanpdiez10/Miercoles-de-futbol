@@ -1248,19 +1248,38 @@ function shareWhatsApp(){
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-function forumKey(f){return`mdf_forum_f${f}`;}
-function getPosts(f){try{return JSON.parse(localStorage.getItem(forumKey(f)))||[];}catch{return[];}}
-function savePosts(f,posts){localStorage.setItem(forumKey(f),JSON.stringify(posts));}
+// ═══════════════════════════════════════
+// FORO GLOBAL VINCULADO A GOOGLE SHEETS
+// ═══════════════════════════════════════
+// PEGA ACA ADENTRO LA URL QUE TE DIO GOOGLE APPS SCRIPT:
+const FORO_URL = 'https://script.google.com/macros/s/AKfycbybbieDB119Tun6A2dnQRBcwinikYYYI0PwjPTjPbA6H2qhOuaZzpjLVQBXZDM72E1L/exec';
 
+let _forumPosts = [];
+
+// Descarga los mensajes de internet
+async function loadForumData() {
+  try {
+    const res = await fetch(FORO_URL);
+    _forumPosts = await res.json();
+    renderForum();
+  } catch (e) {
+    console.error("Error al cargar el foro desde la base de datos.", e);
+  }
+}
+
+// Dibuja los mensajes en pantalla
 function renderForum(){
-  const f=document.getElementById('forum-fecha-sel').value;
-  const posts=getPosts(f);
-  const container=document.getElementById('forum-posts');
-  if(!posts.length){container.innerHTML=`<div style="color:var(--text2);font-size:.83rem;text-align:center;padding:1rem">Nadie se quejó todavía para esta fecha... 🤐</div>`;return;}
+  const f = document.getElementById('forum-fecha-sel').value;
+  const container = document.getElementById('forum-posts');
+  const posts = _forumPosts.filter(p => p.fecha === f);
+
+  if(!posts.length){
+    container.innerHTML=`<div style="color:var(--text2);font-size:.83rem;text-align:center;padding:1rem">Nadie se quejó todavía para esta fecha... 🤐</div>`;
+    return;
+  }
   
-  container.innerHTML=posts.map((p, index)=>{
-    // Solo dibuja el tachito de basura si estás logueado como Admin
-    const delBtn = adminUnlocked ? `<button class="fp-delete" onclick="deletePost('${f}', ${index})" title="Borrar mensaje">🗑️</button>` : '';
+  container.innerHTML = posts.map(p => {
+    const delBtn = adminUnlocked ? `<button class="fp-delete" onclick="deletePost('${p.id}')" title="Borrar mensaje">🗑️</button>` : '';
     return `<div class="forum-post">
       <div class="fp-meta"><span class="fp-name">${esc(p.name)}</span><span class="fp-time">· ${p.time}</span>${delBtn}</div>
       <div class="fp-body">${esc(p.msg)}</div>
@@ -1269,27 +1288,63 @@ function renderForum(){
   container.scrollTop=container.scrollHeight;
 }
 
-// Nueva función para borrar mensajes siendo admin
-function deletePost(f, index) {
-  if(confirm('¿Seguro que querés borrar este mensaje?')) {
-    const posts = getPosts(f);
-    posts.splice(index, 1);
-    savePosts(f, posts);
-    renderForum();
-  }
-}
-
-function postForum(){
+// Envía un mensaje nuevo a Google Sheets
+async function postForum(){
   const name=document.getElementById('forum-name').value.trim();
   const msg=document.getElementById('forum-msg').value.trim();
   if(!name||!msg){alert('Completá tu nombre y tu mensaje.');return;}
+  
   const f=document.getElementById('forum-fecha-sel').value;
-  const posts=getPosts(f);
   const now=new Date();
   const time=now.toLocaleDateString('es-AR')+' '+now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-  posts.push({name,msg,time});savePosts(f,posts);
-  document.getElementById('forum-msg').value='';renderForum();
+  
+  const btn = document.querySelector('.forum-form .btn-p');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const payload = { action: 'add', fecha: f, name: name, msg: msg, time: time };
+
+  try {
+    // Lo guardamos en Sheets (usamos text/plain para evitar bloqueos de seguridad del navegador)
+    await fetch(FORO_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    
+    // Lo mostramos al instante en la pantalla
+    _forumPosts.push({ id: new Date().getTime().toString(), fecha: f, name: name, msg: msg, time: time });
+    document.getElementById('forum-msg').value = '';
+    renderForum();
+  } catch(e) {
+    alert('Hubo un error de conexión al enviar el mensaje. Intentalo de nuevo.');
+  }
+  
+  btn.textContent = '📤 Publicar';
+  btn.disabled = false;
 }
+
+// Borra un mensaje de la base de datos (Solo Admin)
+async function deletePost(id) {
+  if(!confirm('¿Seguro que querés borrar este mensaje permanentemente?')) return;
+
+  // Lo borramos de la pantalla al instante
+  _forumPosts = _forumPosts.filter(p => p.id !== id);
+  renderForum();
+
+  // Le avisamos a Google Sheets que borre esa fila
+  const payload = { action: 'delete', id: id };
+  try {
+    await fetch(FORO_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {
+    console.error('Error al borrar en la base de datos', e);
+  }
+}
+
 function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
 // ═══════════════════════════════════════
@@ -1424,7 +1479,7 @@ window.addEventListener('popstate', () => {
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
-  loadData();loadEquipos();setupNextDate();renderForum();
+  loadData();loadEquipos();loadForumData();setupNextDate();renderForum();
   const hash = window.location.hash.substring(1);
   if(hash) showPage(hash, false);
 });
