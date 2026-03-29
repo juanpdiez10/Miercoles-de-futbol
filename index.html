@@ -829,6 +829,7 @@ async function loadApiData() {
 }
 
 function isListaAbierta() {
+  return true; // ⚠️ HACK DE PRUEBA: Obliga a que la lista esté siempre abierta.
   if (adminUnlocked) return true; 
   const now = new Date();
   const day = now.getDay(); 
@@ -972,7 +973,8 @@ async function adminUpdateSlot(slotNum, estado, jugador) {
 }
 
 function adminBloquear(slotNum) {
-  const motivo = prompt("Motivo del bloqueo (Ej: 🧤 Arqueros):");
+  // Le sumamos el emoji de la camiseta a la sugerencia
+  const motivo = prompt("Motivo del bloqueo (Ej: 🧤 Arqueros / 👕 Camisetas):");
   if(motivo) {
     adminUpdateSlot(slotNum, 'Bloqueado', motivo);
   }
