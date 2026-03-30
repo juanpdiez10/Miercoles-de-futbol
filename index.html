@@ -218,8 +218,14 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-modal-date{color:var(--text2);font-size:.9rem;margin-bottom:.8rem}
 .mvp-modal-stat{color:var(--text2);font-size:1rem;line-height:1.5}
 
+/* VOTE MVP MODAL NUEVO */
+.vote-cand { display:inline-block; padding:0.6rem 1rem; margin:0.3rem; border:2px solid var(--green-dark); border-radius:8px; cursor:pointer; color:var(--text); background:var(--bg2); transition:all 0.2s; font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; text-transform:uppercase;}
+.vote-cand:hover { border-color:var(--green); }
+.vote-cand.selected { background:var(--green); color:#000; font-weight:bold; border-color:var(--green); box-shadow:0 0 15px rgba(57,255,20,0.4); transform:scale(1.05);}
+.vote-cand.disabled { opacity:0.3; cursor:not-allowed; border-color:#333; }
+
 /* MVP PAGE */
-.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
+.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
 .mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover; object-position:center -10px;}
 .mvp-l{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;font-size:.7rem;text-transform:uppercase;margin-bottom:.35rem}
 .mvp-n{font-family:'Anton',sans-serif;font-size:1.8rem}
@@ -316,7 +322,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .qt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.3rem}
 .qd{color:var(--text2);font-size:.73rem;line-height:1.4}
 
-/* FOOTER (Diseño PC ultra compacto) */
+/* FOOTER */
 footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5rem 2rem 1.5rem;margin-top:3rem}
 .fi{max-width:1200px;margin:0 auto}
 .ft{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1rem}
@@ -347,7 +353,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   .hamburger{display:flex}
   .ft{grid-template-columns:1fr}
   
-  /* Ajustes Match Cards Celular */
   .mc-head{padding:1rem .5rem}
   .mc-score{font-size:2.6rem;gap:.3rem}
   .mc-score-sep{font-size:1.5rem}
@@ -364,7 +369,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   .rank-section{grid-template-columns:1fr}
   .stats-grid{grid-template-columns:1fr 1fr}
   
-  /* Ajustes footer celular */
   .map-section iframe { display: none !important; }
   .map-section { border: none !important; }
   .map-overlay { position: static !important; background: transparent !important; padding: 0 !important; }
@@ -394,6 +398,26 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="mvp-modal-name" id="modal-name"></div>
     <div class="mvp-modal-date" id="modal-date"></div>
     <div class="mvp-modal-stat" id="modal-stat"></div>
+  </div>
+</div>
+
+<div class="score-modal" id="vote-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="score-modal-inner" style="max-width:400px;">
+    <button class="score-modal-close" onclick="document.getElementById('vote-modal').classList.remove('open')">✕</button>
+    <div class="sm-title" style="text-align:center; font-size:1.8rem; margin-bottom:1rem;">🗳️ VOTAR MVP</div>
+    
+    <label style="color:var(--text2); font-size:0.8rem; margin-bottom:0.2rem; display:block;">1. ¿Quién sos?</label>
+    <select id="vote-who" class="insc-select" style="width:100%; margin-bottom:1.5rem;"></select>
+    
+    <label style="color:var(--text2); font-size:0.8rem; margin-bottom:0.5rem; display:block;">2. Elegí a tus DOS candidatos:</label>
+    <div id="vote-candidates" style="display:flex; flex-wrap:wrap; justify-content:center; margin-bottom:1rem;">
+       </div>
+    
+    <div id="vote-status" style="text-align:center; color:var(--text2); font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; margin-bottom:1rem;">
+      Elegidos: 0/2
+    </div>
+    
+    <button id="btn-submit-vote" class="btn btn-p" style="width:100%; justify-content:center; display:none;" onclick="submitMVPVote()">Enviar mis 2 votos</button>
   </div>
 </div>
 
@@ -609,6 +633,12 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="divider"></div>
     <div class="mvp-featured" id="mvp-featured-cnt">
       </div>
+      
+    <div style="text-align:center; margin: 2.5rem 0;">
+      <button class="btn btn-p" style="font-size:1rem; padding:1rem 2rem; box-shadow: 0 0 30px rgba(57,255,20,0.5);" onclick="openVoteModal()">🗳️ VOTAR MVP DEL ÚLTIMO PARTIDO</button>
+      <p style="color:var(--text2); font-size:0.8rem; margin-top:0.5rem;">Solo pueden votar los que jugaron.</p>
+    </div>
+
     <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs · 2026</h3>
     <p style="color:var(--text2);font-size:.76rem;margin-bottom:1.1rem">Toca cualquier card para ver el detalle de los MVP de cada fecha.</p>
     <div class="mvp-grid" id="mvp-cnt"></div>
@@ -820,6 +850,8 @@ const MVP_DATA=[
 ];
 
 let _rawData=null, _allStandings=[], _golesPerFecha={};
+let _misVotos = []; // Para el sistema de votación
+let _fechaMVPActual = 0;
 
 function formatName(n) {
   if(!n) return '—';
@@ -1390,6 +1422,116 @@ function openMvpModal(imgSrc,name,date,stat){
   document.getElementById('mvp-modal').classList.add('open');
 }
 
+// ==========================================
+// NUEVO: LÓGICA DE VOTACIÓN MVP
+// ==========================================
+function openVoteModal() {
+  const matches = computeMatches(_rawData || D);
+  const lastMatch = matches[matches.length - 1];
+  _fechaMVPActual = lastMatch.fecha;
+
+  const bW = lastMatch.gfB > lastMatch.gfN;
+  const nW = lastMatch.gfN > lastMatch.gfB;
+  
+  let ganadores = [];
+  if (bW) ganadores = lastMatch.blanco.filter(r=>r.resultado==='G').map(r=>r.jugador);
+  else if (nW) ganadores = lastMatch.negro.filter(r=>r.resultado==='G').map(r=>r.jugador);
+  else ganadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado==='E').map(r=>r.jugador);
+
+  const todosLosJugadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
+
+  document.getElementById('vote-who').innerHTML = `<option value="">Seleccioná tu nombre...</option>` + todosLosJugadores.map(p => `<option value="${p}">${p}</option>`).join('');
+
+  _misVotos = [];
+  renderVoteCandidates(ganadores);
+  
+  document.getElementById('vote-status').innerHTML = "Elegidos: 0/2 (Faltan 2)";
+  document.getElementById('btn-submit-vote').style.display = 'none';
+  document.getElementById('vote-modal').classList.add('open');
+}
+
+function renderVoteCandidates(ganadores) {
+  const container = document.getElementById('vote-candidates');
+  container.innerHTML = ganadores.map(p => {
+    const isSel = _misVotos.includes(p);
+    const maxReached = _misVotos.length >= 2 && !isSel;
+    return `<div class="vote-cand ${isSel ? 'selected' : ''} ${maxReached ? 'disabled' : ''}" onclick="toggleVote('${p}')">${p}</div>`;
+  }).join('');
+}
+
+function toggleVote(jugador) {
+  if (_misVotos.includes(jugador)) {
+    _misVotos = _misVotos.filter(p => p !== jugador);
+  } else {
+    if (_misVotos.length >= 2) return; 
+    _misVotos.push(jugador);
+  }
+  
+  // Re-dibujar botones
+  const matches = computeMatches(_rawData || D);
+  const lastMatch = matches[matches.length - 1];
+  const bW = lastMatch.gfB > lastMatch.gfN;
+  const nW = lastMatch.gfN > lastMatch.gfB;
+  let ganadores = [];
+  if (bW) ganadores = lastMatch.blanco.filter(r=>r.resultado==='G').map(r=>r.jugador);
+  else if (nW) ganadores = lastMatch.negro.filter(r=>r.resultado==='G').map(r=>r.jugador);
+  else ganadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado==='E').map(r=>r.jugador);
+  
+  renderVoteCandidates(ganadores);
+  
+  const status = document.getElementById('vote-status');
+  const btnSubmit = document.getElementById('btn-submit-vote');
+  
+  if (_misVotos.length === 0) {
+    status.innerHTML = "Elegidos: 0/2 (Faltan 2)";
+    btnSubmit.style.display = 'none';
+  } else if (_misVotos.length === 1) {
+    status.innerHTML = "Elegidos: 1/2 (Falta 1. ¡Elegí otro jugador!)";
+    btnSubmit.style.display = 'none';
+  } else {
+    status.innerHTML = "¡Listo! Ya elegiste tus 2 candidatos.";
+    btnSubmit.style.display = 'flex';
+  }
+}
+
+async function submitMVPVote() {
+  const votante = document.getElementById('vote-who').value;
+  if (!votante) { alert("Por favor, elegí quién sos antes de votar."); return; }
+  if (_misVotos.length < 2) { alert("Tenés que elegir a 2 jugadores."); return; }
+  if (_misVotos.includes(votante)) { alert("¡No podés votarte a vos mismo, tramposo!"); return; }
+
+  const btn = document.getElementById('btn-submit-vote');
+  btn.innerHTML = '⏳ Enviando...';
+  btn.disabled = true;
+
+  const payload = { 
+    action: 'votar_mvp', 
+    fecha: _fechaMVPActual, 
+    votante: votante, 
+    voto1: _misVotos[0], 
+    voto2: _misVotos[1] 
+  };
+
+  try {
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    
+    if (data.status === 'ok') {
+       alert("¡Voto registrado con éxito! Gracias por participar.");
+       document.getElementById('vote-modal').classList.remove('open');
+    } else if (data.status === 'ya_voto') {
+       alert("Opa, parece que ya votaste para esta fecha. ¡Un solo voto por persona!");
+    }
+  } catch(e) {
+     alert("Error al enviar el voto. Intentá de nuevo.");
+  }
+  
+  btn.innerHTML = 'Enviar mis 2 votos';
+  btn.disabled = false;
+}
+// ==========================================
+
+
 function renderEstadisticas(data){
   const st=_allStandings.length?_allStandings:computeStandings(data);
   const matches=computeMatches(data);
@@ -1443,8 +1585,11 @@ function renderEstadisticas(data){
          if(!streakPlayers.includes(formatName(p.nombre))) streakPlayers.push(formatName(p.nombre));
      }
   });
+  
+  const fmtList = (arr) => arr.length === 1 ? arr[0] : arr.slice(0, -1).join(', ') + ' y ' + arr[arr.length - 1];
+  
   const txtRacha = maxStreak > 0 
-    ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
+    ? `<strong>${fmtList(streakPlayers)}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
     : 'Aún no hay rachas de victorias registradas.';
 
   let maxGolesP = 0;
@@ -1481,7 +1626,7 @@ function renderEstadisticas(data){
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
   const lavaPlayers = st.filter(p => p.camiseta === maxCamisetas && maxCamisetas > 0).map(p => formatName(p.nombre));
   const txtCamisetas = maxCamisetas > 0
-    ? `<strong>${lavaPlayers.join(' y ')}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
+    ? `<strong>${fmtList(lavaPlayers)}</strong> lidera${lavaPlayers.length>1?'n':''} el ranking de lavandería: se llevó la ropa para lavar <strong>${maxCamisetas} vece${maxCamisetas!==1?'s':''}</strong>. ¡Gracias por el esfuerzo!`
     : 'Todavía nadie se llevó las camisetas a lavar (o no lo anotaron).';
 
   const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
@@ -1523,9 +1668,9 @@ function renderEstadisticas(data){
   
   let txtRandom = '';
   if(maxWB >= maxWN && maxWB > 0) {
-     txtRandom = `Dato random: <strong>${pWB.join(' y ')}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Equipo Blanco, con <strong>${maxWB} victorias</strong> vistiendo ese color.`;
+     txtRandom = `Dato random: <strong>${fmtList(pWB)}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Equipo Blanco, con <strong>${maxWB} victorias</strong> vistiendo ese color.`;
   } else if (maxWN > 0) {
-     txtRandom = `Dato random: <strong>${pWN.join(' y ')}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Equipo Negro, con <strong>${maxWN} victorias</strong> vistiendo ese color.`;
+     txtRandom = `Dato random: <strong>${fmtList(pWN)}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Equipo Negro, con <strong>${maxWN} victorias</strong> vistiendo ese color.`;
   } else {
      txtRandom = `Dato random: ¡El torneo está súper peleado y nadie saca ventaja clara con ninguna camiseta!`;
   }
@@ -1533,9 +1678,6 @@ function renderEstadisticas(data){
   const maxPj = Math.max(...st.map(p => p.pj));
   const ironMen = st.filter(p => p.pj === maxPj && maxPj > 0).map(p => formatName(p.nombre));
   const minutos = maxPj * 60;
-  
-  // Regla gramatical para separar con comas y dejar la "y" al final
-  const fmtList = (arr) => arr.length === 1 ? arr[0] : arr.slice(0, -1).join(', ') + ' y ' + arr[arr.length - 1];
   
   const txtMinutos = maxPj > 0 
     ? `<strong>${fmtList(ironMen)}</strong> ${ironMen.length>1?'son':'es'} de fierro: ${ironMen.length>1?'suman':'suma'} <strong>${minutos} minutos</strong> en cancha (${maxPj} PJ completos) liderando la asistencia.` 
@@ -1583,10 +1725,7 @@ function actualizarUI_Suspension() {
   const btn = document.getElementById('no-play-btn');
   const waBtn = document.getElementById('wa-suspend-btn');
   
-  // A todos les mostramos el mensaje rojo si está suspendido
   if(msg) msg.style.display = noPlayActive ? 'block' : 'none';
-  
-  // Botones de control (solo cambian su aspecto visual si el admin está activo)
   if(btn) btn.textContent = noPlayActive ? '✅ Cancelar suspensión' : '⚠️ Marcar fecha suspendida';
   if(waBtn) waBtn.style.display = (noPlayActive && adminUnlocked) ? 'inline-flex' : 'none';
 }
@@ -1810,7 +1949,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadApiData(); 
   setupNextDate();
   
-  // Leemos la memoria y dibujamos el cartel para todos apenas entran
+  // Memoria del cartel rojo de suspensión
   actualizarUI_Suspension();
   
   const hash = window.location.hash.substring(1);
