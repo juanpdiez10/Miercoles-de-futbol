@@ -238,8 +238,7 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .lv-tag { display:inline-block; background:rgba(255,85,85,0.15); color:var(--red); padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:1px; animation:pulse 2s infinite; margin-bottom:0.4rem; }
 .lv-title { font-family:'Anton',sans-serif; font-size:1.8rem; color:var(--text); line-height:1; }
 .lv-btn { padding:0.8rem 1.2rem; font-size:1.1rem; text-align:center; box-shadow:0 0 20px rgba(57,255,20,0.3); border-radius:8px; line-height:1.2;}
-.lv-body { display:grid; grid-template-columns: 1fr 220px; gap:2rem; }
-@media(max-width:768px) { .lv-body { grid-template-columns:1fr; gap:1.5rem; } }
+.lv-body { display:flex; flex-direction:column; gap:1.5rem; }
 .lv-chart h4, .lv-voters h4 { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; font-size:0.9rem; }
 .lv-bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; font-size:0.85rem; }
 .lv-bar-name { width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:right; font-weight:600; }
@@ -1323,23 +1322,27 @@ function renderMVPs(){
     // Contar los votos que ya llegaron
     const votosFecha = _votosMVP.filter(v => v.fecha == lastMatch.fecha);
     const yaVotaron = votosFecha.map(v => v.votante);
+    
+    // Inicializar a todos los ganadores con 0 votos
     const conteo = {};
+    ganadores.forEach(g => conteo[g] = 0);
+    
     votosFecha.forEach(v => {
-       conteo[v.voto1] = (conteo[v.voto1] || 0) + 1;
-       conteo[v.voto2] = (conteo[v.voto2] || 0) + 1;
+       if(conteo[v.voto1] !== undefined) conteo[v.voto1]++;
+       if(conteo[v.voto2] !== undefined) conteo[v.voto2]++;
     });
     
-    const ranking = Object.entries(conteo).map(([n, c]) => ({nombre: n, votos: c})).sort((a,b)=>b.votos-a.votos);
+    const ranking = Object.entries(conteo).map(([n, ct]) => ({nombre: n, votos: ct})).sort((a,b)=>b.votos-a.votos);
     const maxVotos = ranking.length > 0 ? ranking[0].votos : 1; 
 
-    // Renderizar las barras (top 3)
+    // Renderizar las barras (ahora mostramos hasta 8)
     let barrasHTML = '';
-    if (ranking.length === 0) {
+    if (votosFecha.length === 0) {
         barrasHTML = `<div class="lv-empty">Aún no hay votos registrados. ¡Sé el primero!</div>`;
     } else {
-        const top3 = ranking.slice(0, 3);
-        barrasHTML = top3.map(r => {
-            const w = (r.votos / maxVotos) * 100;
+        const top8 = ranking.slice(0, 8); // Mostramos hasta 8 barras
+        barrasHTML = top8.map((r, idx) => {
+            const w = maxVotos > 0 ? (r.votos / maxVotos) * 100 : 0;
             return `<div class="lv-bar-row">
                       <div class="lv-bar-name">${formatName(r.nombre)}</div>
                       <div class="lv-bar-wrap"><div class="lv-bar-fill" style="width:${w}%"></div></div>
@@ -1348,21 +1351,35 @@ function renderMVPs(){
         }).join('');
     }
 
-    // Renderizar Padrón (Tachados si ya votaron)
+    // Renderizar Padrón
     const padronHTML = todosLosJugadores.map(j => {
        const voto = yaVotaron.includes(j);
        return `<span class="lv-voter ${voto ? 'voted' : 'pending'}">${formatName(j)}</span>`;
     }).join('');
+
+    // Verificar si votaron todos
+    const todosVotaron = yaVotaron.length >= todosLosJugadores.length && todosLosJugadores.length > 0;
+
+    let tagHTML = `<div class="lv-tag">🔴 VOTACIÓN EN VIVO</div>`;
+    let btnHTML = `<button class="btn btn-p lv-btn" onclick="openVoteModal()">🗳️ VOTAR<br><span style="font-size:0.65rem;font-weight:normal;letter-spacing:0.5px;color:#000;">SOLO PARA JUGADORES</span></button>`;
+    let titleHTML = `Elegimos al MVP de la Fecha ${lastMatch.fecha}`;
+
+    if (todosVotaron) {
+        const ganador = ranking[0].nombre;
+        tagHTML = `<div class="lv-tag" style="background:rgba(57,255,20,0.15); color:var(--green); animation:none; border:1px solid var(--green);">✅ VOTACIÓN FINALIZADA</div>`;
+        btnHTML = ``; // Ocultamos el botón
+        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! 🏆`;
+    }
 
     feat.className = "mvp-featured live-mode";
     feat.innerHTML = `
       <div style="width:100%">
         <div class="lv-header">
            <div>
-             <div class="lv-tag">🔴 VOTACIÓN EN VIVO</div>
-             <div class="lv-title">Elegimos al MVP de la Fecha ${lastMatch.fecha}</div>
+             ${tagHTML}
+             <div class="lv-title">${titleHTML}</div>
            </div>
-           <button class="btn btn-p lv-btn" onclick="openVoteModal()">🗳️ VOTAR<br><span style="font-size:0.65rem;font-weight:normal;letter-spacing:0.5px;color:#000;">SOLO PARA JUGADORES</span></button>
+           ${btnHTML}
         </div>
         <div class="lv-body">
            <div class="lv-chart">
@@ -1370,7 +1387,7 @@ function renderMVPs(){
               ${barrasHTML}
            </div>
            <div class="lv-voters">
-              <h4>👥 Padrón Electoral</h4>
+              <h4>👥 Ya Votaron</h4>
               <div class="lv-voter-list">
                  ${padronHTML}
               </div>
@@ -1410,13 +1427,13 @@ function renderMVPs(){
   }).join('');
 }
 
-
 // ==========================================
 // NUEVO: LÓGICA DE VOTACIÓN MVP (MODAL Y ENVÍO)
 // ==========================================
 function openVoteModal() {
   const matches = computeMatches(_rawData || D);
   const lastMatch = matches[matches.length - 1];
+  _fechaMVPActual = lastMatch.fecha;
   
   const bW = lastMatch.gfB > lastMatch.gfN;
   const nW = lastMatch.gfN > lastMatch.gfB;
@@ -1428,7 +1445,17 @@ function openVoteModal() {
 
   const todosLosJugadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
 
-  document.getElementById('vote-who').innerHTML = `<option value="">Seleccioná tu nombre...</option>` + todosLosJugadores.map(p => `<option value="${p}">${p}</option>`).join('');
+  // Filtrar a los que ya votaron
+  const votosFecha = _votosMVP.filter(v => v.fecha == lastMatch.fecha);
+  const yaVotaron = votosFecha.map(v => v.votante);
+  const habilitados = todosLosJugadores.filter(p => !yaVotaron.includes(p));
+
+  if (habilitados.length === 0) {
+    alert("¡Ya votaron todos los jugadores!");
+    return;
+  }
+
+  document.getElementById('vote-who').innerHTML = `<option value="">Seleccioná tu nombre...</option>` + habilitados.map(p => `<option value="${p}">${p}</option>`).join('');
 
   _misVotos = [];
   renderVoteCandidates(ganadores);
