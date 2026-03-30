@@ -260,13 +260,6 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .np{color:var(--text);margin-top:.85rem;font-size:.93rem}
 .np strong{color:var(--green)}
 .next-edit-row{display:flex;gap:.5rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
-.tgrid{display:grid;grid-template-columns:1fr auto 1fr;gap:1.75rem;align-items:start;margin-top:1.75rem}
-.tlist{background:var(--card);border-radius:8px;padding:1.25rem}
-.tlist h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.82rem;color:var(--green);margin-bottom:.85rem;padding-bottom:.6rem;border-bottom:1px solid rgba(57,255,20,.15)}
-.tlist ul{list-style:none;display:flex;flex-direction:column;gap:.35rem}
-.tlist li{display:flex;align-items:center;gap:.4rem;font-size:.88rem;padding:.2rem 0}
-.tlist li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
-.vs{font-family:'Anton',sans-serif;font-size:1.75rem;color:var(--text2);text-align:center;padding-top:2.5rem}
 
 /* FORUM */
 .forum-section{margin-top:2.5rem}
@@ -352,7 +345,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   nav.open{display:flex}
   nav a{padding:.7rem 1rem;font-size:.9rem}
   .hamburger{display:flex}
-  .tgrid{grid-template-columns:1fr}.vs{display:none}
   .ft{grid-template-columns:1fr}
   
   /* Ajustes Match Cards Celular */
@@ -364,7 +356,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   .mc-score-center{padding:0 .5rem}
   .pl-list{padding:.8rem .6rem}
   .pl-item{font-size:.75rem}
-  .pl-name{font-size:.75rem}
+  .pl-name{font-size:.78rem;width:100%}
   .pl-gol{font-size:.75rem}
   
   table.st{font-size:.7rem}
@@ -380,7 +372,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 }
 @media(max-width:380px){
   .stats-grid{grid-template-columns:1fr}
-  .pl-name{max-width:100%}
 }
 </style>
 </head>
@@ -1596,8 +1587,6 @@ function actualizarUI_Suspension() {
   if(waBtn) waBtn.style.display = (noPlayActive && adminUnlocked) ? 'inline-flex' : 'none';
 }
 
-function shareSuspensionWhatsApp() {
-// ... (este sigue quedando igual abajo)
 function shareSuspensionWhatsApp() {
   const nw=getNextWednesday();
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
