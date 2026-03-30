@@ -857,13 +857,6 @@ async function loadApiData() {
 
 function isListaAbierta() {
   return true; // <-- SIMULACRO ACTIVADO: Lista pública abierta ahora mismo.
-  if (adminUnlocked) return true; 
-  const now = new Date();
-  const day = now.getDay(); 
-  const hour = now.getHours();
-  if (day === 2 && hour >= 13) return true;
-  if (day === 3 && hour < 20) return true;
-  return false;
 }
 
 function renderInscripcion() {
