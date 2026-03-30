@@ -473,10 +473,10 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div id="inscripcion-lista" style="display:block;">
       
       <div id="caja-anotador" style="background: var(--card2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid var(--green-dark); text-align: center;">
-        <h3 id="titulo-anotador" style="margin-bottom: 1rem; color: var(--green); font-family: 'Anton', sans-serif; letter-spacing: 1px;">¿VAS A JUGAR ESTE MIÉRCOLES?</h3>
-        <select id="select-jugador-global" class="insc-select" style="width: 100%; margin-bottom: 1rem; font-size: 1rem; padding: 0.8rem;"></select>
-        <button id="btn-anotar-global" class="btn btn-p" style="width: 100%; font-size: 1.2rem; padding: 1rem; justify-content: center;" onclick="anotarmeAuto()">¡QUIERO JUGAR! ⚽</button>
-        <div id="msg-cupos-llenos" style="display:none; color: var(--red); font-size: 1.2rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px;">⚠️ CUPOS LLENOS</div>
+        <h3 id="titulo-anotador" style="margin-bottom: 1rem; color: var(--green); font-family: 'Anton', sans-serif; letter-spacing: 1px; display:none;">¿VAS A JUGAR ESTE MIÉRCOLES?</h3>
+        <select id="select-jugador-global" class="insc-select" style="width: 100%; margin-bottom: 1rem; font-size: 1rem; padding: 0.8rem; display:none;"></select>
+        <button id="btn-anotar-global" class="btn btn-p" style="width: 100%; font-size: 1.2rem; padding: 1rem; justify-content: center; display:none;" onclick="anotarmeAuto()">¡QUIERO JUGAR! ⚽</button>
+        <div id="msg-cupos-llenos" style="color: var(--text2); font-size: 1.2rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px;">⏳ Cargando lista...</div>
       </div>
 
       <div class="insc-list" id="insc-slots">
@@ -913,7 +913,7 @@ function renderInscripcion() {
         btnBajar = `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>`;
       } else {
         // Vista jugador (Abre WhatsApp)
-        const miNumero = "5491164666436"; // <--- PONÉ TU NÚMERO ACÁ (ej: 5491155554444)
+        const miNumero = "5491164666436"; // <--- PONÉ TU NÚMERO ACÁ
         const msj = encodeURIComponent(`Hola, dame de baja del partido de este miércoles por favor. Soy ${slot.jugador}.`);
         btnBajar = `<a href="https://wa.me/${miNumero}?text=${msj}" target="_blank" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); text-decoration:none;">❌ Darme de baja</a>`;
       }
@@ -927,7 +927,7 @@ function renderInscripcion() {
     </div>`;
   }).join('');
   
-// Lógica de memoria para bloquear si ya se anotó
+  // Lógica de memoria para bloquear si ya se anotó y control de carga
   const miRegistro = localStorage.getItem('mdf_mi_jugador');
   const yaAnotado = _inscripcionData.some(s => s.jugador === miRegistro);
 
@@ -937,7 +937,7 @@ function renderInscripcion() {
      btnGlobal.style.display = 'none';
      if(tituloAnotador) tituloAnotador.style.display = 'none';
      msgLlenos.style.display = 'block';
-     msgLlenos.innerHTML = '⏳ Cargando...';
+     msgLlenos.innerHTML = '⏳ Cargando lista...';
      msgLlenos.style.color = 'var(--text2)';
   } else if (yaAnotado && !adminUnlocked) {
      selectGlobal.style.display = 'none';
