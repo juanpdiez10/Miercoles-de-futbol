@@ -773,7 +773,6 @@ function adminLogin() {
         adminUnlocked = true;
         document.getElementById('admin-wa').style.display = 'flex';
         document.getElementById('no-play-btn').style.display = 'inline-flex';
-        document.getElementById('wa-suspend-btn').style.display = 'inline-flex';
         document.getElementById('admin-inscripcion-panel').style.display = 'flex';
         
         renderForum(); 
@@ -1522,6 +1521,10 @@ function toggleNoPlay(){
   noPlayActive=!noPlayActive;
   document.getElementById('no-play-msg').style.display=noPlayActive?'block':'none';
   document.getElementById('no-play-btn').textContent=noPlayActive?'✅ Cancelar suspensión':'⚠️ Marcar fecha suspendida';
+  
+  // Hace aparecer o desaparecer el botón de WhatsApp de suspensión
+  const waSuspendBtn = document.getElementById('wa-suspend-btn');
+  if(waSuspendBtn) waSuspendBtn.style.display = noPlayActive ? 'inline-flex' : 'none';
 }
 
 function shareSuspensionWhatsApp() {
