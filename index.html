@@ -1340,11 +1340,10 @@ function renderMVPs(){
     if (votosFecha.length === 0) {
         barrasHTML = `<div class="lv-empty">Aún no hay votos registrados. ¡Sé el primero!</div>`;
     } else {
-        const top8 = ranking.slice(0, 8); 
+        const top8 = ranking.slice(0, 8); // Mostramos hasta 8 barras
         barrasHTML = top8.map((r, idx) => {
             const w = maxVotos > 0 ? (r.votos / maxVotos) * 100 : 0;
-            const isGold = idx === 0 ? ' gold-bar' : ''; 
-            return `<div class="lv-bar-row${isGold}">
+            return `<div class="lv-bar-row">
                       <div class="lv-bar-name">${formatName(r.nombre)}</div>
                       <div class="lv-bar-wrap"><div class="lv-bar-fill" style="width:${w}%"></div></div>
                       <div class="lv-bar-count">${r.votos}</div>
