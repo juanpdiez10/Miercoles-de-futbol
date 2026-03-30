@@ -175,6 +175,15 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mc-mvp{padding:.7rem 1.25rem;font-size:.85rem;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:.6rem;background:rgba(255,215,0,.08);border-top:1px solid rgba(255,215,0,.15)}
 .mc-mvp span{color:#fff;font-weight:500;font-family:'Barlow',sans-serif;font-size:.8rem;letter-spacing:0}
 
+/* GOAL LOADER EN PARTIDOS */
+.goal-loader-box { background:var(--card2); padding:1.5rem; border-radius:12px; margin:0 auto 2rem; max-width:800px; border:2px solid var(--green-dark); text-align:center; box-shadow:0 0 20px rgba(57,255,20,0.1); }
+.goal-loader-box h4 { font-family:'Anton',sans-serif; font-size:1.4rem; color:var(--green); letter-spacing:1px; margin-bottom:0.5rem; }
+.goal-loader-box p { color:var(--text2); font-size:0.85rem; margin-bottom:1rem; }
+.gl-flex { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; align-items:center; }
+.gl-select { background:var(--bg2); border:1px solid var(--green-dark); color:var(--text); font-family:'Barlow',sans-serif; font-size:1rem; padding:0.6rem; border-radius:6px; min-width:180px; }
+.gl-select:focus { outline:none; border-color:var(--green); }
+.gl-admin-panel { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(57,255,20,0.2); }
+
 /* RANK LIST */
 .rank-section{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
 .rank-list{display:flex;flex-direction:column;gap:.4rem}
@@ -241,13 +250,10 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .lv-body { display:flex; flex-direction:column; gap:1.5rem; }
 .lv-chart h4, .lv-voters h4 { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; font-size:0.9rem; }
 .lv-bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; font-size:0.85rem; }
-.lv-bar-name { width:135px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left; font-weight:600; }
+.lv-bar-name { width:135px; text-align:left; font-weight:600; line-height:1.1; flex-shrink:0; color:var(--text); }
 .lv-bar-wrap { flex:1; background:rgba(255,255,255,0.05); height:14px; border-radius:6px; overflow:hidden; position:relative; }
-/* Todas las barras en gris clarito */
-.lv-bar-fill { height:100%; background:var(--silver); box-shadow:0 0 10px rgba(192,192,192,0.3); border-radius:6px; transition:width 0.5s; width:0%; }
-/* Solo el 1er puesto (puntero) en VERDE NEÓN */
+.lv-bar-fill { height:100%; background:rgba(255,255,255,0.4); border-radius:6px; transition:width 0.5s; width:0%; }
 .lv-bar-row:nth-child(1) .lv-bar-fill { background:var(--green); box-shadow:0 0 10px rgba(57,255,20,0.5); }
-.lv-bar-row:nth-child(1) .lv-bar-name { color:var(--green); }
 .lv-bar-count { width:20px; font-family:'Anton',sans-serif; color:var(--text); text-align:left; }
 .lv-voter-list { display:flex; flex-wrap:wrap; gap:0.5rem; }
 .lv-voter { font-size:0.75rem; padding:0.25rem 0.5rem; border-radius:4px; font-family:'Barlow',sans-serif; }
@@ -338,14 +344,6 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .ay{font-size:.66rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);min-width:2.2rem}
 .an{font-weight:600;font-size:.88rem}
 
-/* QUICK CARDS */
-.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.85rem}
-.qcard{background:var(--card);border:1px solid rgba(57,255,20,.07);border-radius:10px;padding:1.3rem;text-align:center;cursor:pointer;transition:all .25s}
-.qcard:hover{border-color:rgba(57,255,20,.28);transform:translateY(-3px);background:var(--card2)}
-.qi{font-size:2rem;margin-bottom:.65rem;display:block}
-.qt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.3rem}
-.qd{color:var(--text2);font-size:.73rem;line-height:1.4}
-
 /* FOOTER */
 footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5rem 2rem 1.5rem;margin-top:3rem}
 .fi{max-width:1200px;margin:0 auto}
@@ -434,8 +432,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <select id="vote-who" class="insc-select" style="width:100%; margin-bottom:1.5rem;"></select>
     
     <label style="color:var(--text2); font-size:0.8rem; margin-bottom:0.5rem; display:block;">2. Elegí a tus DOS candidatos:</label>
-    <div id="vote-candidates" style="display:flex; flex-wrap:wrap; justify-content:center; margin-bottom:1rem;">
-       </div>
+    <div id="vote-candidates" style="display:flex; flex-wrap:wrap; justify-content:center; margin-bottom:1rem;"></div>
     
     <div id="vote-status" style="text-align:center; color:var(--text2); font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; margin-bottom:1rem;">
       Elegidos: 0/2
@@ -467,17 +464,16 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="hero">
     <div class="hero-bg"></div><div class="field-lines"></div>
     <div class="hero-content">
-      <div class="hero-badge">🏆 Temporada 2026 · Fecha 6 jugada</div>
+      <div class="hero-badge">🏆 Temporada 2026 · <span id="hero-fecha-lbl">Fecha jugada</span></div>
       <h1><span class="gr">MIÉRCOLES</span><br>DE FÚTBOL</h1>
       <div class="hero-btns">
         <button class="btn btn-p" onclick="showPage('inscripcion')">✍️ Anotarse al partido</button>
         <button class="btn btn-s" onclick="showPage('tabla')">📊 Ver Tabla 2026</button>
       </div>
       <div class="hero-stats">
-        <div class="stat-item"><span class="stat-num">6</span><div class="stat-label">Fechas</div></div>
-        <div class="stat-item"><span class="stat-num">26+</span><div class="stat-label">Jugadores</div></div>
-        <div class="stat-item"><span class="stat-num">97</span><div class="stat-label">Apariciones</div></div>
-        <div class="stat-item"><span class="stat-num">71</span><div class="stat-label">Goles</div></div>
+        <div class="stat-item"><span class="stat-num" id="hs-fechas">0</span><div class="stat-label">Fechas</div></div>
+        <div class="stat-item"><span class="stat-num" id="hs-jugadores">0</span><div class="stat-label">Jugadores</div></div>
+        <div class="stat-item"><span class="stat-num" id="hs-goles">0</span><div class="stat-label">Goles</div></div>
       </div>
     </div>
   </div>
@@ -485,11 +481,11 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <h2 class="stitle">Accesos <span class="acc">Rápidos</span></h2>
     <div class="divider"></div>
     <div class="qgrid">
-      <div class="qcard" onclick="showPage('tabla')"><span class="qi">📊</span><div class="qt">Tabla 2026</div><div class="qd">Lidera Ramírez, Jere</div></div>
-      <div class="qcard" onclick="showPage('partidos')"><span class="qi">⚽</span><div class="qt">Partidos</div><div class="qd">6 fechas jugadas</div></div>
-      <div class="qcard" onclick="showPage('goleadores')"><span class="qi">🥅</span><div class="qt">Goleadores</div><div class="qd">Ramírez: 15 goles</div></div>
-      <div class="qcard" onclick="showPage('mvp')"><span class="qi">🌟</span><div class="qt">MVP F6</div><div class="qd">Lorda, Fernando</div></div>
-      <div class="qcard" onclick="showPage('proxima')"><span class="qi">📅</span><div class="qt">Próxima Fecha</div><div class="qd">Fecha 7 · Miércoles</div></div>
+      <div class="qcard" onclick="showPage('tabla')"><span class="qi">📊</span><div class="qt">Tabla 2026</div><div class="qd">Mirá las posiciones</div></div>
+      <div class="qcard" onclick="showPage('partidos')"><span class="qi">⚽</span><div class="qt">Partidos</div><div class="qd">Resultados y Goles</div></div>
+      <div class="qcard" onclick="showPage('goleadores')"><span class="qi">🥅</span><div class="qt">Goleadores</div><div class="qd">¿Quién lidera la bota de oro?</div></div>
+      <div class="qcard" onclick="showPage('mvp')"><span class="qi">🌟</span><div class="qt">MVP</div><div class="qd">Historial de cracks</div></div>
+      <div class="qcard" onclick="showPage('proxima')"><span class="qi">📅</span><div class="qt">Próxima Fecha</div><div class="qd">El armado del miércoles</div></div>
       <div class="qcard" onclick="showPage('stats')"><span class="qi">📈</span><div class="qt">Estadísticas</div><div class="qd">Curiosidades y récords</div></div>
     </div>
   </div>
@@ -533,14 +529,14 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         <label style="font-size:0.8rem; color:var(--text2); display:block; margin-bottom:0.3rem;">Actualizar pronóstico del clima:</label>
         
         <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem;">
-          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('☀️')">☀️</button>
-          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('☁️')">☁️</button>
-          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('🌧️')">🌧️</button>
-          <button class="btn-admin" style="padding:0.3rem 0.6rem; font-size:1.1rem; background:rgba(255,255,255,0.05);" onclick="addEmojiToClima('🌛')">🌛</button>
+          <button class="btn-admin" onclick="addEmojiToClima('☀️')">☀️</button>
+          <button class="btn-admin" onclick="addEmojiToClima('☁️')">☁️</button>
+          <button class="btn-admin" onclick="addEmojiToClima('🌧️')">🌧️</button>
+          <button class="btn-admin" onclick="addEmojiToClima('🌛')">🌛</button>
         </div>
 
         <div style="display:flex; gap:0.5rem;">
-          <input type="text" id="admin-clima-input" placeholder="Ej: despejado / 20°C" style="flex:1; background:var(--bg); border:1px solid rgba(255,255,255,0.2); color:var(--text); padding:0.5rem; border-radius:4px; font-family:'Barlow',sans-serif;">
+          <input type="text" id="admin-clima-input" placeholder="Ej: despejado / 20°C" style="flex:1; background:var(--bg); border:1px solid rgba(255,255,255,0.2); color:var(--text); padding:0.5rem; border-radius:4px;">
           <button class="btn btn-p" style="padding:0.5rem 1rem;" onclick="adminUpdateClima()">Guardar</button>
         </div>
       </div>
@@ -566,11 +562,11 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     </div>
 
     <div id="tabla-2026" class="tab-content active">
-      <div class="live-badge" style="margin-top:1rem;"><div class="pulse"></div> 2026 en curso · Fecha 6 jugada</div>
+      <div class="live-badge" style="margin-top:1rem;"><div class="pulse"></div> 2026 en curso · <span id="lbl-fechas-jugadas">Fecha jugada</span></div>
       <div class="tabla-top">
         <div class="fecha-filter" id="fecha-filter-wrap">
           </div>
-        <div class="updated-lbl">Actualizado a fecha: <strong id="updated-fecha-lbl">F6 · 25/03/2026</strong></div>
+        <div class="updated-lbl">Actualizado a fecha: <strong id="updated-fecha-lbl"></strong></div>
       </div>
       <div class="tbl-wrap">
         <table class="st">
@@ -623,7 +619,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida</button>
     </div>
     <div id="gol-g26" class="tab-content active">
-      <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
+      <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · Toca un nombre para ver desglose por fecha</p>
       <div class="rank-section">
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por goles totales</div>
@@ -670,8 +666,8 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <h2 class="stitle">Próxima <span class="acc">Fecha</span></h2>
     <div class="divider"></div>
     <div class="next-hero">
-      <div style="display:inline-block;background:rgba(57,255,20,.07);border:1px solid var(--green-dark);padding:.28rem .9rem;border-radius:2px;font-size:.7rem;letter-spacing:3px;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:1.2rem" id="fecha-num-label">📅 Fecha 7 · Temporada 2026</div>
-      <div class="nd" id="next-date-display">MIÉRCOLES 1 DE ABRIL</div>
+      <div style="display:inline-block;background:rgba(57,255,20,.07);border:1px solid var(--green-dark);padding:.28rem .9rem;border-radius:2px;font-size:.7rem;letter-spacing:3px;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:1.2rem" id="fecha-num-label">📅 Fecha X</div>
+      <div class="nd" id="next-date-display">MIÉRCOLES</div>
       <div class="nt" id="next-time-display">⏰ 20:00 hs</div>
       <div class="nt" id="next-clima-display" style="font-weight:600; color:var(--text); display:none;"></div>
       <div class="np">📍 <strong>Campus El Irlandés</strong> — Campo de Deportes del Marin<br><span style="color:var(--text2);font-size:.85rem">Av. Bartolomé Mitre 1650, B1643 Béccar, Buenos Aires</span></div>
@@ -716,9 +712,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
           <option value="6">Fecha 6</option>
           <option value="5">Fecha 5</option>
           <option value="4">Fecha 4</option>
-          <option value="3">Fecha 3</option>
-          <option value="2">Fecha 2</option>
-          <option value="1">Fecha 1</option>
         </select>
       </div>
       <div class="forum-posts" id="forum-posts"></div>
@@ -825,11 +818,9 @@ let _inscripcionData = [];
 let _clima = "";
 let _allPlayersList = [];
 
-// --- MODO SIMULACRO VOTACION ---
-// Poné esto en TRUE para ver el tablero de votación en vivo ahora mismo. 
-// Después cambialo a FALSE para que quede automático los Jueves.
-let MODO_SIMULACRO_VOTACION = true; 
-let _votosMVP = []; // Acá se guardan los votos que lee de Google
+let _votosMVP = []; 
+let _golesTemp = [];
+let _configApp = { fecha_mvp: 0, time_mvp: 0 };
 let _fechaMVPActual = 0;
 
 function adminLogin() {
@@ -846,6 +837,8 @@ function adminLogin() {
         renderForum(); 
         renderInscripcion(); 
         
+        if(_rawData) renderMatches(computeMatches(_rawData));
+        
         alert('Modo Admin activado 😎. Ya podés gestionar todo.');
      } else {
         alert('Contraseña incorrecta.');
@@ -860,7 +853,7 @@ function adminLogin() {
 const D=[{"fecha":1,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Sabate, Juan","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Baltazar, Martin","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Tomas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Lorda, Fernando","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Ramirez, Jere","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Natiello, Cristian","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":3,"mvp":1,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Valdez, Lucas","equipo":"BLANCO","resultado":"G","gf":8,"gc":7,"goles":2,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Besse, Luciano","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Questa, Sebastian","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":1,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Florio, Nicolas","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Mendoza, Guillermo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Gonzalez, Matias","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":1,"jugador":"Diez, Juan Pablo","equipo":"NEGRO","resultado":"P","gf":7,"gc":8,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Cañete, Maxi","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Espul, Lucas","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Besse, Luciano","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Vissani, Matias","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Mendoza, Guillermo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Sebastian","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":2,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Diez, Ezequiel","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":0,"mvp":0,"dif":-1,"bonus":0,"camiseta":1},{"fecha":2,"jugador":"Diez, Juan Pablo","equipo":"BLANCO","resultado":"P","gf":5,"gc":6,"goles":1,"mvp":0,"dif":-1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Questa, Ezequiel","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Florio, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Reggi, Tomas","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":1,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Sabate, Juan","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Lorda, Fernando","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Del Rio, Pipa","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Natiello, Cristian","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":0,"mvp":0,"dif":1,"bonus":0,"camiseta":0},{"fecha":2,"jugador":"Ramirez, Jere","equipo":"NEGRO","resultado":"G","gf":6,"gc":5,"goles":4,"mvp":1,"dif":1,"bonus":0,"camiseta":0}];
 
 const FD={1:'11/02/2026',2:'18/02/2026',3:'25/02/2026',4:'04/03/2026',5:'18/03/2026',6:'25/03/2026'};
-const MAX_FECHA=6;
+let MAX_FECHA=6;
 
 const GC_ARQUEROS={
   'Cañete, Maxi':{1:7,2:6,3:8,4:1,5:4,6:8},
@@ -877,7 +870,6 @@ const MVP_DATA=[
 ];
 
 let _rawData=null, _allStandings=[], _golesPerFecha={};
-let _misVotos = []; 
 
 function formatName(n) {
   if(!n) return '—';
@@ -888,7 +880,7 @@ function formatName(n) {
 }
 
 // ═══════════════════════════════════════
-// LOGICA DE INSCRIPCIÓN Y API GITHUB
+// FETCH A LA BASE DE DATOS
 // ═══════════════════════════════════════
 async function loadApiData() {
   try {
@@ -897,9 +889,9 @@ async function loadApiData() {
     _forumPosts = data.posts || [];
     _inscripcionData = data.inscripcion || [];
     _clima = data.clima || "";
-    
-    // Leemos los votos del servidor
     _votosMVP = data.votos || [];
+    _golesTemp = data.golesTemp || [];
+    if (data.configApp) _configApp = data.configApp;
     
     if(_clima !== "") {
       const climasEl = document.querySelectorAll('#next-clima-display, #insc-clima-display');
@@ -909,7 +901,10 @@ async function loadApiData() {
     
     renderForum();
     renderInscripcion();
-    renderMVPs(); // Forzamos a renderizar MVP por si llegaron votos nuevos
+    
+    if(_rawData) {
+       renderAll(_rawData);
+    }
   } catch (e) {
     console.error("Error al cargar la base de datos externa.", e);
   }
@@ -1087,11 +1082,11 @@ async function adminUpdateClima() {
   } catch(e) { alert('Error al guardar clima.'); }
 }
 async function adminResetLista() {
-  if(!confirm("⚠️ ESTÁS POR BORRAR A TODOS LOS ANOTADOS.\n¿Seguro?")) return;
+  if(!confirm("⚠️ ESTÁS POR BORRAR A TODOS LOS ANOTADOS.\nTambién se borrarán los goles temporales de la última fecha.\n¿Seguro?")) return;
   try {
     const payload = { action: 'reset_inscripcion' };
     await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-    alert("Lista reseteada impecable para el próximo martes."); loadApiData();
+    alert("Lista y goles temporales reseteados. Impecable para el próximo martes."); loadApiData();
   } catch(e) { alert('Error al limpiar lista.'); }
 }
 
@@ -1202,6 +1197,17 @@ function filterFecha(maxF,btn){
   _allStandings=st;
   renderStandings(st);
   document.getElementById('updated-fecha-lbl').textContent=`F${maxF} · ${FD[maxF]||''}`;
+  document.getElementById('lbl-fechas-jugadas').textContent=`Fecha ${maxF} jugada`;
+}
+
+function isGoalLoadingActive(fechaCheck) {
+  if (_configApp.fecha_mvp == fechaCheck) return false; // Admin la cerró
+  let now = new Date();
+  let d = now.getDay(); 
+  let h = now.getHours();
+  if (d === 3) return false; 
+  if (d === 4 && h < 10) return false; 
+  return true;
 }
 
 function renderMatches(ms){
@@ -1215,6 +1221,45 @@ function renderMatches(ms){
         const gol=r.goles>0?`<span class="pl-gol">⚽ ${r.goles}</span>`:'';
         return`<div class="pl-item ${isMvp?'pl-mvp-item':''}"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name">${r.jugador}</span></div>${gol}</div>`;
       }).join('');
+
+    let extraHTML = '';
+    if (m.fecha === MAX_FECHA) {
+       if (isGoalLoadingActive(m.fecha)) {
+           const todosLosJugadores = [...m.blanco, ...m.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
+           extraHTML += `
+             <div class="goal-loader-box">
+                <h4>⚽ CARGAR MIS GOLES</h4>
+                <p>Buscá tu nombre e indicá cuántos goles metiste en esta fecha.</p>
+                <div class="gl-flex">
+                   <select id="gl-jugador" class="gl-select">
+                     <option value="">¿Quién sos?</option>
+                     ${todosLosJugadores.map(p => `<option value="${p}">${p}</option>`).join('')}
+                   </select>
+                   <select id="gl-goles" class="gl-select" style="min-width:100px;">
+                     <option value="">Goles</option>
+                     <option value="0">0</option>
+                     <option value="1">1</option>
+                     <option value="2">2</option>
+                     <option value="3">3</option>
+                     <option value="4">4</option>
+                     <option value="5">5</option>
+                     <option value="6">6</option>
+                   </select>
+                   <button class="btn btn-p" onclick="submitGoal(${m.fecha})">Guardar</button>
+                </div>
+             </div>
+           `;
+       }
+       if (adminUnlocked) {
+           extraHTML += `
+             <div class="gl-admin-panel">
+               <button class="btn btn-wa" style="font-size:0.7rem; padding:0.4rem 0.8rem;" onclick="shareGolesWA()">📲 Avisar Carga Goles</button>
+               <button class="btn btn-s" style="font-size:0.7rem; padding:0.4rem 0.8rem; border-color:var(--gold); color:var(--gold);" onclick="adminAbrirMVP(${m.fecha})">🔒 CERRAR GOLES Y ABRIR MVP</button>
+               <button class="btn btn-wa" style="font-size:0.7rem; padding:0.4rem 0.8rem;" onclick="shareMvpWA()">📲 Avisar Votación MVP</button>
+             </div>
+           `;
+       }
+    }
       
     return`<div class="fh">FECHA ${m.fecha} <span class="fh-date">${m.date?'· '+m.date:''}</span></div>
       <div class="mc">
@@ -1225,8 +1270,48 @@ function renderMatches(ms){
         </div>
         <div class="mc-body"><div class="pl-list">${makeList(m.blanco,m.mvp)}</div><div class="pl-list">${makeList(m.negro,m.mvp)}</div></div>
         ${m.mvp?`<div class="mc-mvp">★ MVP DE LA FECHA <span>${m.mvp}</span></div>`:''}
-      </div>`;
+      </div>${extraHTML}`;
   }).join('');
+}
+
+async function submitGoal(fecha) {
+  const jugador = document.getElementById('gl-jugador').value;
+  const goles = document.getElementById('gl-goles').value;
+  if(!jugador || goles === "") { alert("Elegí tu nombre y la cantidad de goles."); return; }
+  
+  const payload = { action: 'cargar_gol', fecha: fecha, jugador: jugador, goles: goles };
+  try {
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if(data.status === 'ok') {
+       alert("¡Goles guardados! El marcador se actualizó.");
+       await loadApiData(); 
+    }
+  } catch(e) { alert("Error al cargar los goles."); }
+}
+
+async function adminAbrirMVP(fecha) {
+  if(!confirm("⚠️ ESTO CIERRA LA CARGA DE GOLES Y DEFINE AL GANADOR.\n¿Estás seguro que los goles están bien cargados?")) return;
+  const payload = { action: 'abrir_mvp', fecha: fecha };
+  try {
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if(data.status === 'ok') {
+       alert("¡Listo! Goles sellados y votación MVP abierta por 24hs.");
+       await loadApiData();
+       showPage('mvp');
+    }
+  } catch(e) { alert("Error al abrir MVP."); }
+}
+
+function shareGolesWA() {
+  let msg = `⚽ ¡Terminó el partido!\n\nYa está habilitada la carga de goles. Entren a la web, busquen su nombre y pongan cuántos metieron para armar el resultado final de la Fecha ${MAX_FECHA}:\n\njuanpdiez10.github.io/Miercoles-de-futbol/#partidos`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+function shareMvpWA() {
+  let msg = `⭐ ¡Goles cerrados y resultado final confirmado!\n\nYa está abierta la urna para votar al MVP. Tienen 24hs, el que no vota es pollo:\n\njuanpdiez10.github.io/Miercoles-de-futbol/#mvp`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
 // Ventanas modales
@@ -1241,7 +1326,8 @@ function openScoreModal(nombre,isValla){
     rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total recibidos</span><span class="sm-val" style="color:#ff9977">${total}</span></div><div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val" style="color:#ff9977">${prom}</span></div>`;
   }else{
     const fd=_golesPerFecha[nombre]||{}; total=Object.values(fd).reduce((a,b)=>a+b,0);
-    const prom=(total/((_allStandings.find(s=>s.nombre===nombre)||{pj:1}).pj||1)).toFixed(2);
+    const allPj=(_allStandings.find(s=>s.nombre===nombre)||{pj:1}).pj||1;
+    const prom=(total/allPj).toFixed(2);
     document.getElementById('sm-sub').textContent='Goles anotados por fecha';
     rows=Object.entries(fd).filter(([,g])=>g>0).sort((a,b)=>Number(a[0])-Number(b[0])).map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val">${g} gol${g>1?'es':''}</span></div>`).join('');
     rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total goles</span><span class="sm-val">${total}</span></div><div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val">${prom}</span></div>`;
@@ -1285,18 +1371,12 @@ function getUrlFoto(nombre) {
   return `mvp/${nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/,\s*/g,'-').replace(/\s+/g,'-')}.png`;
 }
 
-function isVotingActive() {
-  // === MODO SIMULACRO PARA PROBAR AHORA ===
-  if (MODO_SIMULACRO_VOTACION) return true;
-  
-  const now = new Date();
-  const day = now.getDay();
-  const hour = now.getHours();
-  // Está activo el Miércoles (3) desde las 21hs, y todo el Jueves (4) hasta las 21hs.
-  if (day === 3 && hour >= 21) return true;
-  if (day === 4 && hour < 21) return true;
-  
-  return false;
+function isVotingActive(lastMatchFecha) {
+  if (_configApp.fecha_mvp != lastMatchFecha) return false; 
+  let timeOpen = parseInt(_configApp.time_mvp) || 0;
+  let elapsed = new Date().getTime() - timeOpen;
+  if (elapsed > 86400000) return false; 
+  return true;
 }
 
 function renderMVPs(){
@@ -1308,9 +1388,7 @@ function renderMVPs(){
   const lastMatch = matches[matches.length - 1];
   _fechaMVPActual = lastMatch.fecha;
 
-  // --- LÓGICA DEL DASHBOARD DE VOTACIÓN ---
-  if (isVotingActive()) {
-    
+  if (_configApp.fecha_mvp == lastMatch.fecha) {
     const bW = lastMatch.gfB > lastMatch.gfN;
     const nW = lastMatch.gfN > lastMatch.gfB;
     let ganadores = [];
@@ -1320,15 +1398,11 @@ function renderMVPs(){
     ganadores.sort();
 
     const todosLosJugadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
-    
-    // Contar los votos que ya llegaron
     const votosFecha = _votosMVP.filter(v => v.fecha == lastMatch.fecha);
     const yaVotaron = votosFecha.map(v => v.votante);
     
-    // Inicializar a todos los ganadores con 0 votos
     const conteo = {};
     ganadores.forEach(g => conteo[g] = 0);
-    
     votosFecha.forEach(v => {
        if(conteo[v.voto1] !== undefined) conteo[v.voto1]++;
        if(conteo[v.voto2] !== undefined) conteo[v.voto2]++;
@@ -1337,12 +1411,11 @@ function renderMVPs(){
     const ranking = Object.entries(conteo).map(([n, ct]) => ({nombre: n, votos: ct})).sort((a,b)=>b.votos-a.votos);
     const maxVotos = ranking.length > 0 ? ranking[0].votos : 1; 
 
-    // Renderizar las barras (ahora mostramos hasta 8)
     let barrasHTML = '';
     if (votosFecha.length === 0) {
         barrasHTML = `<div class="lv-empty">Aún no hay votos registrados. ¡Sé el primero!</div>`;
     } else {
-        const top8 = ranking.slice(0, 8); // Mostramos hasta 8 barras
+        const top8 = ranking.slice(0, 8); 
         barrasHTML = top8.map((r, idx) => {
             const w = maxVotos > 0 ? (r.votos / maxVotos) * 100 : 0;
             return `<div class="lv-bar-row">
@@ -1353,69 +1426,46 @@ function renderMVPs(){
         }).join('');
     }
 
-    // Renderizar Padrón
-    const padronHTML = todosLosJugadores.map(j => {
-       const voto = yaVotaron.includes(j);
-       return `<span class="lv-voter ${voto ? 'voted' : 'pending'}">${formatName(j)}</span>`;
-    }).join('');
-
-    // Verificar si votaron todos
+    const padronHTML = yaVotaron.map(j => `<span class="lv-voter voted">${formatName(j)}</span>`).join('');
     const todosVotaron = yaVotaron.length >= todosLosJugadores.length && todosLosJugadores.length > 0;
+    const votingActive = isVotingActive(lastMatch.fecha) && !todosVotaron;
 
     let tagHTML = `<div class="lv-tag">🔴 VOTACIÓN EN VIVO</div>`;
     let btnHTML = `<button class="btn btn-p lv-btn" onclick="openVoteModal()">🗳️ VOTAR<br><span style="font-size:0.65rem;font-weight:normal;letter-spacing:0.5px;color:#000;">SOLO PARA JUGADORES</span></button>`;
     let titleHTML = `Elegimos al MVP de la Fecha ${lastMatch.fecha}`;
 
-    if (todosVotaron) {
+    if (!votingActive) {
         const ganador = ranking[0].nombre;
         tagHTML = `<div class="lv-tag" style="background:rgba(57,255,20,0.15); color:var(--green); animation:none; border:1px solid var(--green);">✅ VOTACIÓN FINALIZADA</div>`;
-        btnHTML = ``; // Ocultamos el botón
-        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! <span style="display:inline-block; transform:translateY(-3px); font-size:0.85em;">⭐</span>`;
+        btnHTML = ``; 
+        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! ⭐`;
     }
 
     feat.className = "mvp-featured live-mode";
     feat.innerHTML = `
       <div style="width:100%">
         <div class="lv-header">
-           <div>
-             ${tagHTML}
-             <div class="lv-title">${titleHTML}</div>
-           </div>
+           <div>${tagHTML}<div class="lv-title">${titleHTML}</div></div>
            ${btnHTML}
         </div>
         <div class="lv-body">
-           <div class="lv-chart">
-              <h4>📊 Resultados Parciales</h4>
-              ${barrasHTML}
-           </div>
-           <div class="lv-voters">
-              <h4>👥 Ya Votaron</h4>
-              <div class="lv-voter-list">
-                 ${padronHTML}
-              </div>
-           </div>
+           <div class="lv-chart"><h4>📊 Resultados Parciales</h4>${barrasHTML}</div>
+           <div class="lv-voters"><h4>👥 Ya Votaron</h4><div class="lv-voter-list">${padronHTML || '<span class="lv-empty">Nadie votó todavía.</span>'}</div></div>
         </div>
       </div>
     `;
 
   } else {
-    // --- LÓGICA DEL MVP TRADICIONAL (Cuadro amarillo) ---
     feat.className = "mvp-featured";
-    const lastMVP = MVP_DATA[0];
-    const lastUrl = getUrlFoto(lastMVP.nombre);
-    
     feat.innerHTML = `
-        <img class="mvp-photo-placeholder" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-placeholder\\'>⭐</div>'">
-        <div>
-          <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
-          <div class="mvp-n">${lastMVP.nombre}</div>
-          <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
-          <div class="mvp-desc">${lastMVP.stat}</div>
+        <div style="width:100%; text-align:center;">
+          <span style="font-size: 2rem; display:block; margin-bottom:1rem;">⏳</span>
+          <h3 style="color:var(--text); margin-bottom:0.5rem; font-family:'Anton', sans-serif; letter-spacing:1px;">ESPERANDO CIERRE DE GOLES</h3>
+          <p style="color:var(--text2); font-size:0.9rem;">La urna para elegir al MVP de la Fecha ${lastMatch.fecha} se abrirá una vez que se confirmen los goles y el equipo ganador.</p>
         </div>
     `;
   }
 
-  // --- HISTORIAL DE MVPs ---
   c.innerHTML=MVP_DATA.map(m=>{
     const url = getUrlFoto(m.nombre);
     const thumb = `<img class="mvp-thumb" src="${url}" alt="${m.nombre}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
@@ -1429,9 +1479,6 @@ function renderMVPs(){
   }).join('');
 }
 
-// ==========================================
-// NUEVO: LÓGICA DE VOTACIÓN MVP (MODAL Y ENVÍO)
-// ==========================================
 function openVoteModal() {
   const matches = computeMatches(_rawData || D);
   const lastMatch = matches[matches.length - 1];
@@ -1447,7 +1494,6 @@ function openVoteModal() {
 
   const todosLosJugadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
 
-  // Filtrar a los que ya votaron
   const votosFecha = _votosMVP.filter(v => v.fecha == lastMatch.fecha);
   const yaVotaron = votosFecha.map(v => v.votante);
   const habilitados = todosLosJugadores.filter(p => !yaVotaron.includes(p));
@@ -1521,33 +1567,23 @@ async function submitMVPVote() {
   btn.innerHTML = '⏳ Enviando...';
   btn.disabled = true;
 
-  const payload = { 
-    action: 'votar_mvp', 
-    fecha: _fechaMVPActual, 
-    votante: votante, 
-    voto1: _misVotos[0], 
-    voto2: _misVotos[1] 
-  };
+  const payload = { action: 'votar_mvp', fecha: _fechaMVPActual, votante: votante, voto1: _misVotos[0], voto2: _misVotos[1] };
 
   try {
     const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
     const data = await res.json();
-    
     if (data.status === 'ok') {
        alert("¡Voto registrado con éxito! Gracias por participar.");
        document.getElementById('vote-modal').classList.remove('open');
-       await loadApiData(); // Recargamos para que se actualice el gráfico en vivo
+       await loadApiData(); 
     } else if (data.status === 'ya_voto') {
        alert("Opa, parece que ya votaste para esta fecha. ¡Un solo voto por persona!");
     }
-  } catch(e) {
-     alert("Error al enviar el voto. Intentá de nuevo.");
-  }
+  } catch(e) { alert("Error al enviar el voto. Intentá de nuevo."); }
   
   btn.innerHTML = 'Enviar mis 2 votos';
   btn.disabled = false;
 }
-// ==========================================
 
 function renderEstadisticas(data){
   const st=_allStandings.length?_allStandings:computeStandings(data);
@@ -1861,11 +1897,15 @@ async function loadData(){
     if(!r.ok)throw new Error('Error al conectar con Sheets');
     const csv=await r.text();
     const rows=parseCSV(csv);
-    if(rows.length>0){renderAll(rows);return;}
+    if(rows.length>0){
+       let dataMerged = JSON.parse(JSON.stringify(rows));
+       _rawData = dataMerged; 
+       return;
+    }
   }catch(e){
     console.error("Falló la carga, usando respaldo:", e);
   }
-  renderAll(D);
+  _rawData = JSON.parse(JSON.stringify(D));
 }
 
 async function loadEquipos(){
@@ -1886,26 +1926,61 @@ async function loadEquipos(){
   }catch(e){}
 }
 
-function renderAll(data){
-  _rawData=data;
-  buildGolesPerFecha(data);
-  const st=computeStandings(data);
+function renderAll(dataRaw){
+  let dataMerged = JSON.parse(JSON.stringify(dataRaw));
+  
+  _golesTemp.forEach(gt => {
+      let row = dataMerged.find(r => r.fecha == gt.fecha && r.jugador === gt.jugador);
+      if(row) row.goles = parseInt(gt.goles) || 0;
+  });
+
+  let fechasObj = [...new Set(dataMerged.map(r=>r.fecha))];
+  fechasObj.forEach(f => {
+     let matchRows = dataMerged.filter(r=>r.fecha == f);
+     let sumB = matchRows.filter(r=>r.equipo==='BLANCO').reduce((s,r)=>s+(r.goles||0), 0);
+     let sumN = matchRows.filter(r=>r.equipo==='NEGRO').reduce((s,r)=>s+(r.goles||0), 0);
+     matchRows.forEach(r => {
+         r.gf = (r.equipo==='BLANCO') ? sumB : sumN;
+         r.gc = (r.equipo==='BLANCO') ? sumN : sumB;
+         if (sumB > sumN) r.resultado = (r.equipo==='BLANCO') ? 'G' : 'P';
+         else if (sumN > sumB) r.resultado = (r.equipo==='NEGRO') ? 'G' : 'P';
+         else r.resultado = 'E';
+         r.dif = r.gf - r.gc;
+     });
+  });
+
+  buildGolesPerFecha(dataMerged);
+  const st=computeStandings(dataMerged);
   _allStandings=st;
   
-  _allPlayersList = [...new Set((_rawData||D).map(r=>formatName(r.jugador)))].sort();
+  _allPlayersList = [...new Set((dataMerged).map(r=>formatName(r.jugador)))].sort();
+  
+  const fechas=[...new Set(dataMerged.map(r=>r.fecha))].sort((a,b)=>a-b);
+  MAX_FECHA = fechas[fechas.length-1];
   
   renderFechaFilter();
   renderStandings(st);
-  renderMatches(computeMatches(data));
-  renderScorers(computeScorers(data));
+  renderMatches(computeMatches(dataMerged));
+  renderScorers(computeScorers(dataMerged));
   renderVallas();
-  renderEstadisticas(data);
+  renderEstadisticas(dataMerged);
   renderMVPs();
   
-  const fechas=[...new Set(data.map(r=>r.fecha))].sort((a,b)=>a-b);
-  const maxF=fechas[fechas.length-1];
   const lbl=document.getElementById('updated-fecha-lbl');
-  if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
+  if(lbl)lbl.textContent=`F${MAX_FECHA} · ${FD[MAX_FECHA]||''}`;
+  const lblJ = document.getElementById('lbl-fechas-jugadas');
+  if(lblJ) lblJ.textContent = `Fecha ${MAX_FECHA} jugada`;
+  
+  // Actualiza el Hero
+  const heroFecha = document.getElementById('hero-fecha-lbl');
+  if(heroFecha) heroFecha.textContent = `Fecha ${MAX_FECHA} jugada`;
+  const hsFechas = document.getElementById('hs-fechas');
+  if(hsFechas) hsFechas.textContent = MAX_FECHA;
+  const hsJug = document.getElementById('hs-jugadores');
+  if(hsJug) hsJug.textContent = _allPlayersList.length + "+";
+  const totalGoles = computeMatches(dataMerged).reduce((s,m)=>s+m.gfB+m.gfN,0);
+  const hsGoles = document.getElementById('hs-goles');
+  if(hsGoles) hsGoles.textContent = totalGoles;
 }
 
 function showPage(id, updateUrl = true){
@@ -1959,10 +2034,10 @@ window.addEventListener('popstate', () => {
   showPage(hash, false); 
 });
 
-document.addEventListener('DOMContentLoaded',()=>{
-  loadData();
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await loadData();
+  await loadApiData(); 
   loadEquipos();
-  loadApiData(); 
   setupNextDate();
   
   actualizarUI_Suspension();
