@@ -1591,14 +1591,14 @@ function shareEquiposWhatsApp(){
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fechaNum=MAX_FECHA+1;
 
-  let msg=`*FECHA ${fechaNum}*\n`;
-  msg+=`Miercoles ${nw.getDate()} de ${months[nw.getMonth()]}\n`;
-  msg+=`Horario: 20:00 hs\n`;
-  if(_clima) msg+=`Clima: ${_clima}\n`;
-  msg+=`Llegar temprano ⏰\n`;
-  msg+=`Llevar efectivo 💵\n\n`;
+  let msg=`*FECHA ${fechaNum}* / Miércoles ${nw.getDate()} de ${months[nw.getMonth()]}\n`;
+  msg+=`*Horario*: 20:00hs\n`;
+  if(_clima) msg+=`*Clima*: ${_clima}\n`;
+  msg+=`Llegar TEMPRANO ⏰ / Llevar EFECTIVO 💵\n\n`;
+  
   msg+=`*EQUIPO BLANCO* ⚪\n`;
   bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+  
   msg+=`\n*EQUIPO NEGRO* ⚫\n`;
   ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
   
