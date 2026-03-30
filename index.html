@@ -862,8 +862,8 @@ function isListaAbierta() {
   const hour = now.getHours();
   const minutes = now.getMinutes();
 
-  // --- MODO PRUEBA: Abre Lunes (1) a las 00:15 hs ---
-  if (day === 1 && hour === 0 && minutes >= 15) return true;
+  // --- MODO PRUEBA: Abre Lunes (1) a las 00:22 hs ---
+  if (day === 1 && hour === 0 && minutes >= 22) return true;
 
   // Horario normal (Martes 13hs a Miércoles 20hs)
   if (day === 2 && hour >= 13) return true;
