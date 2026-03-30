@@ -643,15 +643,22 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem">
       <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;color:var(--text2)">Armado de Equipos — 8 vs 8</h3>
     </div>
-    <div class="tgrid">
-      <div class="tlist">
-        <h3>⚪ Equipo Blanco</h3>
-        <ul id="team-blanco"></ul>
+  
+    <div class="mc" style="margin-top:1.5rem; pointer-events:none;">
+      <div class="mc-head" style="padding:1.25rem 1rem;">
+        <div class="mc-team">
+          <div class="mc-team-name"><span class="dot-w"></span> BLANCO</div>
+        </div>
+        <div class="mc-score-center" style="padding:0 1rem;">
+          <span class="mc-score-sep" style="font-family:'Anton',sans-serif;font-size:1.8rem;color:var(--text2);">VS</span>
+        </div>
+        <div class="mc-team">
+          <div class="mc-team-name"><span class="dot-n"></span> NEGRO</div>
+        </div>
       </div>
-      <div class="vs">VS</div>
-      <div class="tlist">
-        <h3>⚫ Equipo Negro</h3>
-        <ul id="team-negro"></ul>
+      <div class="mc-body">
+        <div class="pl-list" id="team-blanco-list" style="padding:1.25rem 1rem;"></div>
+        <div class="pl-list" id="team-negro-list" style="padding:1.25rem 1rem;"></div>
       </div>
     </div>
     
@@ -771,8 +778,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbz3lNZKZn_vViL9s6PGaCqD
 const ADMIN_PASS='mdf2026';
 let adminUnlocked=false;
 let adminClicks = 0;
-let noPlayActive=false;
-
+let noPlayActive = localStorage.getItem('mdf_suspendido') === 'SI';
 let _forumPosts = [];
 let _inscripcionData = [];
 let _clima = "";
@@ -787,6 +793,7 @@ function adminLogin() {
         document.getElementById('admin-wa').style.display = 'flex';
         document.getElementById('no-play-btn').style.display = 'inline-flex';
         document.getElementById('admin-inscripcion-panel').style.display = 'flex';
+        actualizarUI_Suspension();
         
         renderForum(); 
         renderInscripcion(); 
@@ -1532,6 +1539,13 @@ function renderEstadisticas(data){
      txtRandom = `Dato random: ¡El torneo está súper peleado y nadie saca ventaja clara con ninguna camiseta!`;
   }
 
+  const maxPj = Math.max(...st.map(p => p.pj));
+  const ironMen = st.filter(p => p.pj === maxPj && maxPj > 0).map(p => formatName(p.nombre));
+  const minutos = maxPj * 60;
+  const txtMinutos = maxPj > 0 
+    ? `<strong>${ironMen.join(' y ')}</strong> ${ironMen.length>1?'son':'es'} de fierro: ${ironMen.length>1?'suman':'suma'} <strong>${minutos} minutos</strong> en cancha (${maxPj} PJ completos) liderando la asistencia.` 
+    : 'Aún no hay minutos jugados.';
+  
   const clist=[
     {e:'🔥',t: txtRacha},
     {e:'🎯',t: txtGoles},
@@ -1541,6 +1555,7 @@ function renderEstadisticas(data){
     {e:'👕',t: txtCamisetas},
     {e:'📊',t: txtPromedio},
     {e:'🍀',t: txtRandom},
+    {e:'⏱️',t: txtMinutos},
   ];
 
   document.getElementById('curiosidades').innerHTML=clist.map(c=>`
@@ -1563,15 +1578,26 @@ function setupNextDate(){
 }
 
 function toggleNoPlay(){
-  noPlayActive=!noPlayActive;
-  document.getElementById('no-play-msg').style.display=noPlayActive?'block':'none';
-  document.getElementById('no-play-btn').textContent=noPlayActive?'✅ Cancelar suspensión':'⚠️ Marcar fecha suspendida';
-  
-  // Hace aparecer o desaparecer el botón de WhatsApp de suspensión
-  const waSuspendBtn = document.getElementById('wa-suspend-btn');
-  if(waSuspendBtn) waSuspendBtn.style.display = noPlayActive ? 'inline-flex' : 'none';
+  noPlayActive = !noPlayActive;
+  localStorage.setItem('mdf_suspendido', noPlayActive ? 'SI' : 'NO');
+  actualizarUI_Suspension();
 }
 
+function actualizarUI_Suspension() {
+  const msg = document.getElementById('no-play-msg');
+  const btn = document.getElementById('no-play-btn');
+  const waBtn = document.getElementById('wa-suspend-btn');
+  
+  // A todos les mostramos el mensaje rojo si está suspendido
+  if(msg) msg.style.display = noPlayActive ? 'block' : 'none';
+  
+  // Botones de control (solo cambian su aspecto visual si el admin está activo)
+  if(btn) btn.textContent = noPlayActive ? '✅ Cancelar suspensión' : '⚠️ Marcar fecha suspendida';
+  if(waBtn) waBtn.style.display = (noPlayActive && adminUnlocked) ? 'inline-flex' : 'none';
+}
+
+function shareSuspensionWhatsApp() {
+// ... (este sigue quedando igual abajo)
 function shareSuspensionWhatsApp() {
   const nw=getNextWednesday();
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -1585,8 +1611,8 @@ function shareSuspensionWhatsApp() {
 }
 
 function shareEquiposWhatsApp(){
-  const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
-  const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
+  const bl=[...document.querySelectorAll('#team-blanco-list .player-name-text')].map(el=>el.textContent.trim());
+  const ng=[...document.querySelectorAll('#team-negro-list .player-name-text')].map(el=>el.textContent.trim());
   const nw=getNextWednesday();
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fechaNum=MAX_FECHA+1;
@@ -1706,8 +1732,9 @@ async function loadEquipos(){
       if(v[0] && v[0] !== '') blanco.push(v[0]);
       if(v[1] && v[1] !== '') negro.push(v[1]);
     }
-    if(blanco.length > 0) document.getElementById('team-blanco').innerHTML = blanco.map(p => `<li>${p}</li>`).join('');
-    if(negro.length > 0) document.getElementById('team-negro').innerHTML = negro.map(p => `<li>${p}</li>`).join('');
+    const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
+    if(blanco.length > 0) document.getElementById('team-blanco-list').innerHTML = blanco.map(makePlayer).join('');
+    if(negro.length > 0) document.getElementById('team-negro-list').innerHTML = negro.map(makePlayer).join('');
   }catch(e){}
 }
 
