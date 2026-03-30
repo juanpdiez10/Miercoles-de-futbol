@@ -224,13 +224,36 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .vote-cand.selected { background:var(--green); color:#000; font-weight:bold; border-color:var(--green); box-shadow:0 0 15px rgba(57,255,20,0.4); transform:scale(1.05);}
 .vote-cand.disabled { opacity:0.3; cursor:not-allowed; border-color:#333; }
 
-/* MVP PAGE */
-.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
+/* MVP PAGE - DESTACADO & DASHBOARD EN VIVO */
+.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07); transition:all 0.3s;}
+.mvp-featured.live-mode { border-color:var(--green); background:linear-gradient(135deg,var(--card),var(--bg2)); box-shadow:0 0 40px rgba(57,255,20,0.1); display:block; padding:1.5rem; }
 .mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover; object-position:center -10px;}
 .mvp-l{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;font-size:.7rem;text-transform:uppercase;margin-bottom:.35rem}
 .mvp-n{font-family:'Anton',sans-serif;font-size:1.8rem}
 .mvp-d{color:var(--text2);font-size:.83rem;margin-top:.2rem}
 .mvp-desc{color:var(--text2);margin-top:.6rem;font-size:.88rem;line-height:1.5}
+
+/* Estilos internos del Dashboard de Votación */
+.lv-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; border-bottom:1px solid rgba(57,255,20,0.15); padding-bottom:1rem; margin-bottom:1.5rem;}
+.lv-tag { display:inline-block; background:rgba(255,85,85,0.15); color:var(--red); padding:0.2rem 0.6rem; border-radius:4px; font-size:0.7rem; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:1px; animation:pulse 2s infinite; margin-bottom:0.4rem; }
+.lv-title { font-family:'Anton',sans-serif; font-size:1.8rem; color:var(--text); line-height:1; }
+.lv-btn { padding:0.8rem 1.2rem; font-size:1.1rem; text-align:center; box-shadow:0 0 20px rgba(57,255,20,0.3); border-radius:8px; line-height:1.2;}
+.lv-body { display:grid; grid-template-columns: 1fr 220px; gap:2rem; }
+@media(max-width:768px) { .lv-body { grid-template-columns:1fr; gap:1.5rem; } }
+.lv-chart h4, .lv-voters h4 { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; font-size:0.9rem; }
+.lv-bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; font-size:0.85rem; }
+.lv-bar-name { width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:right; font-weight:600; }
+.lv-bar-wrap { flex:1; background:rgba(255,255,255,0.05); height:14px; border-radius:6px; overflow:hidden; position:relative; }
+.lv-bar-fill { height:100%; background:var(--green); box-shadow:0 0 10px rgba(57,255,20,0.5); border-radius:6px; transition:width 0.5s; width:0%;}
+.lv-bar-row:nth-child(1) .lv-bar-fill { background:var(--gold); box-shadow:0 0 10px rgba(255,215,0,0.5); }
+.lv-bar-row:nth-child(2) .lv-bar-fill { background:var(--silver); box-shadow:0 0 10px rgba(192,192,192,0.5); }
+.lv-bar-count { width:20px; font-family:'Anton',sans-serif; color:var(--text); text-align:left; }
+.lv-voter-list { display:flex; flex-wrap:wrap; gap:0.5rem; }
+.lv-voter { font-size:0.75rem; padding:0.25rem 0.5rem; border-radius:4px; font-family:'Barlow',sans-serif; }
+.lv-voter.voted { background:rgba(57,255,20,0.05); color:var(--text2); text-decoration:line-through; opacity:0.5; border:1px solid rgba(57,255,20,0.1); }
+.lv-voter.pending { background:var(--bg2); color:var(--text); border:1px solid rgba(255,255,255,0.1); }
+.lv-empty { color:var(--text2); font-size:0.85rem; font-style:italic;}
+
 .mvp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;margin-top:1rem}
 .mvp-card{background:var(--card);border:1px solid rgba(255,215,0,.1);border-radius:10px;padding:1rem;transition:all .2s;cursor:pointer}
 .mvp-card:hover{border-color:rgba(255,215,0,.35);transform:translateY(-3px)}
@@ -631,12 +654,8 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="section">
     <h2 class="stitle">MVP de <span class="acc">la Fecha</span></h2>
     <div class="divider"></div>
+    
     <div class="mvp-featured" id="mvp-featured-cnt">
-      </div>
-      
-    <div style="text-align:center; margin: 2.5rem 0;">
-      <button class="btn btn-p" style="font-size:1rem; padding:1rem 2rem; box-shadow: 0 0 30px rgba(57,255,20,0.5);" onclick="openVoteModal()">🗳️ VOTAR MVP DEL ÚLTIMO PARTIDO</button>
-      <p style="color:var(--text2); font-size:0.8rem; margin-top:0.5rem;">Solo pueden votar los que jugaron.</p>
     </div>
 
     <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs · 2026</h3>
@@ -662,7 +681,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       </div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem">
-      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;color:var(--text2)">Aqui están, estos son: los 16 convocados de la Fecha</h3>
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;color:var(--text2)">Aquí están, estos son: los 16 convocados de la Fecha</h3>
     </div>
   
     <div class="mc" style="margin-top:1.5rem; pointer-events:none;">
@@ -805,6 +824,13 @@ let _inscripcionData = [];
 let _clima = "";
 let _allPlayersList = [];
 
+// --- MODO SIMULACRO VOTACION ---
+// Poné esto en TRUE para ver el tablero de votación en vivo ahora mismo. 
+// Después cambialo a FALSE para que quede automático los Jueves.
+let MODO_SIMULACRO_VOTACION = true; 
+let _votosMVP = []; // Acá se guardan los votos que lee de Google
+let _fechaMVPActual = 0;
+
 function adminLogin() {
   adminClicks++;
   if(adminClicks === 3) {
@@ -850,8 +876,7 @@ const MVP_DATA=[
 ];
 
 let _rawData=null, _allStandings=[], _golesPerFecha={};
-let _misVotos = []; // Para el sistema de votación
-let _fechaMVPActual = 0;
+let _misVotos = []; 
 
 function formatName(n) {
   if(!n) return '—';
@@ -872,6 +897,9 @@ async function loadApiData() {
     _inscripcionData = data.inscripcion || [];
     _clima = data.clima || "";
     
+    // Leemos los votos del servidor
+    _votosMVP = data.votos || [];
+    
     if(_clima !== "") {
       const climasEl = document.querySelectorAll('#next-clima-display, #insc-clima-display');
       climasEl.forEach(el => { el.style.display = 'inline-flex'; el.textContent = _clima; });
@@ -880,6 +908,7 @@ async function loadApiData() {
     
     renderForum();
     renderInscripcion();
+    renderMVPs(); // Forzamos a renderizar MVP por si llegaron votos nuevos
   } catch (e) {
     console.error("Error al cargar la base de datos externa.", e);
   }
@@ -891,7 +920,6 @@ function isListaAbierta() {
   const day = now.getDay(); 
   const hour = now.getHours();
 
-  // Horario normal oficial: Abre Martes (2) a las 13:00 hs, Cierra Miércoles (3) a las 20:00 hs
   if (day === 2 && hour >= 13) return true;
   if (day === 3 && hour < 20) return true;
   
@@ -918,7 +946,6 @@ function renderInscripcion() {
   divAbierta.style.display = 'block';
   divCerrada.style.display = 'none';
   
-  // Nombres disponibles para el combo gigante
   const anotados = _inscripcionData.map(s => s.jugador).filter(j => j !== '');
   const disponibles = _allPlayersList.filter(p => !anotados.includes(p));
   selectGlobal.innerHTML = `<option value="">Seleccioná tu nombre...</option>` + disponibles.map(p => `<option value="${p}">${p}</option>`).join('');
@@ -948,15 +975,12 @@ function renderInscripcion() {
       
       let btnBajar = '';
       if (adminUnlocked) {
-        // Vista de Admin
         btnBajar = `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>`;
       } else {
-        // Vista jugador (Abre WhatsApp)
-        const miNumero = "5491164666436"; // <--- PONÉ TU NÚMERO ACÁ
+        const miNumero = "5491164666436"; 
         const msj = encodeURIComponent(`Hola, dame de baja del partido de este miércoles por favor. Soy ${slot.jugador}.`);
         btnBajar = `<a href="https://wa.me/${miNumero}?text=${msj}" target="_blank" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); text-decoration:none;">❌ Darme de baja</a>`;
       }
-      
       contenido = `<span class="insc-name">${carita} ${slot.jugador}</span> ${btnBajar}`;
     }
     
@@ -966,12 +990,10 @@ function renderInscripcion() {
     </div>`;
   }).join('');
   
-  // Lógica de memoria para bloquear si ya se anotó y control de carga
   const miRegistro = localStorage.getItem('mdf_mi_jugador');
   const yaAnotado = _inscripcionData.some(s => s.jugador === miRegistro);
 
   if (_inscripcionData.length === 0) {
-     // Si la base de datos todavía no cargó
      selectGlobal.style.display = 'none';
      btnGlobal.style.display = 'none';
      if(tituloAnotador) tituloAnotador.style.display = 'none';
@@ -999,7 +1021,6 @@ function renderInscripcion() {
      msgLlenos.style.color = 'var(--red)';
   }
 
-  // Botón de WhatsApp
   if (ocupadosCont + _inscripcionData.filter(s=>s.estado.startsWith('Bloqueado')).length >= 16 || adminUnlocked) {
     btnShare.style.display = 'inline-block';
   } else {
@@ -1007,12 +1028,10 @@ function renderInscripcion() {
   }
 }
 
-// Nueva función de Anotado Automático (Anti-choques)
 async function anotarmeAuto() {
   const sel = document.getElementById('select-jugador-global');
   const btn = document.getElementById('btn-anotar-global');
   const nombre = sel.value;
-  
   if(!nombre) { alert("¡Elegí tu nombre en la lista primero!"); return; }
   
   btn.innerHTML = '⏳ Anotando...';
@@ -1023,8 +1042,6 @@ async function anotarmeAuto() {
   try {
     const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
     const data = await res.json();
-    
- // Leemos la respuesta inteligente de Google
     if (data.status === 'ok') {
        localStorage.setItem('mdf_mi_jugador', nombre);
        alert("¡Adentro! ⚽ Quedaste anotado en el lugar " + data.slot + ".");
@@ -1033,106 +1050,66 @@ async function anotarmeAuto() {
     } else if (data.status === 'ya_anotado') {
        alert("¡Ey, ya estás anotado en la lista! No ocupes dos lugares.");
     }
-  } catch(e) {
-     console.error(e);
-  }
+  } catch(e) { console.error(e); }
   
-  // Recargamos los datos visuales para todos
   await loadApiData(); 
   btn.innerHTML = '¡QUIERO JUGAR! ⚽';
   btn.disabled = false;
   sel.disabled = false;
 }
 
-// Actualizaciones de Administrador (para Bloquear/Bajar)
 async function adminUpdateSlot(slotNum, estado, jugador) {
   const payload = { action: 'admin_update_slot', slot: slotNum, estado: estado, jugador: jugador };
   try {
     await fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-    setTimeout(loadApiData, 1000); // Recarga después de 1 segundo para mostrar el cambio
-  } catch(e) {
-    alert('Error de red.');
-  }
+    setTimeout(loadApiData, 1000); 
+  } catch(e) { alert('Error de red.'); }
 }
-
 function adminBloquear(slotNum) {
-  // Le sumamos el emoji de la camiseta a la sugerencia
   const motivo = prompt("Motivo del bloqueo (Ej: 🧤 Arqueros / 👕 Camisetas):");
-  if(motivo) {
-    adminUpdateSlot(slotNum, 'Bloqueado', motivo);
-  }
+  if(motivo) adminUpdateSlot(slotNum, 'Bloqueado', motivo);
 }
-
 function adminLiberar(slotNum) {
-  if(confirm('¿Seguro que querés liberar este lugar?')) {
-    adminUpdateSlot(slotNum, 'Libre', '');
-  }
+  if(confirm('¿Seguro que querés liberar este lugar?')) adminUpdateSlot(slotNum, 'Libre', '');
 }
-  
-// Función para escribir el emoji rápido
 function addEmojiToClima(emoji) {
   const input = document.getElementById('admin-clima-input');
-  input.value += emoji;
-  input.focus(); // Deja el cursor titilando para que sigas escribiendo
+  input.value += emoji; input.focus(); 
 }
-
-// Reemplazá también tu adminUpdateClima por esta versión que te tira más info si hay error
 async function adminUpdateClima() {
   const c = document.getElementById('admin-clima-input').value;
   const payload = { action: 'update_clima', clima: c };
   try {
     const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-    if(!res.ok) throw new Error('Error de red al conectar con Google');
-    _clima = c;
-    alert("Clima guardado 🌤️.");
-    loadApiData(); 
-  } catch(e) {
-    console.error(e);
-    alert('Error al guardar clima. ¡Asegurate de haber implementado la "Nueva versión" en Apps Script!');
-  }
+    if(!res.ok) throw new Error('Error');
+    _clima = c; alert("Clima guardado 🌤️."); loadApiData(); 
+  } catch(e) { alert('Error al guardar clima.'); }
 }
-
 async function adminResetLista() {
-  if(!confirm("⚠️ ESTÁS POR BORRAR A TODOS LOS ANOTADOS.\n¿Seguro que querés vaciar la lista para arrancar una fecha nueva?")) return;
+  if(!confirm("⚠️ ESTÁS POR BORRAR A TODOS LOS ANOTADOS.\n¿Seguro?")) return;
   try {
     const payload = { action: 'reset_inscripcion' };
     await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-    alert("Lista reseteada impecable para el próximo martes.");
-    loadApiData();
-  } catch(e) {
-    alert('Error al limpiar lista.');
-  }
+    alert("Lista reseteada impecable para el próximo martes."); loadApiData();
+  } catch(e) { alert('Error al limpiar lista.'); }
 }
 
 function shareInscripcionWA() {
   const nw = getNextWednesday();
   const fechaNum = MAX_FECHA+1;
   const dateStr = `${nw.getDate().toString().padStart(2, '0')}/${(nw.getMonth()+1).toString().padStart(2, '0')}`;
-  
-  let msg = `LISTA MIERCOLES 20HS – CANCHA MARIN ⚽\n\n`;
-  msg += `Valor: $11.000 C/U\n\n`;
-  msg += `FECHA ${fechaNum} ‼️\n\n`;
-  msg += `Clima Miercoles ${dateStr}: ${_clima}\n\n`;
-  msg += `Lista:\n`;
-  
+  let msg = `LISTA MIERCOLES 20HS – CANCHA MARIN ⚽\n\nValor: $11.000 C/U\n\nFECHA ${fechaNum} ‼️\n\nClima Miercoles ${dateStr}: ${_clima}\n\nLista:\n`;
   for(let i=1; i<=16; i++) {
     let slotInfo = _inscripcionData.find(s => s.slot === i);
     let textoFila = "";
-    if(slotInfo) {
-       if(slotInfo.estado.startsWith("Bloqueado")) {
-          textoFila = slotInfo.jugador; 
-       } else if(slotInfo.estado === "Ocupado") {
-          textoFila = slotInfo.jugador;
-       }
-    }
+    if(slotInfo && (slotInfo.estado.startsWith("Bloqueado") || slotInfo.estado === "Ocupado")) { textoFila = slotInfo.jugador; }
     msg += `${i}. ${textoFila}\n`;
   }
-  
-  msg += `\n👇 *Ver lista jugadores / Darme de baja:*\njuanpdiez10.github.io/Miercoles-de-futbol/#inscripcion 👈`;
+  msg += `\n👇 *Ver lista / Baja:*\njuanpdiez10.github.io/Miercoles-de-futbol/#inscripcion 👈`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
-  // ═══════════════════════════════════════
+// ═══════════════════════════════════════
 // COMPUTE Y ESTADÍSTICAS
 // ═══════════════════════════════════════
 function computeStandings(data){
@@ -1155,25 +1132,21 @@ function computeStandings(data){
   }).sort((a,b)=>b.pts-a.pts||b.pg-a.pg||b.goles-a.goles);
 }
 function computeScorers(data){
-  const g={};
-  const pj={};
+  const g={}; const pj={};
   data.forEach(r=>{
     if(!g[r.jugador])g[r.jugador]=0;
     g[r.jugador]+=r.goles;
     if(r.resultado==='G'||r.resultado==='E'||r.resultado==='P'){
-      if(!pj[r.jugador])pj[r.jugador]=0;
-      pj[r.jugador]++;
+      if(!pj[r.jugador])pj[r.jugador]=0; pj[r.jugador]++;
     }
   });
-  return Object.entries(g).filter(([,v])=>v>0).map(([n,v])=>({nombre:n,goles:v,pj:pj[n]||1}))
-    .sort((a,b)=>b.goles-a.goles);
+  return Object.entries(g).filter(([,v])=>v>0).map(([n,v])=>({nombre:n,goles:v,pj:pj[n]||1})).sort((a,b)=>b.goles-a.goles);
 }
 function computeMatches(data){
   return[...new Set(data.map(r=>r.fecha))].sort((a,b)=>a-b).map(f=>{
     const rows=data.filter(r=>r.fecha===f);
     const bl=rows.filter(r=>r.equipo==='BLANCO'),ng=rows.filter(r=>r.equipo==='NEGRO');
-    return{fecha:f,date:FD[f]||'',gfB:bl[0]?.gf||0,gfN:ng[0]?.gf||0,blanco:bl,negro:ng,
-      mvp:rows.find(r=>r.mvp===1)?.jugador||null};
+    return{fecha:f,date:FD[f]||'',gfB:bl[0]?.gf||0,gfN:ng[0]?.gf||0,blanco:bl,negro:ng,mvp:rows.find(r=>r.mvp===1)?.jugador||null};
   });
 }
 function buildGolesPerFecha(data){
@@ -1185,9 +1158,7 @@ function buildGolesPerFecha(data){
 }
 
 function rachaHTML(hist,n=7){
-  return hist.slice(-n).map(r=>
-    `<span class="rc ${r==='G'?'rc-g':r==='P'?'rc-p':'rc-e'}" title="${r==='G'?'Victoria':r==='P'?'Derrota':'Empate'}"></span>`
-  ).join('');
+  return hist.slice(-n).map(r=>`<span class="rc ${r==='G'?'rc-g':r==='P'?'rc-p':'rc-e'}"></span>`).join('');
 }
 
 function renderStandings(standings){
@@ -1229,181 +1200,206 @@ function filterFecha(maxF,btn){
   const st=computeStandings(data);
   _allStandings=st;
   renderStandings(st);
-  const lbl=document.getElementById('updated-fecha-lbl');
-  if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
+  document.getElementById('updated-fecha-lbl').textContent=`F${maxF} · ${FD[maxF]||''}`;
 }
 
 function renderMatches(ms){
   const c=document.getElementById('par-p2026');if(!c)return;
   c.innerHTML=[...ms].reverse().map(m=>{
-    const bW=m.gfB>m.gfN,nW=m.gfN>m.gfB, draw=m.gfB===m.gfN;
-    const diff=Math.abs(m.gfB-m.gfN);
-    const bonusTag=diff>=5?`<div class="mc-bonus">🔥 +1 GOLEADA</div>`:'';
+    const bW=m.gfB>m.gfN,nW=m.gfN>m.gfB;
+    const bonusTag=Math.abs(m.gfB-m.gfN)>=5?`<div class="mc-bonus">🔥 +1 GOLEADA</div>`:'';
     
-    const makeList=(players,mvp)=>players
-      .filter(r=>r.resultado==='G'||r.resultado==='P'||r.resultado==='E')
-      .map(r=>{
+    const makeList=(players,mvp)=>players.filter(r=>r.resultado==='G'||r.resultado==='P'||r.resultado==='E').map(r=>{
         const isMvp=r.jugador===mvp;
         const gol=r.goles>0?`<span class="pl-gol">⚽ ${r.goles}</span>`:'';
-        return`<div class="pl-item ${isMvp?'pl-mvp-item':''}">
-          <div class="pl-left">
-            <div class="pl-dot"></div>
-            <span class="pl-name">${r.jugador}</span>
-          </div>
-          ${gol}
-        </div>`;
+        return`<div class="pl-item ${isMvp?'pl-mvp-item':''}"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name">${r.jugador}</span></div>${gol}</div>`;
       }).join('');
       
-    return`
-      <div class="fh">FECHA ${m.fecha} <span class="fh-date">${m.date?'· '+m.date:''}</span></div>
+    return`<div class="fh">FECHA ${m.fecha} <span class="fh-date">${m.date?'· '+m.date:''}</span></div>
       <div class="mc">
         <div class="mc-head">
-          <div class="mc-team">
-            <div class="mc-team-name"><span class="dot-w"></span> BLANCO</div>
-            <div class="mc-result-badge ${bW?'rb-win':nW?'rb-loss':'rb-draw'}">${bW?'VICTORIA':nW?'DERROTA':'EMPATE'}</div>
-          </div>
-          <div class="mc-score-center">
-            <div class="mc-score">
-              <span class="${bW?'mc-score-b':'mc-score-n'}">${m.gfB}</span>
-              <span class="mc-score-sep">-</span>
-              <span class="${nW?'mc-score-b':'mc-score-n'}">${m.gfN}</span>
-            </div>
-            ${bonusTag}
-          </div>
-          <div class="mc-team">
-            <div class="mc-team-name"><span class="dot-n"></span> NEGRO</div>
-            <div class="mc-result-badge ${nW?'rb-win':bW?'rb-loss':'rb-draw'}">${nW?'VICTORIA':bW?'DERROTA':'EMPATE'}</div>
-          </div>
+          <div class="mc-team"><div class="mc-team-name"><span class="dot-w"></span> BLANCO</div><div class="mc-result-badge ${bW?'rb-win':nW?'rb-loss':'rb-draw'}">${bW?'VICTORIA':nW?'DERROTA':'EMPATE'}</div></div>
+          <div class="mc-score-center"><div class="mc-score"><span class="${bW?'mc-score-b':'mc-score-n'}">${m.gfB}</span><span class="mc-score-sep">-</span><span class="${nW?'mc-score-b':'mc-score-n'}">${m.gfN}</span></div>${bonusTag}</div>
+          <div class="mc-team"><div class="mc-team-name"><span class="dot-n"></span> NEGRO</div><div class="mc-result-badge ${nW?'rb-win':bW?'rb-loss':'rb-draw'}">${nW?'VICTORIA':bW?'DERROTA':'EMPATE'}</div></div>
         </div>
-        <div class="mc-body">
-          <div class="pl-list">${makeList(m.blanco,m.mvp)}</div>
-          <div class="pl-list">${makeList(m.negro,m.mvp)}</div>
-        </div>
+        <div class="mc-body"><div class="pl-list">${makeList(m.blanco,m.mvp)}</div><div class="pl-list">${makeList(m.negro,m.mvp)}</div></div>
         ${m.mvp?`<div class="mc-mvp">★ MVP DE LA FECHA <span>${m.mvp}</span></div>`:''}
       </div>`;
   }).join('');
 }
 
+// Ventanas modales
 function openScoreModal(nombre,isValla){
-  const modal=document.getElementById('score-modal');
-  document.getElementById('sm-name').textContent=nombre;
+  const modal=document.getElementById('score-modal'); document.getElementById('sm-name').textContent=nombre;
   let rows='',total=0;
   if(isValla){
-    const gcData=GC_ARQUEROS[nombre]||{};
-    total=Object.values(gcData).reduce((a,b)=>a+b,0);
-    const pj=Object.keys(gcData).length||1;
-    const prom=(total/pj).toFixed(2);
+    const gcData=GC_ARQUEROS[nombre]||{}; total=Object.values(gcData).reduce((a,b)=>a+b,0);
+    const prom=(total/(Object.keys(gcData).length||1)).toFixed(2);
     document.getElementById('sm-sub').textContent='Goles recibidos por fecha';
-    rows=Object.entries(gcData).sort((a,b)=>Number(a[0])-Number(b[0]))
-      .map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val" style="color:#ff9977">${g} gol${g!==1?'es':''}</span></div>`).join('');
-    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total recibidos</span><span class="sm-val" style="color:#ff9977">${total}</span></div>`;
-    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val" style="color:#ff9977">${prom}</span></div>`;
+    rows=Object.entries(gcData).sort((a,b)=>Number(a[0])-Number(b[0])).map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val" style="color:#ff9977">${g} gol${g!==1?'es':''}</span></div>`).join('');
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total recibidos</span><span class="sm-val" style="color:#ff9977">${total}</span></div><div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val" style="color:#ff9977">${prom}</span></div>`;
   }else{
-    const fd=_golesPerFecha[nombre]||{};
-    total=Object.values(fd).reduce((a,b)=>a+b,0);
-    const allPj=(_allStandings.find(s=>s.nombre===nombre)||{pj:1}).pj||1;
-    const prom=(total/allPj).toFixed(2);
+    const fd=_golesPerFecha[nombre]||{}; total=Object.values(fd).reduce((a,b)=>a+b,0);
+    const prom=(total/((_allStandings.find(s=>s.nombre===nombre)||{pj:1}).pj||1)).toFixed(2);
     document.getElementById('sm-sub').textContent='Goles anotados por fecha';
-    rows=Object.entries(fd).filter(([,g])=>g>0).sort((a,b)=>Number(a[0])-Number(b[0]))
-      .map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val">${g} gol${g>1?'es':''}</span></div>`).join('');
-    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total goles</span><span class="sm-val">${total}</span></div>`;
-    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val">${prom}</span></div>`;
+    rows=Object.entries(fd).filter(([,g])=>g>0).sort((a,b)=>Number(a[0])-Number(b[0])).map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f} · ${FD[f]||''}</span><span class="sm-val">${g} gol${g>1?'es':''}</span></div>`).join('');
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total goles</span><span class="sm-val">${total}</span></div><div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val">${prom}</span></div>`;
   }
-  document.getElementById('sm-rows').innerHTML=rows;
-  modal.classList.add('open');
+  document.getElementById('sm-rows').innerHTML=rows; modal.classList.add('open');
+}
+
+function openMvpModal(imgSrc,name,date,stat){
+  document.getElementById('modal-img-wrap').innerHTML = `<img class="mvp-modal-img" src="${imgSrc}" alt="${name}" onerror="this.outerHTML='<div class=\\'mvp-modal-img-ph\\'>😎</div>'">`;
+  document.getElementById('modal-name').textContent=name; document.getElementById('modal-date').textContent=date; document.getElementById('modal-stat').textContent=stat;
+  document.getElementById('mvp-modal').classList.add('open');
 }
 
 function renderScorers(sc){
-  const c=document.getElementById('scorers-cnt');
-  const cp=document.getElementById('scorers-prom-cnt');
-  if(!c||!cp)return;
-  const byTotal=sc;
-  const byProm=[...sc].sort((a,b)=>(b.goles/b.pj)-(a.goles/a.pj));
-  const makeItem=(s,i)=>{
-    const pj=(_allStandings.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1;
-    const prom=(s.goles/pj).toFixed(2);
-    return`<div class="rank-item" onclick="openScoreModal('${s.nombre.replace(/'/g,"\\'")}',false)">
-      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
-      <div class="ri-info"><div class="ri-name">${s.nombre}</div><div class="ri-sub">Toca para ver desglose</div></div>
-      <div class="ri-stats"><div class="ri-count">${s.goles}</div><div class="ri-unit">goles</div><div class="ri-prom">${prom}/pj</div></div>
-    </div>`;
+  const byTotal=sc, byProm=[...sc].sort((a,b)=>(b.goles/b.pj)-(a.goles/a.pj));
+  const make=(s,i,isP)=>{
+    const pj=(_allStandings.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1; const prom=(s.goles/pj).toFixed(2);
+    return`<div class="rank-item" onclick="openScoreModal('${s.nombre.replace(/'/g,"\\'")}',false)"><div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${s.nombre}</div><div class="ri-sub">${isP?pj+' partidos':'Toca para ver desglose'}</div></div>
+      <div class="ri-stats"><div class="ri-count">${isP?prom:s.goles}</div><div class="ri-unit">${isP?'gol/pj':'goles'}</div><div class="ri-prom">${isP?s.goles+' totales':prom+'/pj'}</div></div></div>`;
   };
-  const makeItemProm=(s,i)=>{
-    const pj=(_allStandings.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1;
-    const prom=(s.goles/pj).toFixed(2);
-    return`<div class="rank-item" onclick="openScoreModal('${s.nombre.replace(/'/g,"\\'")}',false)">
-      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
-      <div class="ri-info"><div class="ri-name">${s.nombre}</div><div class="ri-sub">${pj} partidos</div></div>
-      <div class="ri-stats"><div class="ri-count">${prom}</div><div class="ri-unit">gol/pj</div><div class="ri-prom">${s.goles} totales</div></div>
-    </div>`;
-  };
-  c.innerHTML=byTotal.map(makeItem).join('');
-  cp.innerHTML=byProm.map(makeItemProm).join('');
+  document.getElementById('scorers-cnt').innerHTML=byTotal.map((s,i)=>make(s,i,false)).join('');
+  document.getElementById('scorers-prom-cnt').innerHTML=byProm.map((s,i)=>make(s,i,true)).join('');
 }
 
 function renderVallas(){
-  const c=document.getElementById('valla-cnt');
-  const cp=document.getElementById('valla-prom-cnt');
-  if(!c||!cp)return;
-  const vallas=Object.entries(GC_ARQUEROS).map(([n,fd])=>{
-    const total=Object.values(fd).reduce((a,b)=>a+b,0);
-    const pj=Object.keys(fd).length;
-    return{nombre:n,gc:total,pj};
-  }).sort((a,b)=>a.gc-b.gc);
-  const vallasProm=[...vallas].sort((a,b)=>(a.gc/a.pj)-(b.gc/b.pj));
-  const makeValla=(a,i)=>{
+  const v=Object.entries(GC_ARQUEROS).map(([n,fd])=>{return{nombre:n,gc:Object.values(fd).reduce((a,b)=>a+b,0),pj:Object.keys(fd).length};}).sort((a,b)=>a.gc-b.gc);
+  const vp=[...v].sort((a,b)=>(a.gc/a.pj)-(b.gc/b.pj));
+  const make=(a,i,isP)=>{
     const prom=(a.gc/a.pj).toFixed(2);
-    return`<div class="rank-item" onclick="openScoreModal('${a.nombre}',true)">
-      <div class="ri-pos ${i===0?'r1':i===1?'r2':''}">${i+1}</div>
-      <div class="ri-info"><div class="ri-name">${a.nombre}</div><div class="ri-sub">Toca para ver desglose</div></div>
-      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${a.gc}</div><div class="ri-unit">recibidos</div><div class="ri-prom">${prom}/pj</div></div>
-    </div>`;
+    return`<div class="rank-item" onclick="openScoreModal('${a.nombre}',true)"><div class="ri-pos ${i===0?'r1':i===1?'r2':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${a.nombre}</div><div class="ri-sub">${isP?a.pj+' partidos':'Toca para ver desglose'}</div></div>
+      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${isP?prom:a.gc}</div><div class="ri-unit">${isP?'prom/pj':'recibidos'}</div><div class="ri-prom">${isP?a.gc+' totales':prom+'/pj'}</div></div></div>`;
   };
-  const makeVallaProm=(a,i)=>{
-    const prom=(a.gc/a.pj).toFixed(2);
-    return`<div class="rank-item" onclick="openScoreModal('${a.nombre}',true)">
-      <div class="ri-pos ${i===0?'r1':i===1?'r2':''}">${i+1}</div>
-      <div class="ri-info"><div class="ri-name">${a.nombre}</div><div class="ri-sub">${a.pj} partidos</div></div>
-      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${prom}</div><div class="ri-unit">prom/pj</div><div class="ri-prom">${a.gc} totales</div></div>
-    </div>`;
-  };
-  c.innerHTML=vallas.map(makeValla).join('');
-  cp.innerHTML=vallasProm.map(makeVallaProm).join('');
+  document.getElementById('valla-cnt').innerHTML=v.map((a,i)=>make(a,i,false)).join('');
+  document.getElementById('valla-prom-cnt').innerHTML=vp.map((a,i)=>make(a,i,true)).join('');
 }
 
 function getUrlFoto(nombre) {
   if(!nombre) return '';
-  let formateado = nombre.toLowerCase()
-                         .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-                         .replace(/,\s*/g, '-') 
-                         .replace(/\s+/g, '-'); 
-  return `mvp/${formateado}.png`;
+  return `mvp/${nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/,\s*/g,'-').replace(/\s+/g,'-')}.png`;
+}
+
+function isVotingActive() {
+  // === MODO SIMULACRO PARA PROBAR AHORA ===
+  if (MODO_SIMULACRO_VOTACION) return true;
+  
+  const now = new Date();
+  const day = now.getDay();
+  const hour = now.getHours();
+  // Está activo el Miércoles (3) desde las 21hs, y todo el Jueves (4) hasta las 21hs.
+  if (day === 3 && hour >= 21) return true;
+  if (day === 4 && hour < 21) return true;
+  
+  return false;
 }
 
 function renderMVPs(){
   const c=document.getElementById('mvp-cnt');
   const feat=document.getElementById('mvp-featured-cnt');
   if(!c || !feat) return;
-  
-  const lastMVP = MVP_DATA[0];
-  const lastUrl = getUrlFoto(lastMVP.nombre);
-  
-  const lastThumb = `<img class="mvp-photo-placeholder" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-placeholder\\'>⭐</div>'">`;
-    
-  feat.innerHTML = `
-      ${lastThumb}
-      <div>
-        <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
-        <div class="mvp-n">${lastMVP.nombre}</div>
-        <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
-        <div class="mvp-desc">${lastMVP.stat}</div>
-      </div>
-  `;
 
+  const matches = computeMatches(_rawData || D);
+  const lastMatch = matches[matches.length - 1];
+  _fechaMVPActual = lastMatch.fecha;
+
+  // --- LÓGICA DEL DASHBOARD DE VOTACIÓN ---
+  if (isVotingActive()) {
+    
+    const bW = lastMatch.gfB > lastMatch.gfN;
+    const nW = lastMatch.gfN > lastMatch.gfB;
+    let ganadores = [];
+    if (bW) ganadores = lastMatch.blanco.filter(r=>r.resultado==='G').map(r=>r.jugador);
+    else if (nW) ganadores = lastMatch.negro.filter(r=>r.resultado==='G').map(r=>r.jugador);
+    else ganadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado==='E').map(r=>r.jugador);
+    ganadores.sort();
+
+    const todosLosJugadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
+    
+    // Contar los votos que ya llegaron
+    const votosFecha = _votosMVP.filter(v => v.fecha == lastMatch.fecha);
+    const yaVotaron = votosFecha.map(v => v.votante);
+    const conteo = {};
+    votosFecha.forEach(v => {
+       conteo[v.voto1] = (conteo[v.voto1] || 0) + 1;
+       conteo[v.voto2] = (conteo[v.voto2] || 0) + 1;
+    });
+    
+    const ranking = Object.entries(conteo).map(([n, c]) => ({nombre: n, votos: c})).sort((a,b)=>b.votos-a.votos);
+    const maxVotos = ranking.length > 0 ? ranking[0].votos : 1; 
+
+    // Renderizar las barras (top 3)
+    let barrasHTML = '';
+    if (ranking.length === 0) {
+        barrasHTML = `<div class="lv-empty">Aún no hay votos registrados. ¡Sé el primero!</div>`;
+    } else {
+        const top3 = ranking.slice(0, 3);
+        barrasHTML = top3.map(r => {
+            const w = (r.votos / maxVotos) * 100;
+            return `<div class="lv-bar-row">
+                      <div class="lv-bar-name">${formatName(r.nombre)}</div>
+                      <div class="lv-bar-wrap"><div class="lv-bar-fill" style="width:${w}%"></div></div>
+                      <div class="lv-bar-count">${r.votos}</div>
+                    </div>`;
+        }).join('');
+    }
+
+    // Renderizar Padrón (Tachados si ya votaron)
+    const padronHTML = todosLosJugadores.map(j => {
+       const voto = yaVotaron.includes(j);
+       return `<span class="lv-voter ${voto ? 'voted' : 'pending'}">${formatName(j)}</span>`;
+    }).join('');
+
+    feat.className = "mvp-featured live-mode";
+    feat.innerHTML = `
+      <div style="width:100%">
+        <div class="lv-header">
+           <div>
+             <div class="lv-tag">🔴 VOTACIÓN EN VIVO</div>
+             <div class="lv-title">Elegimos al MVP de la Fecha ${lastMatch.fecha}</div>
+           </div>
+           <button class="btn btn-p lv-btn" onclick="openVoteModal()">🗳️ VOTAR<br><span style="font-size:0.65rem;font-weight:normal;letter-spacing:0.5px;color:#000;">SOLO PARA JUGADORES</span></button>
+        </div>
+        <div class="lv-body">
+           <div class="lv-chart">
+              <h4>📊 Resultados Parciales</h4>
+              ${barrasHTML}
+           </div>
+           <div class="lv-voters">
+              <h4>👥 Padrón Electoral</h4>
+              <div class="lv-voter-list">
+                 ${padronHTML}
+              </div>
+           </div>
+        </div>
+      </div>
+    `;
+
+  } else {
+    // --- LÓGICA DEL MVP TRADICIONAL (Cuadro amarillo) ---
+    feat.className = "mvp-featured";
+    const lastMVP = MVP_DATA[0];
+    const lastUrl = getUrlFoto(lastMVP.nombre);
+    
+    feat.innerHTML = `
+        <img class="mvp-photo-placeholder" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-placeholder\\'>⭐</div>'">
+        <div>
+          <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
+          <div class="mvp-n">${lastMVP.nombre}</div>
+          <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
+          <div class="mvp-desc">${lastMVP.stat}</div>
+        </div>
+    `;
+  }
+
+  // --- HISTORIAL DE MVPs ---
   c.innerHTML=MVP_DATA.map(m=>{
     const url = getUrlFoto(m.nombre);
     const thumb = `<img class="mvp-thumb" src="${url}" alt="${m.nombre}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
-    
     return`<div class="mvp-card" onclick="openMvpModal('${url}', '${m.nombre.replace(/'/g,"\\'")}', 'Fecha ${m.fecha} · ${m.date}', '${m.stat.replace(/'/g,"\\'")}')">
       <div class="mvp-card-top">${thumb}<div>
         <div class="mvp-card-date">Fecha ${m.fecha} · ${m.date}</div>
@@ -1414,29 +1410,21 @@ function renderMVPs(){
   }).join('');
 }
 
-function openMvpModal(imgSrc,name,date,stat){
-  document.getElementById('modal-img-wrap').innerHTML = `<img class="mvp-modal-img" src="${imgSrc}" alt="${name}" onerror="this.outerHTML='<div class=\\'mvp-modal-img-ph\\'>😎</div>'">`;
-  document.getElementById('modal-name').textContent=name;
-  document.getElementById('modal-date').textContent=date;
-  document.getElementById('modal-stat').textContent=stat;
-  document.getElementById('mvp-modal').classList.add('open');
-}
 
 // ==========================================
-// NUEVO: LÓGICA DE VOTACIÓN MVP
+// NUEVO: LÓGICA DE VOTACIÓN MVP (MODAL Y ENVÍO)
 // ==========================================
 function openVoteModal() {
   const matches = computeMatches(_rawData || D);
   const lastMatch = matches[matches.length - 1];
-  _fechaMVPActual = lastMatch.fecha;
-
+  
   const bW = lastMatch.gfB > lastMatch.gfN;
   const nW = lastMatch.gfN > lastMatch.gfB;
-  
   let ganadores = [];
   if (bW) ganadores = lastMatch.blanco.filter(r=>r.resultado==='G').map(r=>r.jugador);
   else if (nW) ganadores = lastMatch.negro.filter(r=>r.resultado==='G').map(r=>r.jugador);
   else ganadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado==='E').map(r=>r.jugador);
+  ganadores.sort();
 
   const todosLosJugadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado!=='Ausente').map(r=>r.jugador).sort();
 
@@ -1467,7 +1455,6 @@ function toggleVote(jugador) {
     _misVotos.push(jugador);
   }
   
-  // Re-dibujar botones
   const matches = computeMatches(_rawData || D);
   const lastMatch = matches[matches.length - 1];
   const bW = lastMatch.gfB > lastMatch.gfN;
@@ -1476,6 +1463,7 @@ function toggleVote(jugador) {
   if (bW) ganadores = lastMatch.blanco.filter(r=>r.resultado==='G').map(r=>r.jugador);
   else if (nW) ganadores = lastMatch.negro.filter(r=>r.resultado==='G').map(r=>r.jugador);
   else ganadores = [...lastMatch.blanco, ...lastMatch.negro].filter(r=>r.resultado==='E').map(r=>r.jugador);
+  ganadores.sort();
   
   renderVoteCandidates(ganadores);
   
@@ -1519,6 +1507,7 @@ async function submitMVPVote() {
     if (data.status === 'ok') {
        alert("¡Voto registrado con éxito! Gracias por participar.");
        document.getElementById('vote-modal').classList.remove('open');
+       await loadApiData(); // Recargamos para que se actualice el gráfico en vivo
     } else if (data.status === 'ya_voto') {
        alert("Opa, parece que ya votaste para esta fecha. ¡Un solo voto por persona!");
     }
@@ -1530,7 +1519,6 @@ async function submitMVPVote() {
   btn.disabled = false;
 }
 // ==========================================
-
 
 function renderEstadisticas(data){
   const st=_allStandings.length?_allStandings:computeStandings(data);
@@ -1637,7 +1625,6 @@ function renderEstadisticas(data){
   data.forEach(r => {
       if(r.equipo === 'BLANCO') totalGolesBlanco += (r.gf || 0); 
       if(r.equipo === 'NEGRO') totalGolesNegro += (r.gf || 0);
-      
       if(r.resultado === 'G') {
          if(r.equipo === 'BLANCO') winsBlanco[r.jugador] = (winsBlanco[r.jugador]||0)+1;
          if(r.equipo === 'NEGRO') winsNegro[r.jugador] = (winsNegro[r.jugador]||0)+1;
@@ -1883,8 +1870,8 @@ function renderAll(data){
   renderMatches(computeMatches(data));
   renderScorers(computeScorers(data));
   renderVallas();
-  renderMVPs();
   renderEstadisticas(data);
+  renderMVPs();
   
   const fechas=[...new Set(data.map(r=>r.fecha))].sort((a,b)=>a-b);
   const maxF=fechas[fechas.length-1];
@@ -1949,7 +1936,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadApiData(); 
   setupNextDate();
   
-  // Memoria del cartel rojo de suspensión
   actualizarUI_Suspension();
   
   const hash = window.location.hash.substring(1);
