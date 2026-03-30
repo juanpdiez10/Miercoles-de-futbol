@@ -862,14 +862,17 @@ function isListaAbierta() {
   const hour = now.getHours();
   const minutes = now.getMinutes();
 
-  // --- MODO PRUEBA: Abre Lunes (1) a las 00:22 hs en punto ---
-  if (day === 1 && hour === 0 && minutes >= 22) return true;
+  // Cartelazo chismoso para ver qué lee el sistema (borrar después de la prueba)
+  alert("El sistema lee -> Día: " + day + " | Hora: " + hour + ":" + minutes);
 
-  // Horario normal oficial (Martes 13hs a Miércoles 20hs)
+  // --- MODO PRUEBA: Abre Lunes (1) a las 00:30 hs en punto ---
+  if (day === 1 && hour === 0 && minutes >= 30) return true;
+
+  // Horario normal oficial
   if (day === 2 && hour >= 13) return true;
   if (day === 3 && hour < 20) return true;
   
-  return false; // Si no se cumple nada de lo de arriba, se mantiene CERRADA
+  return false; 
 }
 
 function renderInscripcion() {
