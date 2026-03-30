@@ -243,11 +243,9 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .lv-bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; font-size:0.85rem; }
 .lv-bar-name { width:135px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left; font-weight:600; }
 .lv-bar-wrap { flex:1; background:rgba(255,255,255,0.05); height:14px; border-radius:6px; overflow:hidden; position:relative; }
-/* Por defecto, las barras de los demás serán gris claro */
-.lv-bar-fill { height:100%; background:#aaa; box-shadow:0 0 10px rgba(170,170,170,0.3); border-radius:6px; transition:width 0.5s; width:0%; }
-/* Intercalar un gris más oscuro para los pares para que se distingan */
-.lv-bar-row:nth-child(even) .lv-bar-fill { background:#777; box-shadow:0 0 10px rgba(119,119,119,0.3); }
-/* El 1er puesto (puntero) será VERDE NEÓN */
+/* Todas las barras en gris clarito */
+.lv-bar-fill { height:100%; background:var(--silver); box-shadow:0 0 10px rgba(192,192,192,0.3); border-radius:6px; transition:width 0.5s; width:0%; }
+/* Solo el 1er puesto (puntero) en VERDE NEÓN */
 .lv-bar-row:nth-child(1) .lv-bar-fill { background:var(--green); box-shadow:0 0 10px rgba(57,255,20,0.5); }
 .lv-bar-row:nth-child(1) .lv-bar-name { color:var(--green); }
 .lv-bar-count { width:20px; font-family:'Anton',sans-serif; color:var(--text); text-align:left; }
