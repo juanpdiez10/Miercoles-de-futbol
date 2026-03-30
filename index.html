@@ -241,13 +241,12 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .lv-body { display:flex; flex-direction:column; gap:1.5rem; }
 .lv-chart h4, .lv-voters h4 { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; font-size:0.9rem; }
 .lv-bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; font-size:0.85rem; }
-.lv-bar-name { width:135px; text-align:left; font-weight:600; line-height:1.1; flex-shrink:0; }
+.lv-bar-name { width:135px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left; font-weight:600; }
 .lv-bar-wrap { flex:1; background:rgba(255,255,255,0.05); height:14px; border-radius:6px; overflow:hidden; position:relative; }
 .lv-bar-fill { height:100%; background:var(--green); box-shadow:0 0 10px rgba(57,255,20,0.5); border-radius:6px; transition:width 0.5s; width:0%;}
-.lv-bar-row:nth-child(1) .lv-bar-name { color:var(--gold); }
-.lv-bar-row:nth-child(1) .lv-bar-fill { background:var(--gold); box-shadow:0 0 10px rgba(255,215,0,0.5); }
-.lv-bar-row:nth-child(2) .lv-bar-fill { background:var(--silver); box-shadow:0 0 10px rgba(192,192,192,0.5); }
 .lv-bar-count { width:20px; font-family:'Anton',sans-serif; color:var(--text); text-align:left; }
+.lv-bar-row.gold-bar .lv-bar-name { color:var(--gold); }
+.lv-bar-row.gold-bar .lv-bar-fill { background:var(--gold); box-shadow:0 0 10px rgba(255,215,0,0.5); }
 .lv-voter-list { display:flex; flex-wrap:wrap; gap:0.5rem; }
 .lv-voter { font-size:0.75rem; padding:0.25rem 0.5rem; border-radius:4px; font-family:'Barlow',sans-serif; }
 .lv-voter.voted { background:rgba(57,255,20,0.05); color:var(--text2); text-decoration:line-through; opacity:0.5; border:1px solid rgba(57,255,20,0.1); }
@@ -1341,10 +1340,11 @@ function renderMVPs(){
     if (votosFecha.length === 0) {
         barrasHTML = `<div class="lv-empty">Aún no hay votos registrados. ¡Sé el primero!</div>`;
     } else {
-        const top8 = ranking.slice(0, 8); // Mostramos hasta 8 barras
+        const top8 = ranking.slice(0, 8); 
         barrasHTML = top8.map((r, idx) => {
             const w = maxVotos > 0 ? (r.votos / maxVotos) * 100 : 0;
-            return `<div class="lv-bar-row">
+            const isGold = idx === 0 ? ' gold-bar' : ''; 
+            return `<div class="lv-bar-row${isGold}">
                       <div class="lv-bar-name">${formatName(r.nombre)}</div>
                       <div class="lv-bar-wrap"><div class="lv-bar-fill" style="width:${w}%"></div></div>
                       <div class="lv-bar-count">${r.votos}</div>
@@ -1369,7 +1369,7 @@ function renderMVPs(){
         const ganador = ranking[0].nombre;
         tagHTML = `<div class="lv-tag" style="background:rgba(57,255,20,0.15); color:var(--green); animation:none; border:1px solid var(--green);">✅ VOTACIÓN FINALIZADA</div>`;
         btnHTML = ``; // Ocultamos el botón
-        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! ⭐`;
+        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! <span style="display:inline-block; transform:translateY(-3px); font-size:0.85em;">⭐</span>`;
     }
 
     feat.className = "mvp-featured live-mode";
