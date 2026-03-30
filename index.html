@@ -241,9 +241,10 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .lv-body { display:flex; flex-direction:column; gap:1.5rem; }
 .lv-chart h4, .lv-voters h4 { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; font-size:0.9rem; }
 .lv-bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; font-size:0.85rem; }
-.lv-bar-name { width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:right; font-weight:600; }
+.lv-bar-name { width:135px; text-align:left; font-weight:600; line-height:1.1; flex-shrink:0; }
 .lv-bar-wrap { flex:1; background:rgba(255,255,255,0.05); height:14px; border-radius:6px; overflow:hidden; position:relative; }
 .lv-bar-fill { height:100%; background:var(--green); box-shadow:0 0 10px rgba(57,255,20,0.5); border-radius:6px; transition:width 0.5s; width:0%;}
+.lv-bar-row:nth-child(1) .lv-bar-name { color:var(--gold); }
 .lv-bar-row:nth-child(1) .lv-bar-fill { background:var(--gold); box-shadow:0 0 10px rgba(255,215,0,0.5); }
 .lv-bar-row:nth-child(2) .lv-bar-fill { background:var(--silver); box-shadow:0 0 10px rgba(192,192,192,0.5); }
 .lv-bar-count { width:20px; font-family:'Anton',sans-serif; color:var(--text); text-align:left; }
@@ -1368,7 +1369,7 @@ function renderMVPs(){
         const ganador = ranking[0].nombre;
         tagHTML = `<div class="lv-tag" style="background:rgba(57,255,20,0.15); color:var(--green); animation:none; border:1px solid var(--green);">✅ VOTACIÓN FINALIZADA</div>`;
         btnHTML = ``; // Ocultamos el botón
-        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! 🏆`;
+        titleHTML = `¡${formatName(ganador)} es el MVP de la Fecha ${lastMatch.fecha}! ⭐`;
     }
 
     feat.className = "mvp-featured live-mode";
