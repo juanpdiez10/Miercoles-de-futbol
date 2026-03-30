@@ -364,7 +364,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   .mc-score-center{padding:0 .5rem}
   .pl-list{padding:.8rem .6rem}
   .pl-item{font-size:.75rem}
-  .pl-name{font-size:.75rem;max-width:90px}
+  .pl-name{font-size:.75rem;flex:1;max-width:145px}
   .pl-gol{font-size:.75rem}
   
   table.st{font-size:.7rem}
@@ -380,7 +380,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 }
 @media(max-width:380px){
   .stats-grid{grid-template-columns:1fr}
-  .pl-name{max-width:75px}
+  .pl-name{max-width:115px}
 }
 </style>
 </head>
@@ -933,8 +933,18 @@ function renderInscripcion() {
     </div>`;
   }).join('');
   
-  // Apaga o prende el botón gigante si hay lugares libres
-  if(hayLibres) {
+ // Lógica de memoria para bloquear si ya se anotó
+  const miRegistro = localStorage.getItem('mdf_mi_jugador');
+  const yaAnotado = _inscripcionData.some(s => s.jugador === miRegistro);
+
+  if (yaAnotado && !adminUnlocked) {
+     selectGlobal.style.display = 'none';
+     btnGlobal.style.display = 'none';
+     tituloAnotador.style.display = 'none';
+     msgLlenos.style.display = 'block';
+     msgLlenos.innerHTML = `✅ Ya estás anotado como <strong>${miRegistro}</strong>`;
+     msgLlenos.style.color = 'var(--green)';
+  } else if(hayLibres) {
      selectGlobal.style.display = 'block';
      btnGlobal.style.display = 'flex';
      tituloAnotador.style.display = 'block';
@@ -944,6 +954,8 @@ function renderInscripcion() {
      btnGlobal.style.display = 'none';
      tituloAnotador.style.display = 'none';
      msgLlenos.style.display = 'block';
+     msgLlenos.innerHTML = '⚠️ CUPOS LLENOS';
+     msgLlenos.style.color = 'var(--red)';
   }
 
   // Botón de WhatsApp
@@ -971,8 +983,9 @@ async function anotarmeAuto() {
     const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
     const data = await res.json();
     
-    // Leemos la respuesta inteligente de Google
+ // Leemos la respuesta inteligente de Google
     if (data.status === 'ok') {
+       localStorage.setItem('mdf_mi_jugador', nombre);
        alert("¡Adentro! ⚽ Quedaste anotado en el lugar " + data.slot + ".");
     } else if (data.status === 'lleno') {
        alert("¡Uy! Llegaste un segundo tarde, se acaban de llenar los cupos. 😭");
