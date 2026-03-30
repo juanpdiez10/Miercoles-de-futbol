@@ -625,7 +625,8 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="next-edit-row">
         <div id="no-play-msg" style="display:none;background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);color:#ff8888;padding:.4rem 1rem;border-radius:20px;font-size:.82rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">⚠️ FECHA SUSPENDIDA</div>
         <button class="btn btn-s" style="font-size:.72rem;padding:.42rem .85rem; display:none;" onclick="toggleNoPlay()" id="no-play-btn">⚠️ Marcar fecha suspendida</button>
-        <button class="btn btn-wa" style="font-size:.72rem;padding:.42rem .85rem; display:none; gap:0.4rem;" id="wa-suspend-btn" onclick="shareSuspensionWhatsApp()">📲 Avisar Suspensión</button>      </div>
+        <button class="btn btn-wa" style="font-size:.72rem;padding:.42rem .85rem; display:none; gap:0.4rem;" id="wa-suspend-btn" onclick="shareSuspensionWhatsApp()">📲 Avisar Suspensión</button>
+      </div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem">
       <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;color:var(--text2)">Armado de Equipos — 8 vs 8</h3>
@@ -1432,6 +1433,12 @@ function renderEstadisticas(data){
   const fechasGoleadoras = matches.filter(m => m.gfB + m.gfN === maxTotalGoles);
   const txtFechaGoles = matches.length > 0
     ? `La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`
+    : 'Todavía no hay partidos jugados.';
+
+  const minDiff = Math.min(...matches.map(m => Math.abs(m.gfB - m.gfN)));
+  const ajustadas = matches.filter(m => Math.abs(m.gfB - m.gfN) === minDiff);
+  const txtAjustadas = matches.length > 0
+    ? `La ${ajustadas.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${ajustadas.length>1?'fueron las más ajustadas':'fue la más ajustada'} — separada${ajustadas.length>1?'s':''} por <strong>solo ${minDiff} gol${minDiff!==1?'es':''}</strong> de diferencia.`
     : 'Todavía no hay partidos jugados.';
 
   const maxCamisetas = Math.max(...st.map(p => p.camiseta));
