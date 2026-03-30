@@ -1533,8 +1533,12 @@ function renderEstadisticas(data){
   const maxPj = Math.max(...st.map(p => p.pj));
   const ironMen = st.filter(p => p.pj === maxPj && maxPj > 0).map(p => formatName(p.nombre));
   const minutos = maxPj * 60;
+  
+  // Regla gramatical para separar con comas y dejar la "y" al final
+  const fmtList = (arr) => arr.length === 1 ? arr[0] : arr.slice(0, -1).join(', ') + ' y ' + arr[arr.length - 1];
+  
   const txtMinutos = maxPj > 0 
-    ? `<strong>${ironMen.join(' y ')}</strong> ${ironMen.length>1?'son':'es'} de fierro: ${ironMen.length>1?'suman':'suma'} <strong>${minutos} minutos</strong> en cancha (${maxPj} PJ completos) liderando la asistencia.` 
+    ? `<strong>${fmtList(ironMen)}</strong> ${ironMen.length>1?'son':'es'} de fierro: ${ironMen.length>1?'suman':'suma'} <strong>${minutos} minutos</strong> en cancha (${maxPj} PJ completos) liderando la asistencia.` 
     : 'Aún no hay minutos jugados.';
   
   const clist=[
@@ -1805,6 +1809,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadEquipos();
   loadApiData(); 
   setupNextDate();
+  
+  // Leemos la memoria y dibujamos el cartel para todos apenas entran
+  actualizarUI_Suspension();
   
   const hash = window.location.hash.substring(1);
   if(hash) showPage(hash, false);
