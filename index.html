@@ -1531,8 +1531,8 @@ function shareSuspensionWhatsApp() {
 
   // <-- CAMBIAR TEXTOS DE SUSPENSIÓN ACÁ ABAJO:
   let msg = `⚠️ *FECHA ${fechaNum} SUSPENDIDA* ⚠️\n\n`;
-  msg += `Muchachos, el partido de este miércoles ${nw.getDate()} de ${months[nw.getMonth()]} está suspendido. 🌧️❌\n\n`; 
-  msg += `A recargar energías y nos vemos la semana que viene para la revancha. ¡A guardar las piernas! ⚽🦵💪`; 
+  msg += `El partido de este miércoles ${nw.getDate()} de ${months[nw.getMonth()]} está suspendido. ❌\n\n`; 
+  msg += `Nos vemos la semana que viene. ⚽💪`; 
   
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
@@ -1556,7 +1556,7 @@ function shareEquiposWhatsApp(){
   ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
   
   // <-- CAMBIAR TEXTO DEL FORO ACÁ ABAJO:
-  msg+=`\n👇 *Charla Post-Partido y Comentarios:*\njuanpdiez10.github.io/Miercoles-de-futbol/#foro 👈\n`;
+  msg+=`\n👇 *Quejas o comentarios:*\njuanpdiez10.github.io/Miercoles-de-futbol/#foro 👈\n`;
   
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
