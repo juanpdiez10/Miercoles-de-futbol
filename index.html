@@ -625,7 +625,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="next-edit-row">
         <div id="no-play-msg" style="display:none;background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);color:#ff8888;padding:.4rem 1rem;border-radius:20px;font-size:.82rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">⚠️ FECHA SUSPENDIDA</div>
         <button class="btn btn-s" style="font-size:.72rem;padding:.42rem .85rem; display:none;" onclick="toggleNoPlay()" id="no-play-btn">⚠️ Marcar fecha suspendida</button>
-      </div>
+        <button class="btn btn-wa" style="font-size:.72rem;padding:.42rem .85rem; display:none; gap:0.4rem;" id="wa-suspend-btn" onclick="shareSuspensionWhatsApp()">📲 Avisar Suspensión</button>      </div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem">
       <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;color:var(--text2)">Armado de Equipos — 8 vs 8</h3>
@@ -773,6 +773,7 @@ function adminLogin() {
         adminUnlocked = true;
         document.getElementById('admin-wa').style.display = 'flex';
         document.getElementById('no-play-btn').style.display = 'inline-flex';
+        document.getElementById('wa-suspend-btn').style.display = 'inline-flex';
         document.getElementById('admin-inscripcion-panel').style.display = 'flex';
         
         renderForum(); 
@@ -1523,32 +1524,40 @@ function toggleNoPlay(){
   document.getElementById('no-play-btn').textContent=noPlayActive?'✅ Cancelar suspensión':'⚠️ Marcar fecha suspendida';
 }
 
+function shareSuspensionWhatsApp() {
+  const nw=getNextWednesday();
+  const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const fechaNum=MAX_FECHA+1;
+
+  // <-- CAMBIAR TEXTOS DE SUSPENSIÓN ACÁ ABAJO:
+  let msg = `⚠️ *FECHA ${fechaNum} SUSPENDIDA* ⚠️\n\n`;
+  msg += `Muchachos, el partido de este miércoles ${nw.getDate()} de ${months[nw.getMonth()]} está suspendido. 🌧️❌\n\n`; 
+  msg += `A recargar energías y nos vemos la semana que viene para la revancha. ¡A guardar las piernas! ⚽🦵💪`; 
+  
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
 function shareEquiposWhatsApp(){
   const bl=[...document.querySelectorAll('#team-blanco li')].map(li=>li.textContent.trim());
   const ng=[...document.querySelectorAll('#team-negro li')].map(li=>li.textContent.trim());
   const nw=getNextWednesday();
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fechaNum=MAX_FECHA+1;
-  const dateStr=`${nw.getDate()}/${(nw.getMonth()+1).toString().padStart(2, '0')}`;
 
-  let msg = '';
-  if(noPlayActive) {
-    msg = `⚠️ *FECHA ${fechaNum} SUSPENDIDA* ⚠️\n\n`;
-    msg += `Muchachos, el partido de este miércoles ${nw.getDate()} de ${months[nw.getMonth()]} está suspendido. 🌧️❌\n\n`;
-    msg += `Nos vemos la semana que viene para la revancha. ¡A guardar las piernas! ⚽🦵💪`;
-  } else {
-    msg=`*FECHA ${fechaNum}*\n`;
-    msg+=`Miercoles ${nw.getDate()} de ${months[nw.getMonth()]}\n`;
-    msg+=`Horario: 20:00 hs\n`;
-    if(_clima) msg+=`Clima: ${_clima}\n`;
-    msg+=`Llegar temprano ⏰\n`;
-    msg+=`Llevar efectivo 💵\n\n`;
-    msg+=`*EQUIPO BLANCO* ⚪\n`;
-    bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
-    msg+=`\n*EQUIPO NEGRO* ⚫\n`;
-    ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
-    msg+=`\n👇 *Foro de quejas y opiniones:*\njuanpdiez10.github.io/Miercoles-de-futbol/#foro 👈\n`;
-  }
+  let msg=`*FECHA ${fechaNum}*\n`;
+  msg+=`Miercoles ${nw.getDate()} de ${months[nw.getMonth()]}\n`;
+  msg+=`Horario: 20:00 hs\n`;
+  if(_clima) msg+=`Clima: ${_clima}\n`;
+  msg+=`Llegar temprano ⏰\n`;
+  msg+=`Llevar efectivo 💵\n\n`;
+  msg+=`*EQUIPO BLANCO* ⚪\n`;
+  bl.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+  msg+=`\n*EQUIPO NEGRO* ⚫\n`;
+  ng.forEach((p,i)=>{msg+=`${i+1}. ${p}\n`;});
+  
+  // <-- CAMBIAR TEXTO DEL FORO ACÁ ABAJO:
+  msg+=`\n👇 *Charla Post-Partido y Comentarios:*\njuanpdiez10.github.io/Miercoles-de-futbol/#foro 👈\n`;
+  
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
