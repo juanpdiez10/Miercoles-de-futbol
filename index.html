@@ -1818,53 +1818,62 @@ function setLiveState(obj) {
   localStorage.setItem(FECHA_LIVE_KEY, JSON.stringify(obj));
 }
 
-// Extrae equipos del DOM, con fallback al cache de localStorage
+// Extrae equipos: primero DOM, luego cache localStorage
 function getEquiposFromDOM() {
+  // 1. Intentar del DOM
   const bl = [...document.querySelectorAll('#team-blanco-list .player-name-text')].map(el=>el.textContent.trim()).filter(Boolean);
   const ng = [...document.querySelectorAll('#team-negro-list .player-name-text')].map(el=>el.textContent.trim()).filter(Boolean);
   if (bl.length > 0 || ng.length > 0) return { blanco: bl, negro: ng };
-  // Fallback: usar cache guardado por loadEquipos
+  // 2. Fallback: cache de localStorage guardado por loadEquipos
   try {
-    const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || '{}');
-    return { blanco: cached.blanco || [], negro: cached.negro || [] };
-  } catch(e) { return { blanco: [], negro: [] }; }
+    const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || 'null');
+    if (cached && (cached.blanco?.length > 0 || cached.negro?.length > 0)) {
+      return { blanco: Array.isArray(cached.blanco) ? cached.blanco : [], negro: Array.isArray(cached.negro) ? cached.negro : [] };
+    }
+  } catch(e) {}
+  // 3. Intentar del estado live guardado (si ya se habilitó antes)
+  try {
+    const liveState = JSON.parse(localStorage.getItem('mdf_fecha_live') || 'null');
+    if (liveState?.equipos?.blanco?.length > 0 || liveState?.equipos?.negro?.length > 0) {
+      return { blanco: liveState.equipos.blanco || [], negro: liveState.equipos.negro || [] };
+    }
+  } catch(e) {}
+  return { blanco: [], negro: [] };
 }
 
 // ─── ADMIN: Habilitar carga de goles ─────────────────
 function adminHabilitarGoles() {
-  const { blanco, negro } = getEquiposFromDOM();
-  let all = [...blanco, ...negro];
+  // Intentar obtener equipos: 1) DOM, 2) cache localStorage, 3) manual
+  let { blanco, negro } = getEquiposFromDOM();
   
-  if (!all.length) {
-    // Fallback: pedir jugadores manualmente
-    const input = prompt('No se detectaron jugadores del Sheet.\nIngresá los nombres separados por coma (ej: Ramirez, Jere, Lorda, Fernando, ...):');
-    if (!input || !input.trim()) { alert('No se ingresaron jugadores.'); return; }
-    all = input.split(',').map(s => s.trim()).filter(Boolean);
+  // getEquiposFromDOM ya incluye fallback al cache, pero si sigue vacío: manual
+  if (!blanco.length && !negro.length) {
+    const input = prompt('No se detectaron jugadores.\nIngresá todos los nombres separados por coma:\n(ej: Ramirez Jere, Lorda Fernando, ...)');
+    if (!input || !input.trim()) return;
+    const all = input.split(',').map(x => x.trim()).filter(Boolean);
     if (!all.length) return;
-    // Guardar como equipos (todos en blanco por defecto)
-    blanco.push(...all);
-    negro.length = 0;
-    localStorage.setItem('mdf_equipos_cache', JSON.stringify({ blanco: all, negro: [] }));
+    blanco = all;
+    negro = [];
+    localStorage.setItem('mdf_equipos_cache', JSON.stringify({ blanco, negro }));
   }
   
-  const s = getLiveState();
-  const fechaNum = MAX_FECHA + 1;
-  const goles = {};
-  all.forEach(j => { goles[j] = s.goles?.[j] ?? 0; });
+  const all = [...blanco, ...negro];
+  const prev = getLiveState();
+  const prevGoles = prev.equipos ? {} : {}; // siempre arrancar goles en 0
+  all.forEach(j => { prevGoles[j] = 0; });
   
   setLiveState({
-    ...s,
-    fechaNum,
+    fechaNum: MAX_FECHA + 1,
     equipos: { blanco, negro },
-    goles,
+    goles: prevGoles,
     golesAbierto: true,
     golesCerrado: false,
     votacionAbierta: false,
     votacionCerrada: false,
-    votos: s.votos || {},
-    quienesVotaron: s.quienesVotaron || [],
+    votos: {},
+    quienesVotaron: [],
     mvpWinner: null,
-    resultado: s.resultado || null
+    resultado: null
   });
   
   document.getElementById('btn-habilitar-goles').style.display = 'none';
@@ -1872,7 +1881,7 @@ function adminHabilitarGoles() {
   document.getElementById('btn-share-goles-wa').style.display = 'inline-flex';
   
   renderFechaLiveCard();
-  alert('✅ Carga de goles habilitada. Ahora podés enviar el link por WhatsApp.');
+  alert('✅ Carga de goles habilitada para ' + all.length + ' jugadores: ' + all.slice(0,3).join(', ') + (all.length > 3 ? '...' : ''));
 }
 
 function adminCerrarGoles() {
@@ -1960,7 +1969,9 @@ function renderFechaLiveCard() {
     return;
   }
   
-  const { blanco = [], negro = [], goles = {}, golesCerrado, golesAbierto, fechaNum } = s;
+  const blanco = s.equipos?.blanco || [];
+  const negro = s.equipos?.negro || [];
+  const { goles = {}, golesCerrado, golesAbierto, fechaNum } = s;
   const isOpen = golesAbierto && !golesCerrado;
   
   // Verificar si el jugador ya envió sus goles
