@@ -1943,15 +1943,34 @@ function adminHabilitarVotacion() {
 }
 
 function adminResetFechaLive() {
-  if (!confirm('⚠️ Esto borrará toda la data de la fecha en curso (goles cargados, votos, resultado). ¿Continuar?')) return;
+  if (!confirm('⚠️ Esto borrará TODA la data de la fecha en curso:\n- Goles cargados\n- Votos MVP\n- Resultado\n- Goles propios de todos los jugadores\n\n¿Confirmar reset?')) return;
+  
+  // Limpiar estado principal
   localStorage.removeItem(FECHA_LIVE_KEY);
-  document.getElementById('btn-habilitar-goles').style.display = 'inline-flex';
-  document.getElementById('btn-cerrar-goles').style.display = 'none';
-  document.getElementById('btn-share-goles-wa').style.display = 'none';
-  document.getElementById('btn-habilitar-votacion').style.display = 'none';
+  
+  // Limpiar todas las marcas de "ya cargué mis goles" de todos los fechaNum posibles
+  const keysToRemove = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && (k.startsWith('mdf_goles_enviado_f') || k.startsWith('mdf_mvp_vote_f'))) {
+      keysToRemove.push(k);
+    }
+  }
+  keysToRemove.forEach(k => localStorage.removeItem(k));
+  
+  // Restaurar botones admin
+  const btnHabilitar = document.getElementById('btn-habilitar-goles');
+  const btnCerrar = document.getElementById('btn-cerrar-goles');
+  const btnShare = document.getElementById('btn-share-goles-wa');
+  const btnVotacion = document.getElementById('btn-habilitar-votacion');
+  if (btnHabilitar) btnHabilitar.style.display = 'inline-flex';
+  if (btnCerrar) btnCerrar.style.display = 'none';
+  if (btnShare) btnShare.style.display = 'none';
+  if (btnVotacion) btnVotacion.style.display = 'none';
+  
   renderFechaLiveCard();
   renderMvpLivePanel();
-  alert('🗑️ Fecha en curso reseteada.');
+  alert('✅ Fecha reseteada. Todo limpio para la próxima fecha real.');
 }
 
 // ─── CARD FECHA EN CURSO (Partidos) ──────────────────
@@ -1977,103 +1996,123 @@ function renderFechaLiveCard() {
   // Verificar si el jugador ya envió sus goles
   const myName = localStorage.getItem('mdf_goles_enviado_f' + fechaNum);
   
-  const makePlayerRow = (jugador, equipo) => {
+  // Fila admin (editable con +/-)
+  const makePlayerRowAdmin = (jugador) => {
     const g = goles[jugador] || 0;
-    const confirmed = myName && myName === jugador;
-    const controls = isOpen && !confirmed
-      ? `<div class="gpl-controls">
-          <button class="gpl-btn gpl-btn-minus" onclick="changeGolSelf('${jugador.replace(/'/g,"\\'")}', -1)">−</button>
-          <span class="gpl-count" id="gpl-${jugador.replace(/[^a-zA-Z]/g,'_')}">${g}</span>
-          <button class="gpl-btn gpl-btn-plus" onclick="changeGolSelf('${jugador.replace(/'/g,"\\'")}', 1)">+</button>
-        </div>`
-      : `<span class="gpl-count">${g > 0 ? '⚽ '+g : '—'}</span>`;
     return `<div class="goles-player-row">
-      <span class="gpl-name${confirmed?' confirmed':''}">${jugador}${confirmed?' ✓':''}</span>
-      ${controls}
+      <span class="gpl-name${g>0?' confirmed':''}">${jugador}${g>0?' ✓':''}</span>
+      <div class="gpl-controls">
+        <button class="gpl-btn gpl-btn-minus" onclick="changeGolAdmin('${jugador.replace(/'/g,"\\'")}', -1)">−</button>
+        <span class="gpl-count" id="gpl-${jugador.replace(/[^a-zA-Z]/g,'_')}">${g}</span>
+        <button class="gpl-btn gpl-btn-plus" onclick="changeGolAdmin('${jugador.replace(/'/g,"\\'")}', 1)">+</button>
+      </div>
     </div>`;
   };
-  
+
+  // Fila pública (solo lectura)
+  const makePlayerRowPublic = (jugador) => {
+    const g = goles[jugador] || 0;
+    const isMe = myName === jugador;
+    return `<div class="goles-player-row">
+      <span class="gpl-name${isMe?' confirmed':''}">${jugador}${isMe?' ✓':''}</span>
+      <span class="gpl-count">${g > 0 ? '⚽ '+g : '—'}</span>
+    </div>`;
+  };
+
+  const makeTeamGrid = (players, label, dotCls) => `
+    <div>
+      <div class="goles-team-title"><span class="${dotCls}"></span> ${label}</div>
+      ${players.map(j => adminUnlocked ? makePlayerRowAdmin(j) : makePlayerRowPublic(j)).join('') || '<div style="color:var(--text2);font-size:.8rem">Sin jugadores cargados</div>'}
+    </div>`;
+
   const statusHtml = isOpen
     ? `<span class="fecha-live-status status-abierta"><span class="pulse"></span> CARGA ABIERTA</span>`
     : `<span class="fecha-live-status status-cerrada">🔒 CARGA CERRADA</span>`;
-  
-  const selfFormHtml = isOpen ? `
-    <div class="player-self-form" id="self-goles-form">
-      <div class="player-self-title">⚽ Cargá tus goles</div>
-      <select class="self-select" id="self-select-jugador">
-        <option value="">Seleccioná tu nombre...</option>
-        ${[...blanco, ...negro].map(j => `<option value="${j}"${myName===j?' selected':''}>${j}</option>`).join('')}
-      </select>
-      <div class="self-goles-row">
-        <span class="self-goles-label">Cantidad de goles:</span>
-        <button class="gpl-btn gpl-btn-minus" onclick="changeSelfGolCount(-1)" style="width:32px;height:32px;font-size:1.2rem">−</button>
-        <span class="self-goles-val" id="self-gol-count">0</span>
-        <button class="gpl-btn gpl-btn-plus" onclick="changeSelfGolCount(1)" style="width:32px;height:32px;font-size:1.2rem">+</button>
-      </div>
-      <button class="self-submit-btn" onclick="submitSelfGoles()">✔ Confirmar mis goles</button>
-      <div class="self-submitted-msg" id="self-submitted-msg">✅ ¡Goles confirmados! Gracias.</div>
-    </div>` : '';
-  
-  // WA share button para jugadores
+
   const shareBtn = isOpen ? `<button class="btn-wa-small" onclick="playerShareGolesWA()">📲 Compartir</button>` : '';
-  
+
+  // Form jugador: si ya envió → mensaje; si no → form de carga
+  const yaEnvie = !!(myName && myName !== '');
+  let selfFormHtml = '';
+  if (isOpen && !adminUnlocked) {
+    if (yaEnvie) {
+      selfFormHtml = `<div class="player-self-form" style="border-color:rgba(57,255,20,.4)">
+        <div style="text-align:center;padding:.5rem 0">
+          <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;color:var(--green);letter-spacing:1px">¡Goles confirmados!</div>
+          <div style="color:var(--text2);font-size:.84rem;margin-top:.3rem">Cargaste <strong style="color:var(--green)">${goles[myName]||0} gole${(goles[myName]||0)!==1?'s':''}</strong> como <strong>${myName}</strong></div>
+        </div>
+      </div>`;
+    } else {
+      selfFormHtml = `<div class="player-self-form" id="self-goles-form">
+        <div class="player-self-title">⚽ Cargá tus goles</div>
+        <select class="self-select" id="self-select-jugador" onchange="syncSelfCount()">
+          <option value="">Seleccioná tu nombre...</option>
+          ${[...blanco, ...negro].map(j => `<option value="${j}">${j}</option>`).join('')}
+        </select>
+        <div class="self-goles-row">
+          <span class="self-goles-label">Cantidad de goles:</span>
+          <button class="gpl-btn gpl-btn-minus" onclick="changeSelfGolCount(-1)" style="width:32px;height:32px;font-size:1.2rem">−</button>
+          <span class="self-goles-val" id="self-gol-count">0</span>
+          <button class="gpl-btn gpl-btn-plus" onclick="changeSelfGolCount(1)" style="width:32px;height:32px;font-size:1.2rem">+</button>
+        </div>
+        <button class="self-submit-btn" onclick="submitSelfGoles()">✔ Confirmar mis goles</button>
+      </div>`;
+    }
+  }
+
   container.innerHTML = `
     <div class="fecha-live-card">
       <div class="fecha-live-header">
         <div>
           <div class="fecha-live-title">⚽ Fecha ${fechaNum} en curso</div>
-          <div style="color:var(--text2);font-size:.78rem;margin-top:.2rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px">Cargá los goles del partido del miércoles</div>
+          <div style="color:var(--text2);font-size:.78rem;margin-top:.2rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px">Goles del partido del miércoles</div>
         </div>
         <div style="display:flex;gap:.5rem;align-items:center;">${statusHtml}${shareBtn}</div>
       </div>
       <div class="goles-teams">
-        <div>
-          <div class="goles-team-title"><span class="dot-w"></span> Equipo Blanco</div>
-          ${blanco.map(j => makePlayerRow(j, 'blanco')).join('') || '<div style="color:var(--text2);font-size:.8rem">Sin jugadores cargados</div>'}
-        </div>
-        <div>
-          <div class="goles-team-title"><span class="dot-n"></span> Equipo Negro</div>
-          ${negro.map(j => makePlayerRow(j, 'negro')).join('') || '<div style="color:var(--text2);font-size:.8rem">Sin jugadores cargados</div>'}
-        </div>
+        ${makeTeamGrid(blanco, 'Equipo Blanco', 'dot-w')}
+        ${makeTeamGrid(negro, 'Equipo Negro', 'dot-n')}
       </div>
       ${selfFormHtml}
       ${adminUnlocked && isOpen ? `<div class="admin-goles-bar"><span style="color:var(--text2);font-size:.78rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">ADMIN:</span> <button class="btn-admin-sm" onclick="adminCerrarGoles()">🔒 Cerrar carga</button> <button class="btn-wa-small" onclick="adminShareGolesWA()">📲 Enviar link WA</button></div>` : ''}
     </div>`;
-  
-  // Restaurar contador de goles propio
-  const selfSel = document.getElementById('self-select-jugador');
-  if (selfSel && myName) {
-    selfSel.value = myName;
-    const selfCount = document.getElementById('self-gol-count');
-    if (selfCount) selfCount.textContent = goles[myName] || 0;
-  }
 }
 
 let _selfGolCount = 0;
+function syncSelfCount() {
+  _selfGolCount = 0;
+  const el = document.getElementById('self-gol-count');
+  if (el) el.textContent = 0;
+}
 function changeSelfGolCount(delta) {
   _selfGolCount = Math.max(0, _selfGolCount + delta);
   const el = document.getElementById('self-gol-count');
   if (el) el.textContent = _selfGolCount;
 }
-function changeGolSelf(jugador, delta) {
+function changeGolAdmin(jugador, delta) {
   const s = getLiveState();
   s.goles[jugador] = Math.max(0, (s.goles[jugador] || 0) + delta);
   setLiveState(s);
   const id = 'gpl-' + jugador.replace(/[^a-zA-Z]/g, '_');
   const el = document.getElementById(id);
   if (el) el.textContent = s.goles[jugador];
+  const row = el ? el.closest('.goles-player-row') : null;
+  const nameEl = row ? row.querySelector('.gpl-name') : null;
+  if (nameEl) {
+    nameEl.className = 'gpl-name' + (s.goles[jugador] > 0 ? ' confirmed' : '');
+    nameEl.textContent = jugador + (s.goles[jugador] > 0 ? ' ✓' : '');
+  }
 }
 function submitSelfGoles() {
   const sel = document.getElementById('self-select-jugador');
   const jugador = sel ? sel.value : '';
   if (!jugador) { alert('Seleccioná tu nombre primero.'); return; }
   const s = getLiveState();
-  s.goles[jugador] = _selfGolCount;
+  s.goles[jugador] = _selfGolCount;  // solo modifica ESTE jugador, no borra los demás
   setLiveState(s);
   localStorage.setItem('mdf_goles_enviado_f' + s.fechaNum, jugador);
-  const msg = document.getElementById('self-submitted-msg');
-  if (msg) { msg.style.display = 'block'; }
-  setTimeout(() => renderFechaLiveCard(), 600);
+  renderFechaLiveCard();
 }
 function playerShareGolesWA() {
   const url = window.location.href.split('#')[0] + '#partidos';
@@ -2163,16 +2202,27 @@ function renderMvpLivePanel() {
     </div>`;
   }).join('');
   
-  // Form de votación
+  // Filtrar quiénes NO votaron aún para el dropdown "¿quién sos?"
+  const votedSet2 = new Set(quienesVotaron);
+  const noVotaron = todosLosJugadores.filter(j => !votedSet2.has(j));
+
+  // ¿Este navegador ya votó?
   const yaVotó = myVotes.length === 2;
-  const voteFormHtml = !yaVotó ? `
+
+  let voteFormHtml = '';
+  if (yaVotó) {
+    voteFormHtml = `<div class="mvp-voted-msg" style="display:block">✅ Ya votaste: <strong>${myVotes.join(' y ')}</strong></div>`;
+  } else if (noVotaron.length === 0) {
+    voteFormHtml = `<div class="mvp-voted-msg" style="display:block">✅ Todos los jugadores ya votaron.</div>`;
+  } else {
+    voteFormHtml = `
     <div class="mvp-vote-section" id="mvp-vote-form">
       <div style="color:var(--text2);font-size:.82rem;margin-bottom:.6rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px">
         Votá a <strong style="color:var(--gold)">2 jugadores</strong> del equipo ${isEmpate ? 'de ambos equipos' : (blancoGana ? 'Blanco' : 'Negro')} (ganador${isEmpate ? 'es' : ''})
       </div>
       <select class="mvp-vote-select" id="mvp-quien-vota">
-        <option value="">¿Quién sos vos? (solo jugadores de esta fecha)</option>
-        ${todosLosJugadores.map(j => `<option value="${j}">${j}</option>`).join('')}
+        <option value="">¿Quién sos vos?</option>
+        ${noVotaron.map(j => `<option value="${j}">${j}</option>`).join('')}
       </select>
       <select class="mvp-vote-select" id="mvp-voto1">
         <option value="">1° voto — Mejor jugador...</option>
@@ -2183,9 +2233,8 @@ function renderMvpLivePanel() {
         ${candidatos.map(j => `<option value="${j}">${j}</option>`).join('')}
       </select>
       <button class="mvp-vote-btn" onclick="submitMvpVote()">🌟 Confirmar mis votos</button>
-    </div>
-    <div class="mvp-voted-msg" id="mvp-voted-ok">✅ ¡Votos enviados! Gracias por participar.</div>
-  ` : `<div class="mvp-voted-msg" style="display:block">✅ Ya votaste: <strong>${myVotes.join(' y ')}</strong></div>`;
+    </div>`;
+  }
   
   // Quiénes votaron / faltan
   const votedSet = new Set(quienesVotaron);
@@ -2223,32 +2272,28 @@ function submitMvpVote() {
   const v1 = document.getElementById('mvp-voto1')?.value;
   const v2 = document.getElementById('mvp-voto2')?.value;
   
-  if (!quien) { alert('Seleccioná quién sos.'); return; }
-  if (!v1 || !v2) { alert('Tenés que votar a 2 jugadores.'); return; }
-  if (v1 === v2) { alert('Tenés que votar a 2 jugadores distintos.'); return; }
+  if (!quien) { alert('Seleccioná tu nombre primero.'); return; }
+  if (!v1 || !v2) { alert('Tenés que elegir 2 jugadores.'); return; }
+  if (v1 === v2) { alert('Elegí 2 jugadores distintos.'); return; }
   
   const s = getLiveState();
   if (!s.votacionAbierta || s.votacionCerrada) { alert('La votación ya cerró.'); return; }
+  if (s.quienesVotaron.includes(quien)) { alert(quien + ' ya votó antes.'); return; }
   
-  if (s.quienesVotaron.includes(quien)) { alert('Ya votaste antes.'); return; }
-  
+  // Guardar el voto
   s.votos[quien] = [v1, v2];
   s.quienesVotaron.push(quien);
   setLiveState(s);
   
+  // Marcar en ESTE navegador que "quien" ya votó (para el form local)
   localStorage.setItem('mdf_mvp_vote_f' + s.fechaNum, JSON.stringify([v1, v2]));
   
-  const form = document.getElementById('mvp-vote-form');
-  const ok = document.getElementById('mvp-voted-ok');
-  if (form) form.style.display = 'none';
-  if (ok) ok.style.display = 'block';
-  
-  // Check si ya votaron todos
+  // Check si ya votaron todos → cerrar automáticamente
   const todos = [...(s.equipos?.blanco||[]), ...(s.equipos?.negro||[])];
   if (s.quienesVotaron.length >= todos.length) {
-    setTimeout(() => cerrarVotacionAuto(), 1500);
+    setTimeout(() => cerrarVotacionAuto(), 1200);
   } else {
-    setTimeout(() => renderMvpLivePanel(), 800);
+    renderMvpLivePanel(); // re-render inmediato para sacar el nombre del dropdown
   }
 }
 
