@@ -754,6 +754,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         <button class="btn-admin-sm" onclick="adminShareGolesWA()" id="btn-share-goles-wa" style="display:none">📲 Enviar link de goles x WA</button>
         <button class="btn-admin-sm" onclick="adminHabilitarVotacion()" id="btn-habilitar-votacion" style="display:none">🌟 Habilitar votación MVP</button>
         <button class="btn-admin-sm btn-admin-red" onclick="adminResetFechaLive()" id="btn-reset-fecha-live">🗑️ Resetear fecha en curso</button>
+        <button class="btn-admin-sm" onclick="adminDebugEquipos()" style="border-color:rgba(100,150,255,.4);color:#88aaff">🔍 Debug equipos</button>
       </div>
     </div>
 
@@ -2324,26 +2325,56 @@ async function loadData(){
   renderAll(D);
 }
 
+// GIDs a probar: el original + hoja 0 + otros
+const EQUIPOS_GIDS_TO_TRY = [607354519, 0, 1, 2, 3, 4, 5];
+
+function parseEquiposCSV(csv) {
+  const lines = csv.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length < 2) return { blanco: [], negro: [] };
+  const header = lines[0].toUpperCase();
+  const startRow = (header.includes('BLANCO') || header.includes('NEGRO') || header.includes('EQUIPO') || header.includes('JUGADOR')) ? 1 : 0;
+  const blanco = [], negro = [];
+  for (let i = startRow; i < lines.length; i++) {
+    const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, '').trim());
+    const b = v[0]; const n = v[1];
+    const skip = ['', 'blanco', 'negro', 'equipo blanco', 'equipo negro', 'jugador'];
+    if (b && !skip.includes(b.toLowerCase())) blanco.push(b);
+    if (n && !skip.includes(n.toLowerCase())) negro.push(n);
+  }
+  return { blanco, negro };
+}
+
 async function loadEquipos(){
-  try{
-    const r=await fetch(EQUIPOS_URL + '&_=' + Math.random(), { cache: 'no-store' });
-    if(!r.ok) throw new Error('Error en equipos');
-    const csv=await r.text();
-    const lines=csv.split('\n').filter(l=>l.trim());
-    const blanco=[]; const negro=[];
-    for(let i=1; i<lines.length; i++){
-      const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
-      if(v[0] && v[0] !== '') blanco.push(v[0]);
-      if(v[1] && v[1] !== '') negro.push(v[1]);
-    }
-    const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
-    if(blanco.length > 0) document.getElementById('team-blanco-list').innerHTML = blanco.map(makePlayer).join('');
-    if(negro.length > 0) document.getElementById('team-negro-list').innerHTML = negro.map(makePlayer).join('');
-    // Guardar en cache para que adminHabilitarGoles los encuentre siempre
-    if(blanco.length > 0 || negro.length > 0) {
-      localStorage.setItem('mdf_equipos_cache', JSON.stringify({ blanco, negro }));
-    }
-  }catch(e){}
+  let loaded = false;
+  for (const gid of EQUIPOS_GIDS_TO_TRY) {
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}&_=${Math.random()}`;
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) continue;
+      const csv = await r.text();
+      if (csv.trim().startsWith('<') || csv.length < 10) continue;
+      const { blanco, negro } = parseEquiposCSV(csv);
+      if (blanco.length === 0 && negro.length === 0) continue;
+      const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
+      document.getElementById('team-blanco-list').innerHTML = blanco.map(makePlayer).join('');
+      document.getElementById('team-negro-list').innerHTML = negro.map(makePlayer).join('');
+      localStorage.setItem('mdf_equipos_cache', JSON.stringify({ blanco, negro, gid }));
+      console.log(`Equipos OK - GID ${gid}: Blanco(${blanco.length}) Negro(${negro.length})`);
+      loaded = true;
+      break;
+    } catch(e) { console.warn(`GID ${gid} error:`, e); }
+  }
+  if (!loaded) {
+    try {
+      const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || '{}');
+      if (cached.blanco?.length > 0 || cached.negro?.length > 0) {
+        const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
+        if (cached.blanco?.length) document.getElementById('team-blanco-list').innerHTML = cached.blanco.map(makePlayer).join('');
+        if (cached.negro?.length) document.getElementById('team-negro-list').innerHTML = cached.negro.map(makePlayer).join('');
+        console.log('Usando cache de equipos anterior.');
+      }
+    } catch(e) {}
+  }
 }
 
 function renderAll(data){
@@ -2450,6 +2481,40 @@ document.addEventListener('DOMContentLoaded',()=>{
   const hash = window.location.hash.substring(1);
   if(hash) showPage(hash, false);
 });
+
+async function adminDebugEquipos() {
+  let msg = 'DIAGNÓSTICO DE EQUIPOS\n\n';
+  // 1. Cache local
+  try {
+    const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || '{}');
+    msg += `Cache localStorage: Blanco(${cached.blanco?.length||0}) Negro(${cached.negro?.length||0}) GID usado:${cached.gid??'?'}\n`;
+    if (cached.blanco?.length) msg += `  Blanco: ${cached.blanco.slice(0,3).join(', ')}...\n`;
+    if (cached.negro?.length) msg += `  Negro: ${cached.negro.slice(0,3).join(', ')}...\n`;
+  } catch(e) { msg += 'Cache: ERROR\n'; }
+  // 2. DOM
+  const bl = [...document.querySelectorAll('#team-blanco-list .player-name-text')].map(e=>e.textContent.trim());
+  const ng = [...document.querySelectorAll('#team-negro-list .player-name-text')].map(e=>e.textContent.trim());
+  msg += `\nDOM equipos: Blanco(${bl.length}) Negro(${ng.length})\n`;
+  if (bl.length) msg += `  Blanco: ${bl.slice(0,3).join(', ')}...\n`;
+  // 3. Probar cada GID
+  msg += '\nProbando GIDs del Sheet:\n';
+  for (const gid of [607354519, 0, 1, 2, 3, 4, 5]) {
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}&_=${Math.random()}`;
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) { msg += `  GID ${gid}: HTTP ${r.status}\n`; continue; }
+      const csv = await r.text();
+      if (csv.trim().startsWith('<')) { msg += `  GID ${gid}: respuesta HTML (no existe)\n`; continue; }
+      const firstLine = csv.split('\n')[0];
+      msg += `  GID ${gid}: OK - Encabezado: "${firstLine.substring(0,60)}"\n`;
+      const { blanco, negro } = parseEquiposCSV(csv);
+      msg += `    → Blanco(${blanco.length}) Negro(${negro.length})\n`;
+      if (blanco.length) msg += `    → B: ${blanco.slice(0,3).join(', ')}\n`;
+    } catch(e) { msg += `  GID ${gid}: ${e.message}\n`; }
+  }
+  alert(msg);
+}
+
 </script>
 </body>
 </html>
