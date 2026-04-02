@@ -219,8 +219,9 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .mvp-modal-stat{color:var(--text2);font-size:1rem;line-height:1.5}
 
 /* MVP PAGE */
-.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:2rem;display:flex;gap:1.75rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;box-shadow:0 0 40px rgba(255,215,0,.07)}
-.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0; object-fit:cover; object-position:center -10px;}
+.mvp-featured{background:linear-gradient(135deg,var(--card2),var(--card));border:2px solid var(--gold);border-radius:12px;padding:3rem 2rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem;margin-bottom:3rem;box-shadow:0 0 40px rgba(255,215,0,.07)}
+.mvp-photo-featured{width:180px;height:180px;border-radius:50%;background:var(--card2);border:4px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:5rem;flex-shrink:0;object-fit:cover;object-position:center -10px}
+.mvp-photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--card2);border:3px solid rgba(255,215,0,.3);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0;object-fit:cover;object-position:center -10px}
 .mvp-l{color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;font-size:.7rem;text-transform:uppercase;margin-bottom:.35rem}
 .mvp-n{font-family:'Anton',sans-serif;font-size:1.8rem}
 .mvp-d{color:var(--text2);font-size:.83rem;margin-top:.2rem}
@@ -1354,19 +1355,20 @@ function renderMVPs(){
   if(!c || !feat) return;
   
   const lastMVP = MVP_DATA[0];
-  const lastUrl = getUrlFoto(lastMVP.nombre);
-  
-  const lastThumb = `<img class="mvp-photo-placeholder" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-placeholder\\'>⭐</div>'">`;
-    
-  feat.innerHTML = `
-      ${lastThumb}
-      <div>
-        <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
-        <div class="mvp-n">${lastMVP.nombre}</div>
-        <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
-        <div class="mvp-desc">${lastMVP.stat}</div>
-      </div>
-  `;
+  if(lastMVP) {
+    const lastUrl = getUrlFoto(lastMVP.nombre);
+    const lastThumb = `<img class="mvp-photo-featured" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-featured\\'>⭐</div>'">`;
+      
+    feat.innerHTML = `
+        ${lastThumb}
+        <div>
+          <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
+          <div class="mvp-n">${lastMVP.nombre}</div>
+          <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
+          <div class="mvp-desc">${lastMVP.stat}</div>
+        </div>
+    `;
+  }
 
   c.innerHTML=MVP_DATA.map(m=>{
     const url = getUrlFoto(m.nombre);
