@@ -336,85 +336,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green-dark);border-radius:3px}
 
-/* ═══ CARGA DE GOLES (Fecha en curso) ═══ */
-.fecha-live-card{background:linear-gradient(135deg,#0e1f12,#162419);border:2px solid var(--green-dark);border-radius:14px;padding:1.5rem;margin-bottom:2rem;max-width:800px;margin-left:auto;margin-right:auto}
-.fecha-live-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
-.fecha-live-title{font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:2px;color:var(--green);text-transform:uppercase}
-.fecha-live-status{display:inline-flex;align-items:center;gap:.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.28rem .8rem;border-radius:20px}
-.status-abierta{background:rgba(57,255,20,.1);color:var(--green);border:1px solid rgba(57,255,20,.25)}
-.status-cerrada{background:rgba(255,85,85,.1);color:#ff8888;border:1px solid rgba(255,85,85,.25)}
-.status-pendiente{background:rgba(255,215,0,.08);color:var(--gold);border:1px solid rgba(255,215,0,.2)}
-.goles-teams{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.goles-team-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(57,255,20,.1)}
-.goles-player-row{display:flex;align-items:center;justify-content:space-between;padding:.45rem .5rem;border-radius:6px;margin-bottom:.3rem;background:rgba(0,0,0,.2);border:1px solid transparent;transition:border-color .2s}
-.goles-player-row:hover{border-color:rgba(57,255,20,.15)}
-.gpl-name{font-size:.84rem;flex:1}
-.gpl-name.confirmed{color:var(--green)}
-.gpl-controls{display:flex;align-items:center;gap:.4rem}
-.gpl-count{font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--green);min-width:1.4rem;text-align:center}
-.gpl-btn{width:26px;height:26px;border-radius:50%;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .15s;font-weight:700}
-.gpl-btn-minus{background:rgba(255,85,85,.15);color:#ff8888}
-.gpl-btn-minus:hover{background:rgba(255,85,85,.35)}
-.gpl-btn-plus{background:rgba(57,255,20,.15);color:var(--green)}
-.gpl-btn-plus:hover{background:rgba(57,255,20,.35)}
-.goles-save-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:1.1rem;padding:.75rem;border-radius:8px;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;background:var(--green);color:#0a0f0d;box-shadow:0 0 20px rgba(57,255,20,.25)}
-.goles-save-btn:hover{box-shadow:0 0 35px rgba(57,255,20,.5);transform:translateY(-1px)}
-.goles-save-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.goles-saved-ok{color:var(--green);font-size:.82rem;text-align:center;margin-top:.5rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;display:none}
-.btn-wa-small{background:#25D366;color:#fff;border:none;border-radius:20px;padding:.3rem .75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:.3rem;transition:all .2s;white-space:nowrap}
-.btn-wa-small:hover{background:#1ebe5d;transform:translateY(-1px)}
-.btn-admin-sm{background:transparent;border:1px solid rgba(57,255,20,.3);color:var(--text2);border-radius:6px;padding:.3rem .65rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:1px;cursor:pointer;transition:all .2s}
-.btn-admin-sm:hover{border-color:var(--green);color:var(--green)}
-.btn-admin-red{border-color:rgba(255,85,85,.3);color:#ff8888}
-.btn-admin-red:hover{border-color:#ff5555;color:#ff5555}
-.admin-goles-bar{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:8px;padding:.75rem 1rem;margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
-.player-self-form{background:linear-gradient(135deg,#0f1e14,#16271a);border:2px solid var(--green);border-radius:12px;padding:1.25rem;margin-top:1.25rem}
-.player-self-title{font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:1px;margin-bottom:1rem;color:var(--green)}
-.self-select{width:100%;background:var(--bg);border:1px solid var(--green-dark);color:var(--text);padding:.65rem;border-radius:6px;font-family:'Barlow',sans-serif;font-size:.9rem;margin-bottom:.75rem}
-.self-goles-row{display:flex;align-items:center;gap:1rem;margin-bottom:.9rem}
-.self-goles-label{color:var(--text2);font-size:.85rem;flex:1}
-.self-goles-val{font-family:'Anton',sans-serif;font-size:1.8rem;color:var(--green);min-width:2rem;text-align:center}
-.self-submit-btn{width:100%;padding:.8rem;border-radius:8px;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1.5px;text-transform:uppercase;background:var(--green);color:#0a0f0d;transition:all .2s}
-.self-submit-btn:hover{box-shadow:0 0 30px rgba(57,255,20,.4)}
-.self-submitted-msg{text-align:center;color:var(--green);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-size:.9rem;display:none;padding:.75rem;background:rgba(57,255,20,.08);border-radius:8px;border:1px solid rgba(57,255,20,.2)}
-@media(max-width:600px){.goles-teams{grid-template-columns:1fr}}
-
-/* ═══ MVP VOTING ═══ */
-.mvp-voting-card{background:linear-gradient(135deg,#1a1a00,#1e1c00);border:2px solid rgba(255,215,0,.3);border-radius:14px;padding:1.5rem;margin-bottom:2.5rem;max-width:800px;margin-left:auto;margin-right:auto}
-.mvp-voting-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem}
-.mvp-voting-title{font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:.5rem}
-.mvp-countdown{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;color:var(--text2);letter-spacing:.5px}
-.mvp-countdown strong{color:var(--gold)}
-.mvp-vote-section{margin-bottom:1.25rem}
-.mvp-vote-select{width:100%;background:var(--bg);border:1px solid rgba(255,215,0,.25);color:var(--text);padding:.65rem;border-radius:6px;font-family:'Barlow',sans-serif;font-size:.9rem;margin-bottom:.5rem}
-.mvp-vote-select:focus{outline:none;border-color:var(--gold)}
-.mvp-vote-btn{width:100%;padding:.8rem;border-radius:8px;border:2px solid var(--gold);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,215,0,.1);color:var(--gold);transition:all .2s;margin-top:.3rem}
-.mvp-vote-btn:hover{background:var(--gold);color:#0a0f0d}
-.mvp-vote-btn:disabled{opacity:.35;cursor:not-allowed}
-.mvp-voted-msg{text-align:center;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:8px;padding:1rem;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-size:.9rem;display:none}
-.mvp-bars{margin-top:1.25rem}
-.mvp-bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem}
-.mvp-bar-name{font-size:.84rem;min-width:110px;color:var(--text)}
-.mvp-bar-track{flex:1;height:22px;background:rgba(255,255,255,.05);border-radius:11px;overflow:hidden;border:1px solid rgba(255,215,0,.1)}
-.mvp-bar-fill{height:100%;border-radius:11px;background:linear-gradient(90deg,rgba(255,215,0,.6),var(--gold));transition:width .5s ease;min-width:0}
-.mvp-bar-count{font-family:'Anton',sans-serif;font-size:.95rem;color:var(--gold);min-width:1.5rem;text-align:right}
-.mvp-who-voted{background:rgba(0,0,0,.2);border-radius:8px;padding:.75rem 1rem;margin-top:1rem;border:1px solid rgba(255,255,255,.05)}
-.mvp-who-title{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem}
-.mvp-voters-grid{display:flex;flex-wrap:wrap;gap:.3rem}
-.voter-badge{font-size:.72rem;padding:.18rem .55rem;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.5px}
-.voter-done{background:rgba(57,255,20,.12);color:var(--green);border:1px solid rgba(57,255,20,.2)}
-.voter-pending{background:rgba(255,255,255,.04);color:var(--text2);border:1px solid rgba(255,255,255,.08)}
-.mvp-winner-banner{background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,180,0,.05));border:2px solid var(--gold);border-radius:14px;padding:2rem;text-align:center;margin-bottom:2.5rem;max-width:800px;margin-left:auto;margin-right:auto;box-shadow:0 0 40px rgba(255,215,0,.15)}
-.mvp-winner-star{font-size:3rem;display:block;margin-bottom:.5rem;filter:drop-shadow(0 0 15px rgba(255,215,0,.8))}
-.mvp-winner-label{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:var(--text2);margin-bottom:.4rem}
-.mvp-winner-name{font-family:'Anton',sans-serif;font-size:clamp(1.6rem,5vw,2.8rem);color:var(--gold);letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 30px rgba(255,215,0,.4);margin-bottom:.3rem}
-.mvp-winner-fecha{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;color:var(--text2);letter-spacing:1px}
-.mvp-winner-votes{font-size:.82rem;color:var(--gold);margin-top:.4rem;opacity:.8}
-.admin-mvp-bar{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:8px;padding:.75rem 1rem;margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
-.mvp-pending-banner{background:rgba(255,215,0,.05);border:2px dashed rgba(255,215,0,.2);border-radius:14px;padding:1.75rem;text-align:center;margin-bottom:2.5rem;max-width:800px;margin-left:auto;margin-right:auto}
-.mvp-pending-icon{font-size:2.5rem;margin-bottom:.6rem}
-.mvp-pending-txt{color:var(--text2);font-size:.88rem}
-
 /* RESPONSIVE */
 @media(max-width:900px){
   nav a{font-size:.66rem;padding:.35rem .42rem}
@@ -632,10 +553,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="section">
     <h2 class="stitle">Partidos y <span class="acc">Resultados</span></h2>
     <div class="divider"></div>
-
-    <!-- CARD FECHA EN CURSO: CARGA DE GOLES -->
-    <div id="fecha-live-container"></div>
-
     <div class="tabs">
       <button class="tab-btn" onclick="switchTab('par','p2023',this)">2023</button>
       <button class="tab-btn" onclick="switchTab('par','p2024',this)">2024</button>
@@ -690,14 +607,10 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
   <div class="section">
     <h2 class="stitle">MVP de <span class="acc">la Fecha</span></h2>
     <div class="divider"></div>
-
-    <!-- PANEL MVP FECHA ACTUAL (votación / ganador) -->
-    <div id="mvp-live-panel"></div>
-
-    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs · 2026</h3>
-    <p style="color:var(--text2);font-size:.76rem;margin-bottom:1.1rem">Toca cualquier card para ver el detalle de los MVP de cada fecha.</p>
     <div class="mvp-featured" id="mvp-featured-cnt">
       </div>
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs · 2026</h3>
+    <p style="color:var(--text2);font-size:.76rem;margin-bottom:1.1rem">Toca cualquier card para ver el detalle de los MVP de cada fecha.</p>
     <div class="mvp-grid" id="mvp-cnt"></div>
   </div>
 </div>
@@ -743,19 +656,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="wa-section" id="admin-wa" style="display:none; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-top:2rem;">
       <div class="wa-txt"><strong>📲 Compartir armado por WhatsApp</strong><br><span style="color:var(--text2);font-size:0.8rem;">Solo visible para administrador.</span></div>
       <button class="btn btn-wa" onclick="shareEquiposWhatsApp()">WhatsApp Equipos</button>
-    </div>
-
-    <!-- PANEL ADMIN POST-PARTIDO -->
-    <div id="admin-postpartido-panel" style="display:none; margin-top:1.5rem; background:rgba(255,215,0,.04); border:1px solid rgba(255,215,0,.15); border-radius:10px; padding:1rem 1.25rem;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem">⚙️ Acciones post-partido</div>
-      <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;">
-        <button class="btn-admin-sm" onclick="adminHabilitarGoles()" id="btn-habilitar-goles">⚽ Habilitar carga de goles</button>
-        <button class="btn-admin-sm" onclick="adminCerrarGoles()" id="btn-cerrar-goles" style="display:none">🔒 Cerrar carga de goles</button>
-        <button class="btn-admin-sm" onclick="adminShareGolesWA()" id="btn-share-goles-wa" style="display:none">📲 Enviar link de goles x WA</button>
-        <button class="btn-admin-sm" onclick="adminHabilitarVotacion()" id="btn-habilitar-votacion" style="display:none">🌟 Habilitar votación MVP</button>
-        <button class="btn-admin-sm btn-admin-red" onclick="adminResetFechaLive()" id="btn-reset-fecha-live">🗑️ Resetear fecha en curso</button>
-        <button class="btn-admin-sm" onclick="adminDebugEquipos()" style="border-color:rgba(100,150,255,.4);color:#88aaff">🔍 Debug equipos</button>
-      </div>
     </div>
 
     <div class="forum-section" id="foro-section">
@@ -884,27 +784,7 @@ function adminLogin() {
         document.getElementById('admin-wa').style.display = 'flex';
         document.getElementById('no-play-btn').style.display = 'inline-flex';
         document.getElementById('admin-inscripcion-panel').style.display = 'flex';
-        document.getElementById('admin-postpartido-panel').style.display = 'block';
         actualizarUI_Suspension();
-        
-        // Restaurar estado de botones según localStorage
-        const _ls = getLiveState();
-        if (_ls.golesAbierto && !_ls.golesCerrado) {
-          document.getElementById('btn-habilitar-goles').style.display = 'none';
-          document.getElementById('btn-cerrar-goles').style.display = 'inline-flex';
-          document.getElementById('btn-share-goles-wa').style.display = 'inline-flex';
-        }
-        if (_ls.golesCerrado && !_ls.votacionAbierta && !_ls.votacionCerrada && !_ls.mvpWinner) {
-          document.getElementById('btn-habilitar-votacion').style.display = 'inline-flex';
-        }
-        if (_ls.golesCerrado) {
-          document.getElementById('btn-habilitar-goles').style.display = 'none';
-          document.getElementById('btn-cerrar-goles').style.display = 'none';
-          document.getElementById('btn-share-goles-wa').style.display = 'none';
-        }
-        
-        renderFechaLiveCard();
-        renderMvpLivePanel();
         
         renderForum(); 
         renderInscripcion(); 
@@ -1804,555 +1684,7 @@ async function deletePost(id) {
   } catch(e) { console.error('Error al borrar', e); }
 }
 
-// ═══════════════════════════════════════
-// SISTEMA CARGA DE GOLES & VOTACIÓN MVP
-// ═══════════════════════════════════════
-
-// Estado persistido en localStorage (clave por fecha)
-const FECHA_LIVE_KEY = 'mdf_fecha_live'; // objeto: {fechaNum, equipos:{blanco:[],negro[]}, goles:{nombre:n}, golesAbierto, golesCerrado, votacionAbierta, votacionCerrada, votos:{nombre:[v1,v2]}, quienesVotaron:[], resultado:{gfB,gfN,winner}, mvpWinner, votacionTs}
-
-function getLiveState() {
-  try { return JSON.parse(localStorage.getItem(FECHA_LIVE_KEY)) || {}; } catch(e) { return {}; }
-}
-function setLiveState(obj) {
-  localStorage.setItem(FECHA_LIVE_KEY, JSON.stringify(obj));
-}
-
-// Extrae equipos: primero DOM, luego cache localStorage
-function getEquiposFromDOM() {
-  // 1. Intentar del DOM
-  const bl = [...document.querySelectorAll('#team-blanco-list .player-name-text')].map(el=>el.textContent.trim()).filter(Boolean);
-  const ng = [...document.querySelectorAll('#team-negro-list .player-name-text')].map(el=>el.textContent.trim()).filter(Boolean);
-  if (bl.length > 0 || ng.length > 0) return { blanco: bl, negro: ng };
-  // 2. Fallback: cache de localStorage guardado por loadEquipos
-  try {
-    const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || 'null');
-    if (cached && (cached.blanco?.length > 0 || cached.negro?.length > 0)) {
-      return { blanco: Array.isArray(cached.blanco) ? cached.blanco : [], negro: Array.isArray(cached.negro) ? cached.negro : [] };
-    }
-  } catch(e) {}
-  // 3. Intentar del estado live guardado (si ya se habilitó antes)
-  try {
-    const liveState = JSON.parse(localStorage.getItem('mdf_fecha_live') || 'null');
-    if (liveState?.equipos?.blanco?.length > 0 || liveState?.equipos?.negro?.length > 0) {
-      return { blanco: liveState.equipos.blanco || [], negro: liveState.equipos.negro || [] };
-    }
-  } catch(e) {}
-  return { blanco: [], negro: [] };
-}
-
-// ─── ADMIN: Habilitar carga de goles ─────────────────
-function adminHabilitarGoles() {
-  // Intentar obtener equipos: 1) DOM, 2) cache localStorage, 3) manual
-  let { blanco, negro } = getEquiposFromDOM();
-  
-  // getEquiposFromDOM ya incluye fallback al cache, pero si sigue vacío: manual
-  if (!blanco.length && !negro.length) {
-    const input = prompt('No se detectaron jugadores.\nIngresá todos los nombres separados por coma:\n(ej: Ramirez Jere, Lorda Fernando, ...)');
-    if (!input || !input.trim()) return;
-    const all = input.split(',').map(x => x.trim()).filter(Boolean);
-    if (!all.length) return;
-    blanco = all;
-    negro = [];
-    localStorage.setItem('mdf_equipos_cache', JSON.stringify({ blanco, negro }));
-  }
-  
-  const all = [...blanco, ...negro];
-  const prev = getLiveState();
-  const prevGoles = prev.equipos ? {} : {}; // siempre arrancar goles en 0
-  all.forEach(j => { prevGoles[j] = 0; });
-  
-  setLiveState({
-    fechaNum: MAX_FECHA + 1,
-    equipos: { blanco, negro },
-    goles: prevGoles,
-    golesAbierto: true,
-    golesCerrado: false,
-    votacionAbierta: false,
-    votacionCerrada: false,
-    votos: {},
-    quienesVotaron: [],
-    mvpWinner: null,
-    resultado: null
-  });
-  
-  document.getElementById('btn-habilitar-goles').style.display = 'none';
-  document.getElementById('btn-cerrar-goles').style.display = 'inline-flex';
-  document.getElementById('btn-share-goles-wa').style.display = 'inline-flex';
-  
-  renderFechaLiveCard();
-  alert('✅ Carga de goles habilitada para ' + all.length + ' jugadores: ' + all.slice(0,3).join(', ') + (all.length > 3 ? '...' : ''));
-}
-
-function adminCerrarGoles() {
-  if (!confirm('¿Cerrar la carga de goles? Los jugadores ya no podrán modificar sus goles.')) return;
-  const s = getLiveState();
-  s.golesCerrado = true;
-  s.golesAbierto = false;
-  setLiveState(s);
-  document.getElementById('btn-cerrar-goles').style.display = 'none';
-  document.getElementById('btn-share-goles-wa').style.display = 'none';
-  document.getElementById('btn-habilitar-votacion').style.display = 'inline-flex';
-  renderFechaLiveCard();
-  alert('✅ Carga de goles cerrada. Ahora podés habilitar la votación MVP.');
-}
-
-function adminShareGolesWA() {
-  const url = window.location.href.split('#')[0] + '#partidos';
-  const s = getLiveState();
-  const fechaNum = s.fechaNum || (MAX_FECHA + 1);
-  const msg = `⚽ *CARGÁ TUS GOLES — FECHA ${fechaNum}*\n\nEntrá al link y completá cuántos goles hiciste. ¡Solo tarda un minuto!\n\n👇 ${url}`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-function adminHabilitarVotacion() {
-  const s = getLiveState();
-  if (!s.golesCerrado) { alert('Primero cerrá la carga de goles.'); return; }
-  
-  // Determinar resultado (ganador) para saber quiénes votan
-  const gfB = s.resultado?.gfB ?? null;
-  const gfN = s.resultado?.gfN ?? null;
-  
-  if (gfB === null || gfN === null) {
-    const input = prompt('Ingresá el resultado del partido (ej: 9-8, formato BLANCO-NEGRO):');
-    if (!input) return;
-    const parts = input.split('-').map(x => parseInt(x.trim()));
-    if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) { alert('Formato inválido. Usá el formato: 9-8'); return; }
-    s.resultado = { gfB: parts[0], gfN: parts[1] };
-  }
-  
-  s.votacionAbierta = true;
-  s.votacionCerrada = false;
-  s.votacionTs = Date.now();
-  s.votos = {};
-  s.quienesVotaron = [];
-  s.mvpWinner = null;
-  setLiveState(s);
-  
-  document.getElementById('btn-habilitar-votacion').style.display = 'none';
-  
-  // Compartir por WA
-  const url = window.location.href.split('#')[0] + '#mvp';
-  const fechaNum = s.fechaNum || (MAX_FECHA + 1);
-  const msg = `🌟 *VOTÁ AL MVP — FECHA ${fechaNum}*\n\nEntrá al link y votá a los 2 mejores del partido. ¡Tenés 24hs!\n\n👇 ${url}`;
-  setTimeout(() => window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'), 300);
-  
-  renderFechaLiveCard();
-  renderMvpLivePanel();
-  alert('✅ Votación MVP habilitada. Link de WhatsApp enviado.');
-}
-
-function adminResetFechaLive() {
-  if (!confirm('⚠️ Esto borrará TODA la data de la fecha en curso:\n- Goles cargados\n- Votos MVP\n- Resultado\n- Goles propios de todos los jugadores\n\n¿Confirmar reset?')) return;
-  
-  // Limpiar estado principal
-  localStorage.removeItem(FECHA_LIVE_KEY);
-  
-  // Limpiar todas las marcas de "ya cargué mis goles" de todos los fechaNum posibles
-  const keysToRemove = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k && (k.startsWith('mdf_goles_enviado_f') || k.startsWith('mdf_mvp_vote_f'))) {
-      keysToRemove.push(k);
-    }
-  }
-  keysToRemove.forEach(k => localStorage.removeItem(k));
-  
-  // Restaurar botones admin
-  const btnHabilitar = document.getElementById('btn-habilitar-goles');
-  const btnCerrar = document.getElementById('btn-cerrar-goles');
-  const btnShare = document.getElementById('btn-share-goles-wa');
-  const btnVotacion = document.getElementById('btn-habilitar-votacion');
-  if (btnHabilitar) btnHabilitar.style.display = 'inline-flex';
-  if (btnCerrar) btnCerrar.style.display = 'none';
-  if (btnShare) btnShare.style.display = 'none';
-  if (btnVotacion) btnVotacion.style.display = 'none';
-  
-  renderFechaLiveCard();
-  renderMvpLivePanel();
-  alert('✅ Fecha reseteada. Todo limpio para la próxima fecha real.');
-}
-
-// ─── CARD FECHA EN CURSO (Partidos) ──────────────────
-function renderFechaLiveCard() {
-  const container = document.getElementById('fecha-live-container');
-  if (!container) return;
-  const s = getLiveState();
-  
-  if (!s.golesAbierto && !s.golesCerrado) {
-    // No hay fecha activa
-    container.innerHTML = `<div class="empty-box" style="margin-bottom:2rem">
-      <span style="font-size:1.8rem;display:block;margin-bottom:.5rem">⏳</span>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:1px">La carga de goles se habilitará después del partido del jueves.</div>
-    </div>`;
-    return;
-  }
-  
-  const blanco = s.equipos?.blanco || [];
-  const negro = s.equipos?.negro || [];
-  const { goles = {}, golesCerrado, golesAbierto, fechaNum } = s;
-  const isOpen = golesAbierto && !golesCerrado;
-  
-  // Verificar si el jugador ya envió sus goles
-  const myName = localStorage.getItem('mdf_goles_enviado_f' + fechaNum);
-  
-  // Fila admin (editable con +/-)
-  const makePlayerRowAdmin = (jugador) => {
-    const g = goles[jugador] || 0;
-    return `<div class="goles-player-row">
-      <span class="gpl-name${g>0?' confirmed':''}">${jugador}${g>0?' ✓':''}</span>
-      <div class="gpl-controls">
-        <button class="gpl-btn gpl-btn-minus" onclick="changeGolAdmin('${jugador.replace(/'/g,"\\'")}', -1)">−</button>
-        <span class="gpl-count" id="gpl-${jugador.replace(/[^a-zA-Z]/g,'_')}">${g}</span>
-        <button class="gpl-btn gpl-btn-plus" onclick="changeGolAdmin('${jugador.replace(/'/g,"\\'")}', 1)">+</button>
-      </div>
-    </div>`;
-  };
-
-  // Fila pública (solo lectura)
-  const makePlayerRowPublic = (jugador) => {
-    const g = goles[jugador] || 0;
-    const isMe = myName === jugador;
-    return `<div class="goles-player-row">
-      <span class="gpl-name${isMe?' confirmed':''}">${jugador}${isMe?' ✓':''}</span>
-      <span class="gpl-count">${g > 0 ? '⚽ '+g : '—'}</span>
-    </div>`;
-  };
-
-  const makeTeamGrid = (players, label, dotCls) => `
-    <div>
-      <div class="goles-team-title"><span class="${dotCls}"></span> ${label}</div>
-      ${players.map(j => adminUnlocked ? makePlayerRowAdmin(j) : makePlayerRowPublic(j)).join('') || '<div style="color:var(--text2);font-size:.8rem">Sin jugadores cargados</div>'}
-    </div>`;
-
-  const statusHtml = isOpen
-    ? `<span class="fecha-live-status status-abierta"><span class="pulse"></span> CARGA ABIERTA</span>`
-    : `<span class="fecha-live-status status-cerrada">🔒 CARGA CERRADA</span>`;
-
-  const shareBtn = isOpen ? `<button class="btn-wa-small" onclick="playerShareGolesWA()">📲 Compartir</button>` : '';
-
-  // Form jugador: si ya envió → mensaje; si no → form de carga
-  const yaEnvie = !!(myName && myName !== '');
-  let selfFormHtml = '';
-  if (isOpen && !adminUnlocked) {
-    if (yaEnvie) {
-      selfFormHtml = `<div class="player-self-form" style="border-color:rgba(57,255,20,.4)">
-        <div style="text-align:center;padding:.5rem 0">
-          <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;color:var(--green);letter-spacing:1px">¡Goles confirmados!</div>
-          <div style="color:var(--text2);font-size:.84rem;margin-top:.3rem">Cargaste <strong style="color:var(--green)">${goles[myName]||0} gole${(goles[myName]||0)!==1?'s':''}</strong> como <strong>${myName}</strong></div>
-        </div>
-      </div>`;
-    } else {
-      selfFormHtml = `<div class="player-self-form" id="self-goles-form">
-        <div class="player-self-title">⚽ Cargá tus goles</div>
-        <select class="self-select" id="self-select-jugador" onchange="syncSelfCount()">
-          <option value="">Seleccioná tu nombre...</option>
-          ${[...blanco, ...negro].map(j => `<option value="${j}">${j}</option>`).join('')}
-        </select>
-        <div class="self-goles-row">
-          <span class="self-goles-label">Cantidad de goles:</span>
-          <button class="gpl-btn gpl-btn-minus" onclick="changeSelfGolCount(-1)" style="width:32px;height:32px;font-size:1.2rem">−</button>
-          <span class="self-goles-val" id="self-gol-count">0</span>
-          <button class="gpl-btn gpl-btn-plus" onclick="changeSelfGolCount(1)" style="width:32px;height:32px;font-size:1.2rem">+</button>
-        </div>
-        <button class="self-submit-btn" onclick="submitSelfGoles()">✔ Confirmar mis goles</button>
-      </div>`;
-    }
-  }
-
-  container.innerHTML = `
-    <div class="fecha-live-card">
-      <div class="fecha-live-header">
-        <div>
-          <div class="fecha-live-title">⚽ Fecha ${fechaNum} en curso</div>
-          <div style="color:var(--text2);font-size:.78rem;margin-top:.2rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px">Goles del partido del miércoles</div>
-        </div>
-        <div style="display:flex;gap:.5rem;align-items:center;">${statusHtml}${shareBtn}</div>
-      </div>
-      <div class="goles-teams">
-        ${makeTeamGrid(blanco, 'Equipo Blanco', 'dot-w')}
-        ${makeTeamGrid(negro, 'Equipo Negro', 'dot-n')}
-      </div>
-      ${selfFormHtml}
-      ${adminUnlocked && isOpen ? `<div class="admin-goles-bar"><span style="color:var(--text2);font-size:.78rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">ADMIN:</span> <button class="btn-admin-sm" onclick="adminCerrarGoles()">🔒 Cerrar carga</button> <button class="btn-wa-small" onclick="adminShareGolesWA()">📲 Enviar link WA</button></div>` : ''}
-    </div>`;
-}
-
-let _selfGolCount = 0;
-function syncSelfCount() {
-  _selfGolCount = 0;
-  const el = document.getElementById('self-gol-count');
-  if (el) el.textContent = 0;
-}
-function changeSelfGolCount(delta) {
-  _selfGolCount = Math.max(0, _selfGolCount + delta);
-  const el = document.getElementById('self-gol-count');
-  if (el) el.textContent = _selfGolCount;
-}
-function changeGolAdmin(jugador, delta) {
-  const s = getLiveState();
-  s.goles[jugador] = Math.max(0, (s.goles[jugador] || 0) + delta);
-  setLiveState(s);
-  const id = 'gpl-' + jugador.replace(/[^a-zA-Z]/g, '_');
-  const el = document.getElementById(id);
-  if (el) el.textContent = s.goles[jugador];
-  const row = el ? el.closest('.goles-player-row') : null;
-  const nameEl = row ? row.querySelector('.gpl-name') : null;
-  if (nameEl) {
-    nameEl.className = 'gpl-name' + (s.goles[jugador] > 0 ? ' confirmed' : '');
-    nameEl.textContent = jugador + (s.goles[jugador] > 0 ? ' ✓' : '');
-  }
-}
-function submitSelfGoles() {
-  const sel = document.getElementById('self-select-jugador');
-  const jugador = sel ? sel.value : '';
-  if (!jugador) { alert('Seleccioná tu nombre primero.'); return; }
-  const s = getLiveState();
-  s.goles[jugador] = _selfGolCount;  // solo modifica ESTE jugador, no borra los demás
-  setLiveState(s);
-  localStorage.setItem('mdf_goles_enviado_f' + s.fechaNum, jugador);
-  renderFechaLiveCard();
-}
-function playerShareGolesWA() {
-  const url = window.location.href.split('#')[0] + '#partidos';
-  const s = getLiveState();
-  const msg = `⚽ Cargá tus goles de la Fecha ${s.fechaNum || ''}!\n\n👉 ${url}`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-// ─── MVP LIVE PANEL ───────────────────────────────────
-function renderMvpLivePanel() {
-  const container = document.getElementById('mvp-live-panel');
-  if (!container) return;
-  const s = getLiveState();
-  
-  // Si no hay nada activo
-  if (!s.votacionAbierta && !s.votacionCerrada && !s.mvpWinner) {
-    container.innerHTML = `<div class="mvp-pending-banner">
-      <div class="mvp-pending-icon">🌟</div>
-      <div style="font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--gold);margin-bottom:.4rem">VOTACIÓN MVP PRÓXIMAMENTE</div>
-      <div class="mvp-pending-txt">La votación se habilitará después de que el admin cierre la carga de goles.</div>
-    </div>`;
-    return;
-  }
-  
-  // Si hay ganador consagrado
-  if (s.mvpWinner) {
-    renderMvpWinnerBanner(container, s);
-    return;
-  }
-  
-  const { equipos = {blanco:[], negro:[]}, resultado = {gfB:0, gfN:0}, votos = {}, quienesVotaron = [], votacionTs, votacionCerrada, fechaNum } = s;
-  
-  // Determinar quiénes pueden votar y a quiénes
-  const gfB = resultado.gfB || 0;
-  const gfN = resultado.gfN || 0;
-  const isEmpate = gfB === gfN;
-  const blancoGana = gfB > gfN;
-  
-  let candidatos = [];
-  if (isEmpate) {
-    candidatos = [...(equipos.blanco||[]), ...(equipos.negro||[])];
-  } else if (blancoGana) {
-    candidatos = [...(equipos.blanco||[])];
-  } else {
-    candidatos = [...(equipos.negro||[])];
-  }
-  
-  const todosLosJugadores = [...(equipos.blanco||[]), ...(equipos.negro||[])];
-  const myVote = localStorage.getItem('mdf_mvp_vote_f' + fechaNum);
-  let myVotes = [];
-  try { myVotes = myVote ? JSON.parse(myVote) : []; } catch(e) { myVotes = []; }
-  
-  // Countdown
-  let countdownHtml = '';
-  if (votacionTs) {
-    const end = votacionTs + 24*60*60*1000;
-    const now = Date.now();
-    const remaining = end - now;
-    if (remaining > 0) {
-      const h = Math.floor(remaining / 3600000);
-      const m = Math.floor((remaining % 3600000) / 60000);
-      countdownHtml = `<div class="mvp-countdown">Cierra en <strong>${h}h ${m}m</strong></div>`;
-    }
-  }
-  
-  // Auto-close check
-  const autoClose = votacionTs && (Date.now() > votacionTs + 24*60*60*1000);
-  const allVoted = todosLosJugadores.length > 0 && quienesVotaron.length >= todosLosJugadores.length;
-  if ((autoClose || allVoted) && !votacionCerrada && s.votacionAbierta) {
-    cerrarVotacionAuto();
-    return;
-  }
-  
-  // Calcular votos
-  const voteCount = {};
-  Object.values(votos).forEach(arr => arr.forEach(v => { voteCount[v] = (voteCount[v]||0)+1; }));
-  const maxVotes = Math.max(0, ...Object.values(voteCount));
-  
-  // Resultado parcial (barras)
-  const barsHtml = candidatos.map(j => {
-    const count = voteCount[j] || 0;
-    const pct = maxVotes > 0 ? Math.round(count/maxVotes*100) : 0;
-    return `<div class="mvp-bar-row">
-      <span class="mvp-bar-name">${j}</span>
-      <div class="mvp-bar-track"><div class="mvp-bar-fill" style="width:${pct}%"></div></div>
-      <span class="mvp-bar-count">${count}</span>
-    </div>`;
-  }).join('');
-  
-  // Filtrar quiénes NO votaron aún para el dropdown "¿quién sos?"
-  const votedSet2 = new Set(quienesVotaron);
-  const noVotaron = todosLosJugadores.filter(j => !votedSet2.has(j));
-
-  // ¿Este navegador ya votó?
-  const yaVotó = myVotes.length === 2;
-
-  let voteFormHtml = '';
-  if (yaVotó) {
-    voteFormHtml = `<div class="mvp-voted-msg" style="display:block">✅ Ya votaste: <strong>${myVotes.join(' y ')}</strong></div>`;
-  } else if (noVotaron.length === 0) {
-    voteFormHtml = `<div class="mvp-voted-msg" style="display:block">✅ Todos los jugadores ya votaron.</div>`;
-  } else {
-    voteFormHtml = `
-    <div class="mvp-vote-section" id="mvp-vote-form">
-      <div style="color:var(--text2);font-size:.82rem;margin-bottom:.6rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px">
-        Votá a <strong style="color:var(--gold)">2 jugadores</strong> del equipo ${isEmpate ? 'de ambos equipos' : (blancoGana ? 'Blanco' : 'Negro')} (ganador${isEmpate ? 'es' : ''})
-      </div>
-      <select class="mvp-vote-select" id="mvp-quien-vota">
-        <option value="">¿Quién sos vos?</option>
-        ${noVotaron.map(j => `<option value="${j}">${j}</option>`).join('')}
-      </select>
-      <select class="mvp-vote-select" id="mvp-voto1">
-        <option value="">1° voto — Mejor jugador...</option>
-        ${candidatos.map(j => `<option value="${j}">${j}</option>`).join('')}
-      </select>
-      <select class="mvp-vote-select" id="mvp-voto2">
-        <option value="">2° voto — Segundo mejor...</option>
-        ${candidatos.map(j => `<option value="${j}">${j}</option>`).join('')}
-      </select>
-      <button class="mvp-vote-btn" onclick="submitMvpVote()">🌟 Confirmar mis votos</button>
-    </div>`;
-  }
-  
-  // Quiénes votaron / faltan
-  const votedSet = new Set(quienesVotaron);
-  const whoVotedHtml = `
-    <div class="mvp-who-voted">
-      <div class="mvp-who-title">Votaron (${quienesVotaron.length}/${todosLosJugadores.length})</div>
-      <div class="mvp-voters-grid">
-        ${todosLosJugadores.map(j => `<span class="voter-badge ${votedSet.has(j)?'voter-done':'voter-pending'}">${j} ${votedSet.has(j)?'✓':'⏳'}</span>`).join('')}
-      </div>
-    </div>`;
-  
-  const adminBar = adminUnlocked ? `
-    <div class="admin-mvp-bar">
-      <span style="color:var(--text2);font-size:.78rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">ADMIN:</span>
-      <button class="btn-admin-sm" onclick="adminCerrarVotacionManual()">🏆 Cerrar y consagrar MVP</button>
-      <button class="btn-wa-small" onclick="adminShareMvpWA()">📲 Enviar link WA</button>
-    </div>` : '';
-  
-  container.innerHTML = `
-    <div class="mvp-voting-card">
-      <div class="mvp-voting-header">
-        <div class="mvp-voting-title">🌟 Votación MVP — F${fechaNum}</div>
-        ${countdownHtml}
-      </div>
-      <div style="color:var(--text2);font-size:.8rem;margin-bottom:1rem">Resultado: <strong style="color:var(--text)">Blanco ${gfB} — ${gfN} Negro</strong></div>
-      ${voteFormHtml}
-      <div class="mvp-bars" id="mvp-bars-cnt">${barsHtml}</div>
-      ${whoVotedHtml}
-      ${adminBar}
-    </div>`;
-}
-
-function submitMvpVote() {
-  const quien = document.getElementById('mvp-quien-vota')?.value;
-  const v1 = document.getElementById('mvp-voto1')?.value;
-  const v2 = document.getElementById('mvp-voto2')?.value;
-  
-  if (!quien) { alert('Seleccioná tu nombre primero.'); return; }
-  if (!v1 || !v2) { alert('Tenés que elegir 2 jugadores.'); return; }
-  if (v1 === v2) { alert('Elegí 2 jugadores distintos.'); return; }
-  
-  const s = getLiveState();
-  if (!s.votacionAbierta || s.votacionCerrada) { alert('La votación ya cerró.'); return; }
-  if (s.quienesVotaron.includes(quien)) { alert(quien + ' ya votó antes.'); return; }
-  
-  // Guardar el voto
-  s.votos[quien] = [v1, v2];
-  s.quienesVotaron.push(quien);
-  setLiveState(s);
-  
-  // Marcar en ESTE navegador que "quien" ya votó (para el form local)
-  localStorage.setItem('mdf_mvp_vote_f' + s.fechaNum, JSON.stringify([v1, v2]));
-  
-  // Check si ya votaron todos → cerrar automáticamente
-  const todos = [...(s.equipos?.blanco||[]), ...(s.equipos?.negro||[])];
-  if (s.quienesVotaron.length >= todos.length) {
-    setTimeout(() => cerrarVotacionAuto(), 1200);
-  } else {
-    renderMvpLivePanel(); // re-render inmediato para sacar el nombre del dropdown
-  }
-}
-
-function cerrarVotacionAuto() {
-  const s = getLiveState();
-  const voteCount = {};
-  Object.values(s.votos || {}).forEach(arr => arr.forEach(v => { voteCount[v] = (voteCount[v]||0)+1; }));
-  const sorted = Object.entries(voteCount).sort((a,b) => b[1]-a[1]);
-  const winner = sorted[0]?.[0] || null;
-  const winnerVotes = sorted[0]?.[1] || 0;
-  
-  s.mvpWinner = winner;
-  s.mvpWinnerVotes = winnerVotes;
-  s.votacionCerrada = true;
-  s.votacionAbierta = false;
-  setLiveState(s);
-  
-  renderMvpLivePanel();
-}
-
-function adminCerrarVotacionManual() {
-  if (!confirm('¿Cerrar la votación y consagrar al MVP?')) return;
-  cerrarVotacionAuto();
-}
-
-function adminShareMvpWA() {
-  const url = window.location.href.split('#')[0] + '#mvp';
-  const s = getLiveState();
-  const msg = `🌟 *VOTÁ AL MVP — FECHA ${s.fechaNum || ''}*\n\nSolo jugadores de esta fecha. ¡Tenés 24hs para votar!\n\n👉 ${url}`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-function renderMvpWinnerBanner(container, s) {
-  const voteCount = {};
-  Object.values(s.votos || {}).forEach(arr => arr.forEach(v => { voteCount[v] = (voteCount[v]||0)+1; }));
-  const totalVotos = voteCount[s.mvpWinner] || s.mvpWinnerVotes || 0;
-  const totalVotantes = s.quienesVotaron?.length || 0;
-  
-  container.innerHTML = `
-    <div class="mvp-winner-banner">
-      <span class="mvp-winner-star">⭐</span>
-      <div class="mvp-winner-label">MVP DE LA FECHA ${s.fechaNum}</div>
-      <div class="mvp-winner-name">${s.mvpWinner}</div>
-      <div class="mvp-winner-fecha">Temporada 2026</div>
-      <div class="mvp-winner-votes">${totalVotos} voto${totalVotos!==1?'s':''} de ${totalVotantes} jugador${totalVotantes!==1?'es':''}</div>
-      ${adminUnlocked ? `<div style="margin-top:1rem"><button class="btn-admin-sm" onclick="adminShareMvpResultWA()">📲 Compartir resultado</button></div>` : ''}
-    </div>`;
-}
-
-function adminShareMvpResultWA() {
-  const s = getLiveState();
-  if (!s.mvpWinner) return;
-  const url = window.location.href.split('#')[0] + '#mvp';
-  const msg = `🏆 *MVP FECHA ${s.fechaNum} — MDF 2026*\n\n⭐ *${s.mvpWinner}* es el MVP de la fecha!\n\nVer detalle: ${url}`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-// ─── Re-render en showPage ────────────────────────────
-// (se agrega en el init)
+function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
 function parseCSV(csv){
   const lines=csv.split('\n').filter(l=>l.trim());const out=[];
@@ -2381,56 +1713,22 @@ async function loadData(){
   renderAll(D);
 }
 
-// GIDs a probar: el original + hoja 0 + otros
-const EQUIPOS_GIDS_TO_TRY = [607354519, 0, 1, 2, 3, 4, 5];
-
-function parseEquiposCSV(csv) {
-  const lines = csv.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  if (lines.length < 2) return { blanco: [], negro: [] };
-  const header = lines[0].toUpperCase();
-  const startRow = (header.includes('BLANCO') || header.includes('NEGRO') || header.includes('EQUIPO') || header.includes('JUGADOR')) ? 1 : 0;
-  const blanco = [], negro = [];
-  for (let i = startRow; i < lines.length; i++) {
-    const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, '').trim());
-    const b = v[0]; const n = v[1];
-    const skip = ['', 'blanco', 'negro', 'equipo blanco', 'equipo negro', 'jugador'];
-    if (b && !skip.includes(b.toLowerCase())) blanco.push(b);
-    if (n && !skip.includes(n.toLowerCase())) negro.push(n);
-  }
-  return { blanco, negro };
-}
-
 async function loadEquipos(){
-  let loaded = false;
-  for (const gid of EQUIPOS_GIDS_TO_TRY) {
-    try {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}&_=${Math.random()}`;
-      const r = await fetch(url, { cache: 'no-store' });
-      if (!r.ok) continue;
-      const csv = await r.text();
-      if (csv.trim().startsWith('<') || csv.length < 10) continue;
-      const { blanco, negro } = parseEquiposCSV(csv);
-      if (blanco.length === 0 && negro.length === 0) continue;
-      const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
-      document.getElementById('team-blanco-list').innerHTML = blanco.map(makePlayer).join('');
-      document.getElementById('team-negro-list').innerHTML = negro.map(makePlayer).join('');
-      localStorage.setItem('mdf_equipos_cache', JSON.stringify({ blanco, negro, gid }));
-      console.log(`Equipos OK - GID ${gid}: Blanco(${blanco.length}) Negro(${negro.length})`);
-      loaded = true;
-      break;
-    } catch(e) { console.warn(`GID ${gid} error:`, e); }
-  }
-  if (!loaded) {
-    try {
-      const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || '{}');
-      if (cached.blanco?.length > 0 || cached.negro?.length > 0) {
-        const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
-        if (cached.blanco?.length) document.getElementById('team-blanco-list').innerHTML = cached.blanco.map(makePlayer).join('');
-        if (cached.negro?.length) document.getElementById('team-negro-list').innerHTML = cached.negro.map(makePlayer).join('');
-        console.log('Usando cache de equipos anterior.');
-      }
-    } catch(e) {}
-  }
+  try{
+    const r=await fetch(EQUIPOS_URL + '&_=' + Math.random(), { cache: 'no-store' });
+    if(!r.ok) throw new Error('Error en equipos');
+    const csv=await r.text();
+    const lines=csv.split('\n').filter(l=>l.trim());
+    const blanco=[]; const negro=[];
+    for(let i=1; i<lines.length; i++){
+      const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
+      if(v[0] && v[0] !== '') blanco.push(v[0]);
+      if(v[1] && v[1] !== '') negro.push(v[1]);
+    }
+    const makePlayer = (p) => `<div class="pl-item"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name player-name-text">${p}</span></div></div>`;
+    if(blanco.length > 0) document.getElementById('team-blanco-list').innerHTML = blanco.map(makePlayer).join('');
+    if(negro.length > 0) document.getElementById('team-negro-list').innerHTML = negro.map(makePlayer).join('');
+  }catch(e){}
 }
 
 function renderAll(data){
@@ -2483,8 +1781,6 @@ function showPage(id, updateUrl = true){
   
   if(targetId==='proxima')renderForum();
   if(targetId==='inscripcion')renderInscripcion();
-  if(targetId==='partidos')renderFechaLiveCard();
-  if(targetId==='mvp')renderMvpLivePanel();
 
   if(updateUrl) {
     history.pushState(null, null, '#' + id);
@@ -2517,60 +1813,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Leemos la memoria y dibujamos el cartel para todos apenas entran
   actualizarUI_Suspension();
   
-  // Renderizar paneles dinámicos
-  renderFechaLiveCard();
-  renderMvpLivePanel();
-  
-  // Restaurar botones admin si ya había estado
-  const s = getLiveState();
-  if (adminUnlocked) {
-    if (s.golesAbierto) {
-      document.getElementById('btn-habilitar-goles').style.display = 'none';
-      document.getElementById('btn-cerrar-goles').style.display = 'inline-flex';
-      document.getElementById('btn-share-goles-wa').style.display = 'inline-flex';
-    }
-    if (s.golesCerrado && !s.votacionAbierta && !s.votacionCerrada) {
-      document.getElementById('btn-habilitar-votacion').style.display = 'inline-flex';
-    }
-  }
-  
   const hash = window.location.hash.substring(1);
   if(hash) showPage(hash, false);
 });
-
-async function adminDebugEquipos() {
-  let msg = 'DIAGNÓSTICO DE EQUIPOS\n\n';
-  // 1. Cache local
-  try {
-    const cached = JSON.parse(localStorage.getItem('mdf_equipos_cache') || '{}');
-    msg += `Cache localStorage: Blanco(${cached.blanco?.length||0}) Negro(${cached.negro?.length||0}) GID usado:${cached.gid??'?'}\n`;
-    if (cached.blanco?.length) msg += `  Blanco: ${cached.blanco.slice(0,3).join(', ')}...\n`;
-    if (cached.negro?.length) msg += `  Negro: ${cached.negro.slice(0,3).join(', ')}...\n`;
-  } catch(e) { msg += 'Cache: ERROR\n'; }
-  // 2. DOM
-  const bl = [...document.querySelectorAll('#team-blanco-list .player-name-text')].map(e=>e.textContent.trim());
-  const ng = [...document.querySelectorAll('#team-negro-list .player-name-text')].map(e=>e.textContent.trim());
-  msg += `\nDOM equipos: Blanco(${bl.length}) Negro(${ng.length})\n`;
-  if (bl.length) msg += `  Blanco: ${bl.slice(0,3).join(', ')}...\n`;
-  // 3. Probar cada GID
-  msg += '\nProbando GIDs del Sheet:\n';
-  for (const gid of [607354519, 0, 1, 2, 3, 4, 5]) {
-    try {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}&_=${Math.random()}`;
-      const r = await fetch(url, { cache: 'no-store' });
-      if (!r.ok) { msg += `  GID ${gid}: HTTP ${r.status}\n`; continue; }
-      const csv = await r.text();
-      if (csv.trim().startsWith('<')) { msg += `  GID ${gid}: respuesta HTML (no existe)\n`; continue; }
-      const firstLine = csv.split('\n')[0];
-      msg += `  GID ${gid}: OK - Encabezado: "${firstLine.substring(0,60)}"\n`;
-      const { blanco, negro } = parseEquiposCSV(csv);
-      msg += `    → Blanco(${blanco.length}) Negro(${negro.length})\n`;
-      if (blanco.length) msg += `    → B: ${blanco.slice(0,3).join(', ')}\n`;
-    } catch(e) { msg += `  GID ${gid}: ${e.message}\n`; }
-  }
-  alert(msg);
-}
-
 </script>
 </body>
 </html>
