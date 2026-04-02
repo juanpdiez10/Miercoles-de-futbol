@@ -321,14 +321,46 @@ table.st td:nth-child(2),table.st th:nth-child(2){box-shadow:3px 0 8px rgba(0,0,
 .ay{font-size:.66rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);min-width:2.2rem}
 .an{font-weight:600;font-size:.88rem}
 
-/* QUICK CARDS GLASSMORPHISM (Estilo iOS Neón) */
+/* QUICK CARDS LIQUID GLASS (Wet/Shiny Neón) */
 .qgrid-glass { display:flex; justify-content:center; flex-wrap:wrap; gap:1.2rem; margin-top:2.5rem; max-width:900px; margin-inline:auto; }
-.qcard-glass { background: rgba(57, 255, 20, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(57, 255, 20, 0.15); border-radius: 18px; padding: 1.25rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 115px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); }
-.qcard-glass:hover { transform: translateY(-5px); background: rgba(57, 255, 20, 0.08); border-color: rgba(57, 255, 20, 0.4); box-shadow: 0 12px 40px 0 rgba(57, 255, 20, 0.2); }
+.qcard-glass {
+    /* Base translúcida suave con gradiente para profundidad */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(57, 255, 20, 0.02) 60%);
+    /* Reflejo de brillo "líquido" en el borde superior */
+    background-image:
+        linear-gradient(170deg, rgba(255,255,255,0.08) 0%, transparent 40%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(57, 255, 20, 0.02) 60%);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(57, 255, 20, 0.15);
+    border-radius: 20px;
+    padding: 1.25rem 0.5rem; text-align: center; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 115px;
+    /* Sombra externa suave + Neón sutil */
+    box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.2),
+        inset 0 0 10px rgba(57, 255, 20, 0.05);
+    position: relative; overflow: hidden;
+}
+/* Reflejo dinámico al pasar el mouse (hover shine) */
+.qcard-glass::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: rotate(45deg); transition: all 0.5s ease; opacity: 0;
+}
+.qcard-glass:hover::before { left: 100%; top: 100%; opacity: 1; transition: all 0.8s ease; }
+
+.qcard-glass:hover {
+    transform: translateY(-5px) scale(1.02);
+    background-color: rgba(57, 255, 20, 0.08);
+    border-color: rgba(57, 255, 20, 0.5);
+    box-shadow:
+        0 12px 40px 0 rgba(57, 255, 20, 0.2),
+        0 0 15px rgba(57, 255, 20, 0.1);
+}
 .qicon-glass { width: 34px; height: 34px; color: var(--green); margin-bottom: 0.8rem; filter: drop-shadow(0 0 8px rgba(57,255,20,0.4)); transition: all 0.3s ease; display: inline-block; }
 .qcard-glass:hover .qicon-glass { filter: drop-shadow(0 0 12px rgba(57,255,20,0.8)); transform: scale(1.1); }
 .qt-glass { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text); }
-
 /* FOOTER (Diseño PC ultra compacto) */
 footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5rem 2rem 1.5rem;margin-top:3rem}
 .fi{max-width:1200px;margin:0 auto}
@@ -390,18 +422,18 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 </head>
 <body>
 
-<div class="score-modal" id="score-modal" onclick="if(event.target===this)this.classList.remove('open')">
+<div class="score-modal" id="score-modal" onclick="if(event.target===this)closeModalManual('score-modal')">
   <div class="score-modal-inner">
-    <button class="score-modal-close" onclick="document.getElementById('score-modal').classList.remove('open')">✕</button>
+    <button class="score-modal-close" onclick="closeModalManual('score-modal')">✕</button>
     <div class="sm-title" id="sm-name"></div>
     <div class="sm-sub" id="sm-sub"></div>
     <div class="sm-rows" id="sm-rows"></div>
   </div>
 </div>
 
-<div class="mvp-modal" id="mvp-modal" onclick="if(event.target===this)this.classList.remove('open')">
+<div class="mvp-modal" id="mvp-modal" onclick="if(event.target===this)closeModalManual('mvp-modal')">
   <div class="mvp-modal-inner">
-    <button class="mvp-modal-close" onclick="document.getElementById('mvp-modal').classList.remove('open')">✕</button>
+    <button class="mvp-modal-close" onclick="closeModalManual('mvp-modal')">✕</button>
     <div id="modal-img-wrap"></div>
     <div class="mvp-modal-lbl">★ MVP de la Fecha</div>
     <div class="mvp-modal-name" id="modal-name"></div>
@@ -409,7 +441,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="mvp-modal-stat" id="modal-stat"></div>
   </div>
 </div>
-
+  
 <header>
   <div class="logo">
     <img src="logo.png" alt="MDF" class="logo-img" onclick="adminLogin()">
@@ -441,7 +473,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
           <div class="qt-glass">Tabla</div>
         </div>
         <div class="qcard-glass" onclick="showPage('partidos')">
-          <svg class="qicon-glass" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.974 0-5.699-.535-8.082-1.453M4.157 7.582a8.98 8.98 0 0 0-1.875 3.336M19.843 7.582a8.98 8.98 0 0 1 1.875 3.336" /></svg>
+          <svg class="qicon-glass" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2" style="filter: drop-shadow(0 0 10px rgba(57,255,20,0.5));"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.5h2M11 20.5h2M5 11v2M19 11v2M19 21v-4M19 7V3M5 3v4M5 21v-4M3 10V4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5V10M3 14v5.5A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5V14M11.95 12h.1M12 12m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0M21 12H17M3 12H7" /></svg>
           <div class="qt-glass">Partidos</div>
         </div>
         <div class="qcard-glass" onclick="showPage('goleadores')">
@@ -1280,6 +1312,18 @@ function renderMatches(ms){
   }).join('');
 }
 
+// Función general para cerrar popups manualmente (botón o background)
+function closeModalManual(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal.classList.contains('open')) {
+    modal.classList.remove('open');
+    // Revertimos el estado ficticio del historial si no cerramos con el botón Atrás
+    if (history.state && history.state.modalOpen) {
+      history.back();
+    }
+  }
+}
+
 function openScoreModal(nombre,isValla){
   const modal=document.getElementById('score-modal');
   document.getElementById('sm-name').textContent=nombre;
@@ -1306,6 +1350,11 @@ function openScoreModal(nombre,isValla){
     rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val">${prom}</span></div>`;
   }
   document.getElementById('sm-rows').innerHTML=rows;
+  
+  // AGREGAMOS ESTADO AL HISTORIAL para que "Atrás" en móvil cierre el popup
+  if (!history.state || !history.state.modalOpen) {
+    history.pushState({ modalOpen: true }, '', '#modal-abierto');
+  }
   modal.classList.add('open');
 }
 
@@ -1416,6 +1465,11 @@ function openMvpModal(imgSrc,name,date,stat){
   document.getElementById('modal-name').textContent=name;
   document.getElementById('modal-date').textContent=date;
   document.getElementById('modal-stat').textContent=stat;
+  
+  // AGREGAMOS ESTADO AL HISTORIAL para que "Atrás" en móvil cierre el popup
+  if (!history.state || !history.state.modalOpen) {
+    history.pushState({ modalOpen: true }, '', '#modal-abierto');
+  }
   document.getElementById('mvp-modal').classList.add('open');
 }
 
@@ -1794,7 +1848,7 @@ function showPage(id, updateUrl = true){
   
   const idx={home:0,inscripcion:1,tabla:2,partidos:3,goleadores:4,mvp:5,proxima:6,stats:7,premios:8};
   const links=document.querySelectorAll('nav a');
-  if(idx[targetId]!==undefined && links[idx[targetId]]) links[idx[targetId]].classList.add('active');
+  if(links[idx[targetId]]) links[idx[targetId]].classList.add('active');
   
   const mainNav = document.getElementById('main-nav');
   if(mainNav) mainNav.classList.remove('open');
@@ -1828,8 +1882,24 @@ function switchTab(g,id,btn){
   document.getElementById(g+'-'+id).classList.add('active');
 }
 
-window.addEventListener('popstate', () => {
+window.addEventListener('popstate', (event) => {
+  // Si hay un popup abierto y se presionó "Atrás" (el estado ficticio desapareció)
+  const scoreModal = document.getElementById('score-modal');
+  const mvpModal = document.getElementById('mvp-modal');
+
+  if (scoreModal.classList.contains('open')) {
+    scoreModal.classList.remove('open');
+    return; // Detenemos la navegación a otra página si solo cerramos el modal
+  }
+  if (mvpModal.classList.contains('open')) {
+    mvpModal.classList.remove('open');
+    return; // Detenemos la navegación a otra página si solo cerramos el modal
+  }
+
+  // Handle standard page navigation
   const hash = window.location.hash.substring(1) || 'home';
+  // Evitamos que intente navegar a los hashes ficticios de los modals si quedaron en la URL
+  if (hash === 'modal-abierto') return;
   showPage(hash, false); 
 });
 
@@ -1843,7 +1913,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   actualizarUI_Suspension();
   
   const hash = window.location.hash.substring(1);
-  if(hash) showPage(hash, false);
+  if(hash && hash !== 'modal-abierto') showPage(hash, false);
 });
 </script>
 </body>
