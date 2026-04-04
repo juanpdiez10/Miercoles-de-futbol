@@ -599,9 +599,18 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         <span><strong>👕</strong> = se llevó las camisetas para lavar</span>
       </div>
     </div>
-    <div id="tabla-2023" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá una hoja "BASE_DATOS_2023" en tu Sheets.</div></div>
-    <div id="tabla-2024" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá "BASE_DATOS_2024" en tu Sheets.</div></div>
-    <div id="tabla-2025" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Agregá "BASE_DATOS_2025" en tu Sheets.</div></div>
+    <div id="tabla-2023" class="tab-content">
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft">JUGADOR</th><th>PG</th><th>PJ</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb23"></tbody></table></div>
+      <div class="pts-legend"><span>Criterio 2023: <strong>PG primero</strong>, luego PJ</span></div>
+    </div>
+    <div id="tabla-2024" class="tab-content">
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft">JUGADOR</th><th>PG</th><th>PJ</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb24"></tbody></table></div>
+      <div class="pts-legend"><span>Criterio 2024: <strong>PG primero</strong>, luego PJ</span></div>
+    </div>
+    <div id="tabla-2025" class="tab-content">
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft">JUGADOR</th><th>PTS</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>BONUS</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb25"></tbody></table></div>
+      <div class="pts-legend"><span><strong>PJ</strong> +2</span><span><strong>PG</strong> +3</span><span><strong>PE</strong> +1</span><span><strong>MVP</strong> +1</span></div>
+    </div>
   </div>
 </div>
 
@@ -616,9 +625,9 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn active" onclick="switchTab('par','p2026',this)">⚡ 2026</button>
     </div>
     <div id="par-p2026" class="tab-content active"></div>
-    <div id="par-p2025" class="tab-content"><div class="empty-box">Agregá datos de 2025 en tu Sheets.</div></div>
-    <div id="par-p2024" class="tab-content"><div class="empty-box">Agregá datos de 2024 en tu Sheets.</div></div>
-    <div id="par-p2023" class="tab-content"><div class="empty-box">Agregá datos de 2023 en tu Sheets.</div></div>
+    <div id="par-p2025" class="tab-content"></div>
+    <div id="par-p2024" class="tab-content"></div>
+    <div id="par-p2023" class="tab-content"></div>
   </div>
 </div>
 
@@ -628,6 +637,9 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <div class="divider"></div>
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('gol','g26',this)">⚽ Goleadores 2026</button>
+      <button class="tab-btn" onclick="switchTab('gol','g25',this)">2025</button>
+      <button class="tab-btn" onclick="switchTab('gol','g24',this)">2024</button>
+      <button class="tab-btn" onclick="switchTab('gol','g23',this)">2023</button>
       <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida</button>
     </div>
     <div id="gol-g26" class="tab-content active">
@@ -656,6 +668,27 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         </div>
       </div>
     </div>
+    <div id="gol-g25" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">⚽ Goleadores Temporada 2025</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles totales</div><div class="rank-list" id="gol-g25-total"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio / partido</div><div class="rank-list" id="gol-g25-prom"></div></div>
+      </div>
+    </div>
+    <div id="gol-g24" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">⚽ Goleadores Temporada 2024</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles totales</div><div class="rank-list" id="gol-g24-total"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio / partido</div><div class="rank-list" id="gol-g24-prom"></div></div>
+      </div>
+    </div>
+    <div id="gol-g23" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">⚽ Goleadores Temporada 2023</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles totales</div><div class="rank-list" id="gol-g23-total"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio / partido</div><div class="rank-list" id="gol-g23-prom"></div></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -664,17 +697,40 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     <h2 class="stitle">MVP de <span class="acc">la Fecha</span></h2>
     <div class="divider"></div>
     
-    <div class="mvp-layout-wrapper">
-      
-      <div class="mvp-featured" id="mvp-featured-cnt">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('mvp','m26',this)">⚡ 2026</button>
+      <button class="tab-btn" onclick="switchTab('mvp','m25',this)">2025</button>
+      <button class="tab-btn" onclick="switchTab('mvp','m24',this)">2024</button>
+      <button class="tab-btn" onclick="switchTab('mvp','m23',this)">2023</button>
+    </div>
+
+    <div id="mvp-m26" class="tab-content active">
+      <div class="mvp-layout-wrapper">
+        <div class="mvp-featured" id="mvp-featured-cnt"></div>
+        <div class="mvp-history-column">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs 2026</h3>
+          <p style="color:var(--text2);font-size:.76rem;margin-bottom:1.1rem">Toca cualquier card para ver el detalle.</p>
+          <div class="mvp-grid" id="mvp-cnt"></div>
+        </div>
       </div>
-      
-      <div class="mvp-history-column">
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs</h3>
-        <p style="color:var(--text2);font-size:.76rem;margin-bottom:1.1rem">Toca cualquier card para ver el detalle de los MVP de cada fecha.</p>
-        <div class="mvp-grid" id="mvp-cnt"></div>
+    </div>
+    <div id="mvp-m25" class="tab-content">
+      <div class="mvp-history-column" style="max-width:700px">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs 2025</h3>
+        <div class="mvp-grid" id="mvp-hist-25"></div>
       </div>
-      
+    </div>
+    <div id="mvp-m24" class="tab-content">
+      <div class="mvp-history-column" style="max-width:700px">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs 2024</h3>
+        <div class="mvp-grid" id="mvp-hist-24"></div>
+      </div>
+    </div>
+    <div id="mvp-m23" class="tab-content">
+      <div class="mvp-history-column" style="max-width:700px">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;color:var(--text2)">Historial de MVPs 2023</h3>
+        <div class="mvp-grid" id="mvp-hist-23"></div>
+      </div>
     </div>
 
   </div>
@@ -767,9 +823,27 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="curiosidad-list" id="curiosidades"></div>
     </div>
     
-    <div id="stats-2023" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Conectar datos de 2023.</div></div>
-    <div id="stats-2024" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Conectar datos de 2024.</div></div>
-    <div id="stats-2025" class="tab-content"><div class="empty-box">📌 Temporada cerrada — Conectar datos de 2025.</div></div>
+    <div id="stats-2023" class="tab-content">
+      <p class="ssub">Datos acumulados de la Temporada 2023</p>
+      <div class="stats-grid" id="stats-cards-23"></div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
+      <div class="divider"></div>
+      <div class="curiosidad-list" id="curiosidades-23"></div>
+    </div>
+    <div id="stats-2024" class="tab-content">
+      <p class="ssub">Datos acumulados de la Temporada 2024</p>
+      <div class="stats-grid" id="stats-cards-24"></div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
+      <div class="divider"></div>
+      <div class="curiosidad-list" id="curiosidades-24"></div>
+    </div>
+    <div id="stats-2025" class="tab-content">
+      <p class="ssub">Datos acumulados de la Temporada 2025</p>
+      <div class="stats-grid" id="stats-cards-25"></div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
+      <div class="divider"></div>
+      <div class="curiosidad-list" id="curiosidades-25"></div>
+    </div>
   </div>
 </div>
 
@@ -1648,6 +1722,261 @@ function renderEstadisticas(data){
     </div>`).join('');
 }
 
+
+// ═══════════════════════════════════════
+// DATOS HISTÓRICOS 2023-2025
+// ═══════════════════════════════════════
+const HIST_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQZertGCYwbNanMl1VrkNlxEc9lVURULQsHStcL_9Ei7SM5zi_Al0691n-D74eHiw/pub?output=csv';
+
+let _histData = {}; // { 2023: [...], 2024: [...], 2025: [...] }
+
+function parseHistCSV(csv) {
+  const lines = csv.split('\n').filter(l => l.trim());
+  const out = { 2023: [], 2024: [], 2025: [] };
+  for (let i = 1; i < lines.length; i++) {
+    const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
+    // Columnas: FECHA,JUGADOR,EQUIPO,RESULTADO,GOLES_FAVOR,GOLES_CONTRA,GOLES_INDIV,MVP,DIF_GOL,BONUS_GOLEADA,ANO,DIA
+    const fecha = parseFloat(v[0]);
+    if (!isFinite(fecha) || fecha <= 0) continue;
+    const jugador = v[1]; if (!jugador || jugador === 'JUGADOR') continue;
+    const ano = parseInt(v[10]);
+    if (![2023, 2024, 2025].includes(ano)) continue;
+    const goles = parseFloat(v[6]);
+    out[ano].push({
+      fecha: Math.round(fecha),
+      jugador: jugador,
+      equipo: v[2],
+      resultado: v[3],
+      gf: parseInt(v[4]) || 0,
+      gc: parseInt(v[5]) || 0,
+      goles: isFinite(goles) && goles > 0 ? goles : 0,
+      mvp: v[7] === '1' ? 1 : 0,
+      dif: parseFloat(v[8]) || 0,
+      bonus: parseFloat(v[9]) || 0,
+      dia: v[11] || '',
+      ano: ano
+    });
+  }
+  return out;
+}
+
+function computeHistStandings(data, criterio) {
+  // criterio: 'pg' para 2023/2024, 'pts' para 2025
+  const p = {};
+  data.forEach(r => {
+    if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, dif: 0, bonus: 0, mvp: 0 };
+    const x = p[r.jugador];
+    if (r.resultado === 'G' || r.resultado === 'E' || r.resultado === 'P') {
+      x.pj++; x.goles += r.goles; x.dif += r.dif; x.bonus += r.bonus; x.mvp += r.mvp;
+      if (r.resultado === 'G') x.pg++;
+      else if (r.resultado === 'E') x.pe++;
+      else x.pp++;
+    } else { x.goles += r.goles; }
+  });
+  return Object.entries(p).map(([n, x]) => {
+    const pts = x.pj * 2 + x.pg * 3 + x.pe * 1 + x.mvp + x.bonus;
+    const pct = x.pj > 0 ? Math.round(x.pg / x.pj * 100) : 0;
+    const prom = x.pj > 0 ? (x.goles / x.pj).toFixed(2) : 0;
+    return { nombre: n, pts, pct, prom, ...x };
+  }).sort((a, b) => {
+    if (criterio === 'pg') return b.pg - a.pg || b.pj - a.pj || b.goles - a.goles;
+    return b.pts - a.pts || b.pg - a.pg || b.goles - a.goles;
+  });
+}
+
+function renderHistStandings(standings, tbodyId, criterio) {
+  const tb = document.getElementById(tbodyId); if (!tb) return;
+  const cls = ['r1', 'r2', 'r3'];
+  tb.innerHTML = standings.map((p, i) => {
+    const difStr = p.dif > 0 ? '+' + p.dif : p.dif;
+    const pos = i < 3 ? `<span class="pb p${i+1}">${i+1}</span>` : `<span class="pb pn">${i+1}</span>`;
+    if (criterio === 'pg') {
+      return `<tr class="${cls[i]||''}">
+        <td>${pos}</td>
+        <td class="lft">${formatName(p.nombre)}</td>
+        <td class="pts-cell" style="color:var(--green)">${p.pg}</td>
+        <td>${p.pj}</td><td>${p.pe}</td><td>${p.pp}</td>
+        <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
+        <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
+        <td>${p.mvp > 0 ? p.mvp : '—'}</td>
+        <td>${p.pct}%</td><td>${p.prom}</td>
+      </tr>`;
+    }
+    return `<tr class="${cls[i]||''}">
+      <td>${pos}</td>
+      <td class="lft">${formatName(p.nombre)}</td>
+      <td class="pts-cell">${p.pts}</td>
+      <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
+      <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
+      <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
+      <td>${p.mvp > 0 ? p.mvp : '—'}</td>
+      <td style="color:#7db8d8">${p.bonus > 0 ? '+' + p.bonus : '—'}</td>
+      <td>${p.pct}%</td><td>${p.prom}</td>
+    </tr>`;
+  }).join('');
+}
+
+function computeHistMatches(data) {
+  return [...new Set(data.map(r => r.fecha))].sort((a, b) => a - b).map(f => {
+    const rows = data.filter(r => r.fecha === f);
+    const bl = rows.filter(r => r.equipo === 'BLANCO'), ng = rows.filter(r => r.equipo === 'NEGRO');
+    const dia = rows[0]?.dia || '';
+    return { fecha: f, date: dia, gfB: bl[0]?.gf || 0, gfN: ng[0]?.gf || 0, blanco: bl, negro: ng, mvp: rows.find(r => r.mvp === 1)?.jugador || null };
+  });
+}
+
+function renderHistMatches(ms, containerId) {
+  const c = document.getElementById(containerId); if (!c) return;
+  if (!ms.length) { c.innerHTML = '<div class="empty-box">Sin datos.</div>'; return; }
+  c.innerHTML = [...ms].reverse().map(m => {
+    const bW = m.gfB > m.gfN, nW = m.gfN > m.gfB;
+    const diff = Math.abs(m.gfB - m.gfN);
+    const bonusTag = diff >= 5 ? `<div class="mc-bonus">🔥 +1 GOLEADA</div>` : '';
+    const makeList = (players, mvp) => players.filter(r => ['G','P','E'].includes(r.resultado)).map(r => {
+      const isMvp = r.jugador === mvp;
+      const gol = r.goles > 0 ? `<span class="pl-gol">⚽ ${r.goles}</span>` : '';
+      return `<div class="pl-item ${isMvp ? 'pl-mvp-item' : ''}"><div class="pl-left"><div class="pl-dot"></div><span class="pl-name">${r.jugador}</span></div>${gol}</div>`;
+    }).join('');
+    return `<div class="fh">FECHA ${m.fecha} <span class="fh-date">${m.date ? '· ' + m.date : ''}</span></div>
+    <div class="mc">
+      <div class="mc-head">
+        <div class="mc-team"><div class="mc-team-name"><span class="dot-w"></span> BLANCO</div><div class="mc-result-badge ${bW?'rb-win':nW?'rb-loss':'rb-draw'}">${bW?'VICTORIA':nW?'DERROTA':'EMPATE'}</div></div>
+        <div class="mc-score-center"><div class="mc-score"><span class="${bW?'mc-score-b':'mc-score-n'}">${m.gfB}</span><span class="mc-score-sep">-</span><span class="${nW?'mc-score-b':'mc-score-n'}">${m.gfN}</span></div>${bonusTag}</div>
+        <div class="mc-team"><div class="mc-team-name"><span class="dot-n"></span> NEGRO</div><div class="mc-result-badge ${nW?'rb-win':bW?'rb-loss':'rb-draw'}">${nW?'VICTORIA':bW?'DERROTA':'EMPATE'}</div></div>
+      </div>
+      <div class="mc-body"><div class="pl-list">${makeList(m.blanco, m.mvp)}</div><div class="pl-list">${makeList(m.negro, m.mvp)}</div></div>
+      ${m.mvp ? `<div class="mc-mvp">★ MVP DE LA FECHA <span>${m.mvp}</span></div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function computeHistScorers(data) {
+  const g = {}, pj = {};
+  data.forEach(r => {
+    if (!g[r.jugador]) g[r.jugador] = 0;
+    g[r.jugador] += r.goles;
+    if (['G','E','P'].includes(r.resultado)) { if (!pj[r.jugador]) pj[r.jugador] = 0; pj[r.jugador]++; }
+  });
+  return Object.entries(g).filter(([,v]) => v > 0).map(([n, v]) => ({ nombre: n, goles: v, pj: pj[n] || 1 })).sort((a, b) => b.goles - a.goles);
+}
+
+function renderHistScorers(scorers, totalId, promId) {
+  const makeRow = (p, i, key) => {
+    const medals = ['🥇','🥈','🥉'];
+    const prom = (p.goles / p.pj).toFixed(2);
+    const val = key === 'total' ? p.goles : prom;
+    return `<div class="rank-row"><span class="rank-pos">${medals[i] || (i+1)}</span><span class="rank-name">${formatName(p.nombre)}</span><span class="rank-val">${val} ${key==='total'?'⚽':'/pj'}</span></div>`;
+  };
+  const byProm = [...scorers].sort((a,b) => (b.goles/b.pj) - (a.goles/a.pj));
+  const tEl = document.getElementById(totalId), pEl = document.getElementById(promId);
+  if (tEl) tEl.innerHTML = scorers.map((p,i) => makeRow(p,i,'total')).join('') || '<div class="empty-box">Sin datos.</div>';
+  if (pEl) pEl.innerHTML = byProm.map((p,i) => makeRow(p,i,'prom')).join('') || '<div class="empty-box">Sin datos.</div>';
+}
+
+function renderHistMVPs(data, containerId) {
+  const el = document.getElementById(containerId); if (!el) return;
+  const mvps = data.filter(r => r.mvp === 1).sort((a,b) => b.fecha - a.fecha);
+  if (!mvps.length) { el.innerHTML = '<div class="empty-box">Sin MVPs registrados.</div>'; return; }
+  el.innerHTML = mvps.map(r => {
+    const foto = getUrlFoto(r.jugador);
+    return `<div class="mvp-card" style="cursor:default">
+      <img src="${foto}" class="mvp-img" onerror="this.style.display='none'">
+      <div class="mvp-card-fecha">FECHA ${r.fecha}</div>
+      <div class="mvp-card-name">${formatName(r.jugador)}</div>
+      <div class="mvp-card-date" style="font-size:.7rem;color:var(--text2)">${r.dia}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderHistStats(data, cardsId, curiId) {
+  const matches = computeHistMatches(data);
+  if (!matches.length) {
+    const el = document.getElementById(cardsId);
+    if (el) el.innerHTML = '<div class="empty-box">Sin datos.</div>';
+    return;
+  }
+  const st = computeHistStandings(data, 'pts');
+  const scorers = computeHistScorers(data);
+  const topScorer = scorers[0];
+  const blancoWins = matches.filter(m => m.gfB > m.gfN).length;
+  const negroWins = matches.filter(m => m.gfN > m.gfB).length;
+  const totalGoles = matches.reduce((a,m) => a + m.gfB + m.gfN, 0);
+  const avgGoles = matches.length > 0 ? (totalGoles / matches.length).toFixed(1) : 0;
+  const topMVP = (() => { const c={}; data.filter(r=>r.mvp===1).forEach(r=>{c[r.jugador]=(c[r.jugador]||0)+1;}); return Object.entries(c).sort((a,b)=>b[1]-a[1])[0]; })();
+  const mostGoles = matches.reduce((a,m) => (m.gfB+m.gfN)>(a.gfB+a.gfN)?m:a, matches[0]);
+  const topWinPct = st.filter(p=>p.pj>=3).sort((a,b)=>b.pct-a.pct)[0];
+
+  const cards = [
+    {icon:'👟',label:'Máximo goleador',value:formatName(topScorer?.nombre)||'—',sub:`${topScorer?.goles||0} goles en la temporada`},
+    {icon:'🏆',label:'Campeón (1°)',value:formatName(st[0]?.nombre)||'—',sub:`${st[0]?.pg||0} victorias · ${st[0]?.pts||0} pts`},
+    {icon:'🌟',label:'Más veces MVP',value:topMVP?topMVP[1]:0,sub:`${formatName(topMVP?.[0]||'')}`},
+    {icon:'📈',label:'Mejor % victorias',value:`${topWinPct?.pct||0}%`,sub:`${formatName(topWinPct?.nombre||'')} · ${topWinPct?.pg||0}/${topWinPct?.pj||0} PJ`},
+    {icon:'⚽',label:'Total goles',value:totalGoles,sub:`${avgGoles} promedio por partido`},
+    {icon:'🔥',label:'Partido más goleador',value:`F${mostGoles.fecha}`,sub:`${mostGoles.gfB+mostGoles.gfN} goles (${mostGoles.gfB}-${mostGoles.gfN})`},
+    {icon:'⚪',label:'Victorias Blanco',value:blancoWins,sub:`de ${matches.length} partidos`},
+    {icon:'⚫',label:'Victorias Negro',value:negroWins,sub:`de ${matches.length} partidos`},
+  ];
+  const cEl = document.getElementById(cardsId);
+  if (cEl) cEl.innerHTML = cards.map(c=>`<div class="stat-card"><span class="stat-card-icon">${c.icon}</span><div class="stat-card-label">${c.label}</div><div class="stat-card-value">${c.value}</div><div class="stat-card-sub">${c.sub}</div></div>`).join('');
+
+  const domTxt = blancoWins > negroWins
+    ? `El <strong>Equipo Blanco</strong> dominó con <strong>${blancoWins} victorias</strong> vs ${negroWins} del Negro.`
+    : negroWins > blancoWins
+    ? `El <strong>Equipo Negro</strong> dominó con <strong>${negroWins} victorias</strong> vs ${blancoWins} del Blanco.`
+    : `¡Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos.`;
+  const clist = [
+    {e:'⚽',t:`El torneo tuvo <strong>${totalGoles} goles</strong> en ${matches.length} partidos, un promedio de <strong>${avgGoles} goles</strong> por fecha.`},
+    {e:'⚪',t:domTxt},
+    {e:'🔥',t:`El partido más goleador fue la <strong>Fecha ${mostGoles.fecha}</strong> con <strong>${mostGoles.gfB+mostGoles.gfN} goles</strong> (${mostGoles.gfB}-${mostGoles.gfN}).`},
+    {e:'👟',t:topScorer?`El goleador de la temporada fue <strong>${formatName(topScorer.nombre)}</strong> con <strong>${topScorer.goles} goles</strong> en ${topScorer.pj} partidos.`:'Sin goles registrados.'},
+    {e:'🌟',t:topMVP?`El jugador más premiado fue <strong>${formatName(topMVP[0])}</strong> con <strong>${topMVP[1]} MVPs</strong>.`:'Sin MVPs registrados.'},
+  ];
+  const cuEl = document.getElementById(curiId);
+  if (cuEl) cuEl.innerHTML = clist.map(c=>`<div class="cur-item"><span class="cur-emoji">${c.e}</span><div class="cur-text">${c.t}</div></div>`).join('');
+}
+
+async function loadHistData() {
+  try {
+    const r = await fetch(HIST_URL + '&_=' + Math.random(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('Error cargando histórico');
+    const csv = await r.text();
+    _histData = parseHistCSV(csv);
+    renderAllHistorico();
+  } catch(e) {
+    console.error('Error al cargar datos históricos:', e);
+    ['tabla-2023','tabla-2024','tabla-2025','par-p2023','par-p2024','par-p2025'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.innerHTML.trim() === '') el.innerHTML = '<div class="empty-box">⚠️ No se pudo cargar el historial. Verificá la conexión.</div>';
+    });
+  }
+}
+
+function renderAllHistorico() {
+  [2023, 2024, 2025].forEach(ano => {
+    const data = _histData[ano] || [];
+    const criterio = ano <= 2024 ? 'pg' : 'pts';
+    const tbodyId = `tb${ano.toString().slice(-2)}`;
+
+    // Tabla
+    const st = computeHistStandings(data, criterio);
+    renderHistStandings(st, tbodyId, criterio);
+
+    // Partidos
+    renderHistMatches(computeHistMatches(data), `par-p${ano}`);
+
+    // Goleadores
+    const suffix = ano.toString().slice(-2);
+    renderHistScorers(computeHistScorers(data), `gol-g${suffix}-total`, `gol-g${suffix}-prom`);
+
+    // MVP
+    renderHistMVPs(data, `mvp-hist-${suffix}`);
+
+    // Stats
+    renderHistStats(data, `stats-cards-${suffix}`, `curiosidades-${suffix}`);
+  });
+}
+
+
 function getNextWednesday(){
   const now=new Date();const day=now.getDay();let diff=3-day;
   if(diff<=0)diff+=7;const nw=new Date(now);nw.setDate(now.getDate()+diff);return nw;
@@ -1912,6 +2241,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadData();
   loadEquipos();
   loadApiData(); 
+  loadHistData();
   setupNextDate();
   
   // Leemos la memoria y dibujamos el cartel para todos apenas entran
