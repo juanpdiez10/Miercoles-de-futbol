@@ -673,6 +673,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('gol','gv25',this)">Valla 2025</button>
       <button class="tab-btn" onclick="switchTab('gol','gv24',this)">Valla 2024</button>
       <button class="tab-btn" onclick="switchTab('gol','gv23',this)">Valla 2023</button>
+      <button class="tab-btn" onclick="switchTab('gol','gvhist',this)">🌐 Valla Histórica</button>
     </div>
     <div id="gol-g26" class="tab-content active">
       <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
@@ -698,6 +699,13 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por promedio recibido / partido</div>
           <div class="rank-list" id="valla-prom-cnt"></div>
         </div>
+      </div>
+    </div>
+    <div id="gol-gvhist" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🌐 Valla histórica 2023–2026 · Solo Cañete Maxi y Questa Ezequiel · Toca para ver por temporada</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles recibidos totales</div><div class="rank-list" id="valla-hist-total"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio recibido / partido</div><div class="rank-list" id="valla-hist-prom"></div></div>
       </div>
     </div>
     <div id="gol-ghist" class="tab-content">
@@ -1997,7 +2005,7 @@ function openHistScoreModal(nombre, ano) {
   modal.classList.add('open');
 }
 
-const ARQUEROS_VALIDOS = ['Cañete, Maxi','Questa, Ezequiel','Diaz, Gonzalo'];
+const ARQUEROS_VALIDOS = ['Cañete, Maxi','Questa, Ezequiel'];
 
 function renderHistValla(data, totalId, promId, ano) {
   const gcMap = {};
@@ -2089,14 +2097,34 @@ function renderHistMVPs(data, containerId, ano) {
 }
 
 function renderHistStats(data, cardsId, curiId, ano) {
-  const matches = computeHistMatches(data);
+  const isHistorico = ano === 0;
+
+  let matches;
+  if(isHistorico) {
+    const matchMap = {};
+    data.forEach(r => {
+      const key = `${r.ano||0}-${r.fecha}`;
+      if(!matchMap[key]) matchMap[key] = {fecha:r.fecha,ano:r.ano||0,date:r.dia||'',gfB:0,gfN:0,mvp:null};
+      const m = matchMap[key];
+      if(r.equipo==='BLANCO') m.gfB = r.gf||0;
+      if(r.equipo==='NEGRO') m.gfN = r.gf||0;
+      if(r.mvp===1) m.mvp=r.jugador;
+    });
+    matches = Object.values(matchMap);
+  } else {
+    matches = computeHistMatches(data);
+  }
+
   if (!matches.length) {
     const el = document.getElementById(cardsId);
     if (el) el.innerHTML = '<div class="empty-box">Sin datos.</div>';
     return;
   }
-  const criterio = ano <= 2024 ? 'pj' : 'pts';
-  const st = computeHistStandings(data, criterio);
+
+  const criterio = (!isHistorico && ano <= 2024) ? 'pj' : 'pts';
+  const stAll = computeHistStandings(data, criterio);
+  const st = stAll.filter(p => !p.nombre.startsWith('Invitado') && !p.nombre.toLowerCase().includes('amigo'));
+
   const totalFechas = matches.length;
   const minPJ = Math.ceil(totalFechas / 2);
 
@@ -2108,96 +2136,89 @@ function renderHistStats(data, cardsId, curiId, ano) {
   const blancoWins = matches.filter(m=>m.gfB>m.gfN).length;
   const negroWins = matches.filter(m=>m.gfN>m.gfB).length;
   const topScorer = st.filter(p=>p.goles>0).sort((a,b)=>b.goles-a.goles)[0];
-  const topWinPct = st.filter(p=>p.pj>=3&&!p.nombre.startsWith('Invitado')).sort((a,b)=>b.pct-a.pct)[0];
+  const topWinPct = st.filter(p=>p.pj>=minPJ).sort((a,b)=>b.pct-a.pct)[0];
   const mostMVP = st.filter(p=>p.mvp>0).sort((a,b)=>b.mvp-a.mvp)[0];
-  const unbeaten = st.filter(p=>p.pp===0&&p.pj>=3&&!p.nombre.startsWith('Invitado'));
-  const topProm = st.filter(p=>p.pj>=minPJ&&p.goles>0&&!p.nombre.startsWith('Invitado')).sort((a,b)=>b.goles/b.pj-a.goles/a.pj)[0];
+  const unbeaten = st.filter(p=>p.pp===0&&p.pj>=minPJ);
+  const topProm = st.filter(p=>p.pj>=minPJ&&p.goles>0).sort((a,b)=>b.goles/b.pj-a.goles/a.pj)[0];
+
+  const mostGolesSub = isHistorico
+    ? `${mostGoles.gfB+mostGoles.gfN} goles (${mostGoles.gfB}-${mostGoles.gfN}) · Temp. ${mostGoles.ano}`
+    : `${mostGoles.gfB+mostGoles.gfN} goles totales (${mostGoles.gfB}-${mostGoles.gfN})`;
+  const tightestSub = isHistorico
+    ? `${tightest.gfB}-${tightest.gfN} · solo ${Math.abs(tightest.gfB-tightest.gfN)} gol · Temp. ${tightest.ano}`
+    : `${tightest.gfB}-${tightest.gfN} · solo ${Math.abs(tightest.gfB-tightest.gfN)} gol de diferencia`;
+  const biggestSub = isHistorico
+    ? `${biggestWin.gfB}-${biggestWin.gfN} · dif. ${Math.abs(biggestWin.gfB-biggestWin.gfN)} · Temp. ${biggestWin.ano}`
+    : `${biggestWin.gfB}-${biggestWin.gfN} · diferencia de ${Math.abs(biggestWin.gfB-biggestWin.gfN)}`;
 
   const cardsData = [
-    {icon:'⚽',label:'Total de goles',value:totalGoles,sub:`en ${matches.length} fechas`},
-    {icon:'📊',label:'Promedio por partido',value:avgGoles,sub:'goles por fecha'},
-    {icon:'🔥',label:'Partido más goleador',value:`F${mostGoles.fecha}`,sub:`${mostGoles.gfB+mostGoles.gfN} goles totales (${mostGoles.gfB}-${mostGoles.gfN})`},
-    {icon:'😰',label:'Partido más ajustado',value:`F${tightest.fecha}`,sub:`${tightest.gfB}-${tightest.gfN} · solo ${Math.abs(tightest.gfB-tightest.gfN)} gol de diferencia`},
-    {icon:'💪',label:'Mayor goleada',value:`F${biggestWin.fecha}`,sub:`${biggestWin.gfB}-${biggestWin.gfN} · diferencia de ${Math.abs(biggestWin.gfB-biggestWin.gfN)}`},
-    {icon:'⚪',label:'Victorias Equipo Blanco',value:blancoWins,sub:`de ${matches.length} partidos jugados`},
-    {icon:'⚫',label:'Victorias Equipo Negro',value:negroWins,sub:`de ${matches.length} partidos jugados`},
-    {icon:'👟',label:'Máximo goleador',value:formatName(topScorer?.nombre)||'—',sub:`${topScorer?.goles||0} goles en la temporada`},
-    {icon:'📈',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${formatName(topWinPct?.nombre||'')} · ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos`},
-    {icon:'🌟',label:'Más veces MVP',value:mostMVP?.mvp||0,sub:`${formatName(mostMVP?.nombre||'')}`},
-    {icon:'🎯',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'—',sub:topProm?`${formatName(topProm.nombre)} · ${topProm.goles} goles en ${topProm.pj} PJ`:`mín. ${minPJ} PJ para clasificar`},
-    {icon:'🏆',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>formatName(p.nombre)).join(', '):'—',sub:'sin ninguna derrota en la temporada'},
+    {icon:'\u26bd',label:'Total de goles',value:totalGoles,sub:`en ${matches.length} fechas`},
+    {icon:'\ud83d\udcc8',label:'Promedio por partido',value:avgGoles,sub:'goles por fecha'},
+    {icon:'\ud83d\udd25',label:'Partido m\u00e1s goleador',value:`F${mostGoles.fecha}`,sub:mostGolesSub},
+    {icon:'\ud83d\ude30',label:'Partido m\u00e1s ajustado',value:`F${tightest.fecha}`,sub:tightestSub},
+    {icon:'\ud83d\udcaa',label:'Mayor goleada',value:`F${biggestWin.fecha}`,sub:biggestSub},
+    {icon:'\u26aa',label:'Victorias Equipo Blanco',value:blancoWins,sub:`de ${matches.length} partidos jugados`},
+    {icon:'\u26ab',label:'Victorias Equipo Negro',value:negroWins,sub:`de ${matches.length} partidos jugados`},
+    {icon:'\ud83d\udc9f',label:'M\u00e1ximo goleador',value:formatName(topScorer?.nombre)||'\u2014',sub:`${topScorer?.goles||0} goles en la temporada`},
+    {icon:'\ud83d\udcc8',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${formatName(topWinPct?.nombre||'')} \u00b7 ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos (m\u00edn. ${minPJ} PJ)`},
+    {icon:'\ud83c\udf1f',label:'M\u00e1s veces MVP',value:mostMVP?.mvp||0,sub:`${formatName(mostMVP?.nombre||'')}`},
+    {icon:'\ud83c\udfaf',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'\u2014',sub:topProm?`${formatName(topProm.nombre)} \u00b7 ${topProm.goles} goles en ${topProm.pj} PJ`:`m\u00edn. ${minPJ} PJ para clasificar`},
+    {icon:'\ud83c\udfc6',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>formatName(p.nombre)).join(', '):'\u2014',sub:`sin derrotas con m\u00edn. ${minPJ} PJ`},
   ];
   const cEl = document.getElementById(cardsId);
   if (cEl) cEl.innerHTML = cardsData.map(c=>`<div class="stat-card"><span class="stat-card-icon">${c.icon}</span><div class="stat-card-label">${c.label}</div><div class="stat-card-value">${c.value}</div><div class="stat-card-sub">${c.sub}</div></div>`).join('');
 
-  // Curiosidades completas igual que 2026
-  // Racha
-  let maxStreak=0, streakPlayers=[];
+  let maxStreak=0,streakPlayers=[];
   st.forEach(p=>{
     let cur=0,localMax=0;
     (p.hist||[]).forEach(r=>{if(r==='G'){cur++;localMax=Math.max(localMax,cur);}else cur=0;});
     if(localMax>maxStreak&&localMax>0){maxStreak=localMax;streakPlayers=[formatName(p.nombre)];}
     else if(localMax===maxStreak&&localMax>0&&!streakPlayers.includes(formatName(p.nombre)))streakPlayers.push(formatName(p.nombre));
   });
-  const txtRacha=maxStreak>0?`<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.`:'Sin rachas de victorias registradas.';
+  const txtRacha=maxStreak>0?`<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha con <strong>${maxStreak} victorias al hilo</strong>.`:'Sin rachas registradas.';
 
-  // Max goles en un partido
-  let maxGolesP=0, golesEventos=[];
+  let maxGolesP=0,golesEventos=[];
   data.forEach(r=>{
-    if(r.goles>maxGolesP){maxGolesP=r.goles;golesEventos=[{n:formatName(r.jugador),f:r.fecha}];}
-    else if(r.goles===maxGolesP&&r.goles>0)golesEventos.push({n:formatName(r.jugador),f:r.fecha});
+    if(r.goles>maxGolesP){maxGolesP=r.goles;golesEventos=[{n:formatName(r.jugador),f:r.fecha,ano:r.ano||ano}];}
+    else if(r.goles===maxGolesP&&r.goles>0)golesEventos.push({n:formatName(r.jugador),f:r.fecha,ano:r.ano||ano});
   });
-  const txtGoles=maxGolesP>0?`El récord de goles en un solo partido es de <strong>${maxGolesP} goles</strong>, logrado por `+golesEventos.map(e=>`<strong>${e.n}</strong> (Fecha ${e.f})`).join(' y ')+`.`:'Sin goles registrados.';
+  const txtGoles=maxGolesP>0?`El r\u00e9cord de goles en un solo partido es de <strong>${maxGolesP} goles</strong>, logrado por `+golesEventos.map(e=>`<strong>${e.n}</strong> (F${e.f}${isHistorico?` \u00b7 ${e.ano}`:''})`).join(' y ')+`.`:'Sin goles registrados.';
 
-  // Dom equipo
   let domTeamTxt='';
-  if(blancoWins>negroWins)domTeamTxt=`El <strong>Equipo Blanco</strong> dominó: ganó <strong>${blancoWins} de ${matches.length}</strong> partidos. El Negro (con ${negroWins}) buscó equilibrar la balanza.`;
-  else if(negroWins>blancoWins)domTeamTxt=`El <strong>Equipo Negro</strong> dominó: ganó <strong>${negroWins} de ${matches.length}</strong> partidos. El Blanco (con ${blancoWins}) buscó equilibrar la balanza.`;
-  else domTeamTxt=`¡Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos de los ${matches.length} jugados.`;
+  if(blancoWins>negroWins)domTeamTxt=`El <strong>Equipo Blanco</strong> domin\u00f3: gan\u00f3 <strong>${blancoWins} de ${matches.length}</strong> partidos.`;
+  else if(negroWins>blancoWins)domTeamTxt=`El <strong>Equipo Negro</strong> domin\u00f3: gan\u00f3 <strong>${negroWins} de ${matches.length}</strong> partidos.`;
+  else domTeamTxt=`\u00a1Paridad total! Ambos equipos ganaron <strong>${blancoWins}</strong> partidos.`;
 
-  // Fecha más goleadora
-  const maxTotalGoles=Math.max(...matches.map(m=>m.gfB+m.gfN));
-  const fechasGoleadoras=matches.filter(m=>m.gfB+m.gfN===maxTotalGoles);
-  const txtFechaGoles=`La ${fechasGoleadoras.map(m=>`<strong>Fecha ${m.fecha}</strong>`).join(' y ')} ${fechasGoleadoras.length>1?'fueron las':'fue la'} más goleadora de la temporada con <strong>${maxTotalGoles} goles</strong> (${fechasGoleadoras.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`;
+  const maxTG=Math.max(...matches.map(m=>m.gfB+m.gfN));
+  const fechasG=matches.filter(m=>m.gfB+m.gfN===maxTG);
+  const txtFechaGoles=`La ${fechasG.map(m=>`<strong>Fecha ${m.fecha}${isHistorico?` (${m.ano})`:''}</strong>`).join(' y ')} ${fechasG.length>1?'fueron las':'fue la'} m\u00e1s goleadora con <strong>${maxTG} goles</strong> (${fechasG.map(m=>`${m.gfB}-${m.gfN}`).join(' / ')}).`;
 
-  // Equipo más goleador
-  const realGolesBlanco=matches.reduce((a,m)=>a+m.gfB,0);
-  const realGolesNegro=matches.reduce((a,m)=>a+m.gfN,0);
-  let txtEquipoGoleador='';
-  if(realGolesBlanco>realGolesNegro)txtEquipoGoleador=`El <strong>Equipo Blanco</strong> fue el más letal: anotó <strong>${realGolesBlanco} goles</strong>, contra los ${realGolesNegro} del Equipo Negro.`;
-  else if(realGolesNegro>realGolesBlanco)txtEquipoGoleador=`El <strong>Equipo Negro</strong> fue el más letal: anotó <strong>${realGolesNegro} goles</strong>, contra los ${realGolesBlanco} del Equipo Blanco.`;
-  else txtEquipoGoleador=`¡Pólvora repartida! Ambos equipos anotaron exactamente <strong>${realGolesBlanco} goles</strong>.`;
+  const rGB=matches.reduce((a,m)=>a+m.gfB,0),rGN=matches.reduce((a,m)=>a+m.gfN,0);
+  let txtEG='';
+  if(rGB>rGN)txtEG=`El <strong>Equipo Blanco</strong> fue el m\u00e1s letal: anot\u00f3 <strong>${rGB} goles</strong>, contra los ${rGN} del Negro.`;
+  else if(rGN>rGB)txtEG=`El <strong>Equipo Negro</strong> fue el m\u00e1s letal: anot\u00f3 <strong>${rGN} goles</strong>, contra los ${rGB} del Blanco.`;
+  else txtEG=`\u00a1P\u00f3lvora repartida! Ambos equipos anotaron <strong>${rGB} goles</strong>.`;
 
-  // Promedio
-  const txtPromedio=`El promedio general fue de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol fueron un show ofensivo.`;
-
-  // Talismán
-  const winsBlanco={},winsNegro={};
-  data.forEach(r=>{
-    if(r.resultado==='G'){
-      if(r.equipo==='BLANCO')winsBlanco[r.jugador]=(winsBlanco[r.jugador]||0)+1;
-      if(r.equipo==='NEGRO')winsNegro[r.jugador]=(winsNegro[r.jugador]||0)+1;
-    }
-  });
-  let maxWB=0,pWB=[],maxWN=0,pWN=[];
-  for(let j in winsBlanco){if(winsBlanco[j]>maxWB){maxWB=winsBlanco[j];pWB=[formatName(j)];}else if(winsBlanco[j]===maxWB)pWB.push(formatName(j));}
-  for(let j in winsNegro){if(winsNegro[j]>maxWN){maxWN=winsNegro[j];pWN=[formatName(j)];}else if(winsNegro[j]===maxWN)pWN.push(formatName(j));}
+  const wB={},wN={};
+  data.filter(r=>!r.nombre?.toLowerCase().includes('amigo')&&!r.jugador?.startsWith('Invitado')).forEach(r=>{if(r.resultado==='G'){if(r.equipo==='BLANCO')wB[r.jugador]=(wB[r.jugador]||0)+1;if(r.equipo==='NEGRO')wN[r.jugador]=(wN[r.jugador]||0)+1;}});
+  let mWB=0,pWB=[],mWN=0,pWN=[];
+  for(let j in wB){if(wB[j]>mWB){mWB=wB[j];pWB=[formatName(j)];}else if(wB[j]===mWB)pWB.push(formatName(j));}
+  for(let j in wN){if(wN[j]>mWN){mWN=wN[j];pWN=[formatName(j)];}else if(wN[j]===mWN)pWN.push(formatName(j));}
   let txtRandom='';
-  if(maxWB>=maxWN&&maxWB>0)txtRandom=`Dato random: <strong>${pWB.join(' y ')}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Equipo Blanco, con <strong>${maxWB} victorias</strong> vistiendo ese color.`;
-  else if(maxWN>0)txtRandom=`Dato random: <strong>${pWN.join(' y ')}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Equipo Negro, con <strong>${maxWN} victorias</strong> vistiendo ese color.`;
-  else txtRandom=`¡El torneo estuvo súper peleado y nadie sacó ventaja clara con ninguna camiseta!`;
+  if(mWB>=mWN&&mWB>0)txtRandom=`Dato random: <strong>${pWB.join(' y ')}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Blanco, con <strong>${mWB} victorias</strong>.`;
+  else if(mWN>0)txtRandom=`Dato random: <strong>${pWN.join(' y ')}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Negro, con <strong>${mWN} victorias</strong>.`;
+  else txtRandom=`El torneo estuvo muy parejo entre equipos.`;
 
-  // Jugador de fierro
-  const maxPj=Math.max(...st.map(p=>p.pj));
-  const ironMen=st.filter(p=>p.pj===maxPj&&maxPj>0).map(p=>formatName(p.nombre));
-  const minutos=maxPj*60;
+  const maxPj2=st.length?Math.max(...st.map(p=>p.pj)):0;
+  const ironMen=st.filter(p=>p.pj===maxPj2&&maxPj2>0).map(p=>formatName(p.nombre));
   const fmtList=(arr)=>arr.length===1?arr[0]:arr.slice(0,-1).join(', ')+' y '+arr[arr.length-1];
-  const txtMinutos=maxPj>0?`<strong>${fmtList(ironMen)}</strong> ${ironMen.length>1?'son':'es'} de fierro: ${ironMen.length>1?'suman':'suma'} <strong>${minutos} minutos</strong> en cancha (${maxPj} PJ completos) liderando la asistencia.`:'Sin datos.';
+  const txtMin=maxPj2>0?`<strong>${fmtList(ironMen)}</strong> ${ironMen.length>1?'son':'es'} de fierro con <strong>${maxPj2} partidos</strong> liderando la asistencia.`:'Sin datos.';
 
   const clist=[
-    {e:'🔥',t:txtRacha},{e:'🎯',t:txtGoles},{e:'⚪',t:domTeamTxt},
-    {e:'⚽',t:txtFechaGoles},{e:'🥅',t:txtEquipoGoleador},
-    {e:'📊',t:txtPromedio},{e:'🍀',t:txtRandom},{e:'⏱️',t:txtMinutos},
+    {e:'\ud83d\udd25',t:txtRacha},{e:'\ud83c\udfaf',t:txtGoles},{e:'\u26aa',t:domTeamTxt},
+    {e:'\u26bd',t:txtFechaGoles},{e:'\ud83e\udd45',t:txtEG},
+    {e:'\ud83d\udcc8',t:`El promedio general fue de <strong>${avgGoles} goles</strong> por partido.`},
+    {e:'\ud83c\udf40',t:txtRandom},{e:'\u23f1\ufe0f',t:txtMin},
   ];
   const cuEl=document.getElementById(curiId);
   if(cuEl)cuEl.innerHTML=clist.map(c=>`<div class="cur-item"><span class="cur-emoji">${c.e}</span><div class="cur-text">${c.t}</div></div>`).join('');
@@ -2328,6 +2349,76 @@ function renderHistoricoGlobal() {
 
   // Stats histórico combinado
   renderHistStats(allData, 'stats-cards-hist', 'curiosidades-hist', 0);
+
+  // Valla histórica combinada
+  renderVallaHistorica(allData);
+}
+
+function renderVallaHistorica(allData) {
+  const gcMap = {};
+  ARQUEROS_VALIDOS.forEach(n => { gcMap[n] = {}; });
+
+  // Para el histórico necesitamos distinguir por año+fecha para no duplicar
+  const seen = {};
+  allData.forEach(r => {
+    if(!ARQUEROS_VALIDOS.includes(r.jugador)) return;
+    if(!['G','E','P'].includes(r.resultado)) return;
+    const key = `${r.jugador}-${r.ano||2026}-${r.fecha}`;
+    if(seen[key]) return;
+    seen[key] = true;
+    if(!gcMap[r.jugador]) gcMap[r.jugador] = {};
+    const k = `${r.ano||2026}-${r.fecha}`;
+    gcMap[r.jugador][k] = r.gc || 0;
+  });
+
+  const vallas = ARQUEROS_VALIDOS.map(n => {
+    const fd = gcMap[n] || {};
+    const entries = Object.entries(fd);
+    if(!entries.length) return null;
+    const total = entries.reduce((a,[,v])=>a+v,0);
+    const pj = entries.length;
+    // Group by year for popup
+    const porAno = {};
+    entries.forEach(([k,v])=>{const yr=k.split('-')[0];porAno[yr]=(porAno[yr]||0)+v;});
+    return {nombre:n, gc:total, pj, porAno};
+  }).filter(Boolean).sort((a,b)=>a.gc-b.gc);
+
+  const vallasProm = [...vallas].sort((a,b)=>(a.gc/a.pj)-(b.gc/b.pj));
+
+  const makeV = (a,i,byProm) => {
+    const prom=(a.gc/a.pj).toFixed(2);
+    const safe=a.nombre.replace(/'/g,"\\'");
+    return`<div class="rank-item" onclick="openVallaHistModal('${safe}')">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${formatName(a.nombre)}</div><div class="ri-sub">Toca para ver por temporada</div></div>
+      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${byProm?prom:a.gc}</div><div class="ri-unit">${byProm?'prom/pj':'recibidos'}</div><div class="ri-prom">${byProm?a.gc+' totales':prom+'/pj'}</div></div>
+    </div>`;
+  };
+
+  // Store for popup
+  window._vallaHistData = {};
+  vallas.forEach(v => { window._vallaHistData[v.nombre] = v; });
+
+  const tEl=document.getElementById('valla-hist-total'), pEl=document.getElementById('valla-hist-prom');
+  if(tEl)tEl.innerHTML=vallas.map((v,i)=>makeV(v,i,false)).join('')||'<div class="empty-box">Sin datos.</div>';
+  if(pEl)pEl.innerHTML=vallasProm.map((v,i)=>makeV(v,i,true)).join('')||'<div class="empty-box">Sin datos.</div>';
+}
+
+function openVallaHistModal(nombre) {
+  const modal = document.getElementById('score-modal');
+  document.getElementById('sm-name').textContent = formatName(nombre);
+  document.getElementById('sm-sub').textContent = 'Goles recibidos por temporada · Histórico';
+  const v = (window._vallaHistData||{})[nombre];
+  if(!v){ document.getElementById('sm-rows').innerHTML='<div class="sm-row"><span class="sm-fecha">Sin datos</span></div>'; }
+  else {
+    let rows = Object.entries(v.porAno).sort((a,b)=>a[0]-b[0])
+      .map(([yr,g])=>`<div class="sm-row"><span class="sm-fecha">Temporada ${yr}</span><span class="sm-val" style="color:#ff9977">${g} gol${g!==1?'es':''}</span></div>`).join('');
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total recibidos</span><span class="sm-val" style="color:#ff9977">${v.gc}</span></div>`;
+    rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val" style="color:#ff9977">${(v.gc/v.pj).toFixed(2)}</span></div>`;
+    document.getElementById('sm-rows').innerHTML=rows;
+  }
+  if(!history.state||!history.state.modalOpen)history.pushState({modalOpen:true},'','#modal-abierto');
+  modal.classList.add('open');
 }
 
 function openHistScoreModalPorTemporada(nombre) {
@@ -2716,24 +2807,22 @@ function switchTab(g,id,btn){
 }
 
 window.addEventListener('popstate', (event) => {
-  // Si hay un popup abierto y se presionó "Atrás" (el estado ficticio desapareció)
   const scoreModal = document.getElementById('score-modal');
   const mvpModal = document.getElementById('mvp-modal');
 
   if (scoreModal.classList.contains('open')) {
     scoreModal.classList.remove('open');
-    return; // Detenemos la navegación a otra página si solo cerramos el modal
+    return;
   }
   if (mvpModal.classList.contains('open')) {
     mvpModal.classList.remove('open');
-    return; // Detenemos la navegación a otra página si solo cerramos el modal
+    return;
   }
 
-  // Handle standard page navigation
   const hash = window.location.hash.substring(1) || 'home';
-  // Evitamos que intente navegar a los hashes ficticios de los modals si quedaron en la URL
   if (hash === 'modal-abierto') return;
-  showPage(hash, false); 
+  // resetTab=false: al volver con el botón atrás no resetea el tab activo
+  showPage(hash, false, false); 
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
