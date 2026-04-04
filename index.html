@@ -377,8 +377,27 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
 .fl{font-family:'Anton',sans-serif;font-size:1.25rem;color:var(--green);letter-spacing:2px;margin-bottom:.5rem}
 .fb{border-top:1px solid rgba(255,255,255,.04);padding-top:.8rem;color:var(--text2);font-size:.72rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
 
-/* EMPTY */
-.empty-box{background:var(--card);border:1px dashed var(--green-dark);border-radius:8px;padding:2rem;text-align:center;color:var(--text2)}
+/* FICHA JUGADOR */
+.ficha-header{display:flex;align-items:center;gap:1.5rem;background:var(--card);border-radius:14px;padding:1.5rem;border:1px solid rgba(57,255,20,.12);margin-bottom:2rem;flex-wrap:wrap}
+.ficha-foto{width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:center 15%;border:3px solid var(--green);flex-shrink:0;background:var(--card2)}
+.ficha-foto-ph{width:100px;height:100px;border-radius:50%;background:var(--card2);border:3px solid var(--green-dark);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0}
+.ficha-nombre{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
+.ficha-sub{color:var(--text2);font-size:.85rem;margin-top:.3rem}
+.ficha-stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;margin-bottom:2rem}
+.ficha-stat-card{background:var(--card);border-radius:10px;padding:1rem;border:1px solid rgba(57,255,20,.07);text-align:center}
+.ficha-stat-val{font-family:'Anton',sans-serif;font-size:1.8rem;color:var(--green);line-height:1}
+.ficha-stat-lbl{color:var(--text2);font-size:.65rem;letter-spacing:1px;text-transform:uppercase;margin-top:.25rem}
+.ficha-ano-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-bottom:2rem}
+.ficha-ano-card{background:var(--card);border-radius:10px;padding:1rem 1.25rem;border:1px solid rgba(57,255,20,.07)}
+.ficha-ano-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:.6rem}
+.ficha-ano-row{display:flex;justify-content:space-between;font-size:.82rem;padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ficha-ano-row:last-child{border-bottom:none}
+.ficha-ano-key{color:var(--text2)}.ficha-ano-val{font-weight:600}
+.ficha-back{display:inline-flex;align-items:center;gap:.4rem;color:var(--text2);font-size:.8rem;cursor:pointer;margin-bottom:1.5rem;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.ficha-back:hover{color:var(--green)}
+.hist-badge{display:inline-block;background:rgba(57,255,20,.08);border:1px solid var(--green-dark);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2px;padding:.2rem .75rem;border-radius:12px;margin-left:.5rem;vertical-align:middle}
+.player-link{cursor:pointer;color:var(--text);transition:color .15s}.player-link:hover{color:var(--green);text-decoration:underline}
+
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green-dark);border-radius:3px}
@@ -573,6 +592,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('tabla','2024',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('tabla','2025',this)">2025</button>
       <button class="tab-btn active" onclick="switchTab('tabla','2026',this)">⚡ 2026 Actual</button>
+      <button class="tab-btn" onclick="switchTab('tabla','hist',this)">🌐 Histórico</button>
     </div>
 
     <div id="tabla-2026" class="tab-content active">
@@ -601,7 +621,11 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
         <span><strong>👕</strong> = se llevó las camisetas para lavar</span>
       </div>
     </div>
-    <div id="tabla-2023" class="tab-content">
+    <div id="tabla-hist" class="tab-content">
+      <p class="ssub">Acumulado histórico 2023 a 2026 · Se actualiza automáticamente <span class="hist-badge">🌐 Histórico</span></p>
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb-hist"></tbody></table></div>
+      <div class="pts-legend"><span>Criterio histórico: <strong>PJ primero</strong>, luego PG · Todos los años combinados</span></div>
+    </div>
       <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb23"></tbody></table></div>
       <div class="pts-legend"><span>Criterio 2023: <strong>PJ primero</strong>, luego PG</span></div>
     </div>
@@ -642,6 +666,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('gol','g25',this)">2025</button>
       <button class="tab-btn" onclick="switchTab('gol','g24',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('gol','g23',this)">2023</button>
+      <button class="tab-btn" onclick="switchTab('gol','ghist',this)">🌐 Histórico</button>
     </div>
     <div class="tabs" style="margin-top:.4rem">
       <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida 2026</button>
@@ -673,6 +698,13 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por promedio recibido / partido</div>
           <div class="rank-list" id="valla-prom-cnt"></div>
         </div>
+      </div>
+    </div>
+    <div id="gol-ghist" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🌐 Goleadores históricos 2023–2026 · Toca un nombre para ver goles por temporada</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles totales</div><div class="rank-list" id="gol-ghist-total"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio / partido</div><div class="rank-list" id="gol-ghist-prom"></div></div>
       </div>
     </div>
     <div id="gol-gv25" class="tab-content">
@@ -840,6 +872,7 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('stats','2024',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('stats','2025',this)">2025</button>
       <button class="tab-btn active" onclick="switchTab('stats','2026',this)">⚡ 2026 Actual</button>
+      <button class="tab-btn" onclick="switchTab('stats','hist',this)">🌐 Histórico</button>
     </div>
 
     <div id="stats-2026" class="tab-content active">
@@ -851,6 +884,13 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="curiosidad-list" id="curiosidades"></div>
     </div>
     
+    <div id="stats-hist" class="tab-content">
+      <p class="ssub">Estadísticas acumuladas 2023–2026 <span class="hist-badge">🌐 Histórico</span></p>
+      <div class="stats-grid" id="stats-cards-hist"></div>
+      <h3 style="font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;text-transform:uppercase;margin-top:3rem;margin-bottom:.5rem">Curiosidades <span style="color:var(--green)">& Récords</span></h3>
+      <div class="divider"></div>
+      <div class="curiosidad-list" id="curiosidades-hist"></div>
+    </div>
     <div id="stats-2023" class="tab-content">
       <p class="ssub">Datos acumulados de la Temporada 2023</p>
       <div class="stats-grid" id="stats-cards-23"></div>
@@ -893,6 +933,13 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <h3 style="font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--green);margin-bottom:.4rem">TEMPORADA 2026 EN CURSO</h3>
       <p style="color:var(--text2)">Los premios de 2026 se definen al final del año.</p>
     </div>
+  </div>
+</div>
+
+<div id="page-jugador" class="page">
+  <div class="section">
+    <div class="ficha-back" onclick="history.back()">← Volver</div>
+    <div id="ficha-content"></div>
   </div>
 </div>
 
@@ -1332,9 +1379,10 @@ function renderStandings(standings){
     const difStr=p.dif>0?'+'+p.dif:p.dif;
     const shirt=p.camiseta>0?`<div class="shirt-badge">👕 x${p.camiseta}</div>`:'';
     const pos=i<3?`<span class="pb p${i+1}">${i+1}</span>`:`<span class="pb pn">${i+1}</span>`;
+    const safe=p.nombre.replace(/'/g,"\\'");
     return`<tr class="${cls[i]||''}">
       <td>${pos}</td>
-      <td class="lft"><div class="name-wrap"><span>${p.nombre}</span>${shirt}</div></td>
+      <td class="lft"><div class="name-wrap"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span>${shirt}</div></td>
       <td class="pts-cell">${p.pts}</td>
       <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
       <td style="color:#7dd87d">${p.goles>0?p.goles:'—'}</td>
@@ -1819,11 +1867,11 @@ function renderHistStandings(standings, tbodyId, criterio) {
   tb.innerHTML = standings.map((p, i) => {
     const difStr = p.dif > 0 ? '+' + p.dif : p.dif;
     const pos = i < 3 ? `<span class="pb p${i+1}">${i+1}</span>` : `<span class="pb pn">${i+1}</span>`;
+    const safe = p.nombre.replace(/'/g,"\\'");
     if (criterio === 'pj') {
-      // 2023/2024: PJ primero, luego PG — sin columna PTS ni BONUS
       return `<tr class="${cls[i]||''}">
         <td>${pos}</td>
-        <td class="lft" style="min-width:160px">${formatName(p.nombre)}</td>
+        <td class="lft" style="min-width:160px"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span></td>
         <td class="pts-cell" style="color:var(--green)">${p.pj}</td>
         <td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
         <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
@@ -1832,10 +1880,9 @@ function renderHistStandings(standings, tbodyId, criterio) {
         <td>${p.pct}%</td><td>${p.prom}</td>
       </tr>`;
     }
-    // 2025: sistema de puntos
     return `<tr class="${cls[i]||''}">
       <td>${pos}</td>
-      <td class="lft" style="min-width:160px">${formatName(p.nombre)}</td>
+      <td class="lft" style="min-width:160px"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span></td>
       <td class="pts-cell">${p.pts}</td>
       <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
       <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
@@ -2197,7 +2244,208 @@ function renderAllHistorico() {
     renderHistMVPs(data, `mvp-hist-${suffix}`, ano);
     renderHistStats(data, `stats-cards-${suffix}`, `curiosidades-${suffix}`, ano);
   });
+
+  // Histórico combinado 2023-2026
+  renderHistoricoGlobal();
 }
+
+function getAllDataCombined() {
+  // Junta historico (2023-2025) + 2026 actual
+  const hist = [2023,2024,2025].flatMap(a => _histData[a]||[]);
+  const data26 = (_rawData||D).map(r => ({...r, ano:2026}));
+  return [...hist, ...data26];
+}
+
+function renderHistoricoGlobal() {
+  const allData = getAllDataCombined();
+
+  // Tabla histórica (criterio PJ primero, luego PG)
+  const p = {};
+  allData.forEach(r => {
+    if(!p[r.jugador]) p[r.jugador] = {pj:0,pg:0,pe:0,pp:0,goles:0,dif:0,mvp:0};
+    const x = p[r.jugador];
+    if(['G','E','P'].includes(r.resultado)){
+      x.pj++;x.goles+=r.goles;x.dif+=r.dif;x.mvp+=r.mvp;
+      if(r.resultado==='G')x.pg++;else if(r.resultado==='E')x.pe++;else x.pp++;
+    } else { x.goles+=r.goles; }
+  });
+  const histSt = Object.entries(p).map(([n,x])=>{
+    const pct = x.pj>0?Math.round(x.pg/x.pj*100):0;
+    const prom = x.pj>0?(x.goles/x.pj).toFixed(2):0;
+    return {nombre:n,pct,prom,...x};
+  }).sort((a,b)=>b.pj-a.pj||b.pg-a.pg||b.goles-a.goles);
+
+  const tbHist = document.getElementById('tb-hist');
+  if(tbHist) {
+    const cls=['r1','r2','r3'];
+    tbHist.innerHTML = histSt.map((p,i)=>{
+      const difStr=p.dif>0?'+'+p.dif:p.dif;
+      const pos=i<3?`<span class="pb p${i+1}">${i+1}</span>`:`<span class="pb pn">${i+1}</span>`;
+      const safe=p.nombre.replace(/'/g,"\\'");
+      return`<tr class="${cls[i]||''}">
+        <td>${pos}</td>
+        <td class="lft" style="min-width:160px"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span></td>
+        <td class="pts-cell" style="color:var(--green)">${p.pj}</td>
+        <td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
+        <td style="color:#7dd87d">${p.goles>0?p.goles:'—'}</td>
+        <td class="${p.dif>=0?'dif-pos':'dif-neg'}">${difStr}</td>
+        <td>${p.mvp>0?p.mvp:'—'}</td>
+        <td>${p.pct}%</td><td>${p.prom}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Goleadores histórico con popup por temporada
+  const gTot={}, gPJ={};
+  allData.forEach(r=>{
+    if(!gTot[r.jugador])gTot[r.jugador]=0;
+    gTot[r.jugador]+=r.goles;
+    if(['G','E','P'].includes(r.resultado)){if(!gPJ[r.jugador])gPJ[r.jugador]=0;gPJ[r.jugador]++;}
+  });
+  const histScorers = Object.entries(gTot).filter(([,v])=>v>0)
+    .map(([n,v])=>({nombre:n,goles:v,pj:gPJ[n]||1}))
+    .sort((a,b)=>b.goles-a.goles);
+  const totalPJhist = Math.max(...Object.values(gPJ||{1:1}));
+  const minPJhist = Math.ceil(totalPJhist/2);
+  const histScorersByProm = [...histScorers]
+    .filter(s=>(gPJ[s.nombre]||0)>=minPJhist)
+    .sort((a,b)=>(b.goles/b.pj)-(a.goles/a.pj));
+
+  const makeHistItem=(s,i,byProm)=>{
+    const pj=gPJ[s.nombre]||1;
+    const prom=(s.goles/pj).toFixed(2);
+    const safe=s.nombre.replace(/'/g,"\\'");
+    return`<div class="rank-item" onclick="openHistScoreModalPorTemporada('${safe}')">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${formatName(s.nombre)}</div><div class="ri-sub">Toca para ver por temporada</div></div>
+      <div class="ri-stats"><div class="ri-count">${byProm?prom:s.goles}</div><div class="ri-unit">${byProm?'gol/pj':'goles'}</div><div class="ri-prom">${byProm?s.goles+' totales':prom+'/pj'}</div></div>
+    </div>`;
+  };
+
+  const tEl=document.getElementById('gol-ghist-total'), pEl=document.getElementById('gol-ghist-prom');
+  if(tEl)tEl.innerHTML=histScorers.map((s,i)=>makeHistItem(s,i,false)).join('')||'<div class="empty-box">Sin datos.</div>';
+  if(pEl)pEl.innerHTML=histScorersByProm.map((s,i)=>makeHistItem(s,i,true)).join('')||'<div class="empty-box">Sin datos.</div>';
+
+  // Stats histórico combinado
+  renderHistStats(allData, 'stats-cards-hist', 'curiosidades-hist', 0);
+}
+
+function openHistScoreModalPorTemporada(nombre) {
+  const modal = document.getElementById('score-modal');
+  document.getElementById('sm-name').textContent = formatName(nombre);
+  document.getElementById('sm-sub').textContent = 'Goles por temporada · Histórico';
+
+  const golesPorAno = {};
+  [2023,2024,2025].forEach(ano=>{
+    const d=_histData[ano]||[];
+    const total=d.filter(r=>r.jugador===nombre).reduce((a,r)=>a+r.goles,0);
+    if(total>0)golesPorAno[ano]=total;
+  });
+  const g26 = (_rawData||D).filter(r=>r.jugador===nombre).reduce((a,r)=>a+r.goles,0);
+  if(g26>0)golesPorAno[2026]=g26;
+
+  const totalHist=Object.values(golesPorAno).reduce((a,b)=>a+b,0);
+  let rows=Object.entries(golesPorAno).sort((a,b)=>a[0]-b[0])
+    .map(([ano,g])=>`<div class="sm-row"><span class="sm-fecha">Temporada ${ano}</span><span class="sm-val">${g} gol${g!==1?'es':''}</span></div>`).join('');
+  rows+=`<div class="sm-row sm-total"><span class="sm-fecha">Total histórico</span><span class="sm-val">${totalHist}</span></div>`;
+  document.getElementById('sm-rows').innerHTML=rows;
+  if(!history.state||!history.state.modalOpen)history.pushState({modalOpen:true},'','#modal-abierto');
+  modal.classList.add('open');
+}
+
+// ═══════════════════════════════════════
+// FICHA DE JUGADOR
+// ═══════════════════════════════════════
+function openFicha(nombre) {
+  const allData = getAllDataCombined();
+  const foto = `jugadores/${nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,'').replace(/,\s*/g,'-').replace(/\s+/g,'-')}.png`;
+
+  // Stats globales
+  const rows = allData.filter(r=>r.jugador===nombre);
+  const partidos = rows.filter(r=>['G','E','P'].includes(r.resultado));
+  const pj=partidos.length, pg=partidos.filter(r=>r.resultado==='G').length;
+  const pe=partidos.filter(r=>r.resultado==='E').length, pp=partidos.filter(r=>r.resultado==='P').length;
+  const goles=rows.reduce((a,r)=>a+r.goles,0);
+  const mvps=rows.reduce((a,r)=>a+r.mvp,0);
+  const dif=rows.reduce((a,r)=>a+r.dif,0);
+  const pct=pj>0?Math.round(pg/pj*100):0;
+  const prom=pj>0?(goles/pj).toFixed(2):0;
+
+  // Stats por año
+  const anos = [2023,2024,2025,2026];
+  const anoCards = anos.map(ano=>{
+    let d;
+    if(ano===2026) d=(_rawData||D).filter(r=>r.jugador===nombre);
+    else d=(_histData[ano]||[]).filter(r=>r.jugador===nombre);
+    const pts=d.filter(r=>['G','E','P'].includes(r.resultado));
+    if(!pts.length&&!d.some(r=>r.goles>0))return null;
+    const apj=pts.length,apg=pts.filter(r=>r.resultado==='G').length;
+    const ape=pts.filter(r=>r.resultado==='E').length,app=pts.filter(r=>r.resultado==='P').length;
+    const agoles=d.reduce((a,r)=>a+r.goles,0);
+    const amvp=d.reduce((a,r)=>a+r.mvp,0);
+    const adif=d.reduce((a,r)=>a+r.dif,0);
+    return {ano,apj,apg,ape,app,agoles,amvp,adif};
+  }).filter(Boolean);
+
+  // Racha histórica (últimos resultados)
+  const histRaw=partidos.sort((a,b)=>{if(a.ano!==b.ano)return a.ano-b.ano;return a.fecha-b.fecha;});
+  const racha=histRaw.map(r=>r.resultado);
+  let maxStreak=0,cur=0;
+  racha.forEach(r=>{if(r==='G'){cur++;maxStreak=Math.max(maxStreak,cur);}else cur=0;});
+
+  // MVPs por año
+  const mvpPorAno={};
+  rows.filter(r=>r.mvp===1).forEach(r=>{mvpPorAno[r.ano]=(mvpPorAno[r.ano]||0)+1;});
+
+  const fichaHTML=`
+    <div class="ficha-header">
+      <img src="${foto}" class="ficha-foto" onerror="this.outerHTML='<div class=\\'ficha-foto-ph\\'>👤</div>'">
+      <div>
+        <div class="ficha-nombre">${formatName(nombre)}</div>
+        <div class="ficha-sub">🏟️ ${pj} partidos jugados · Temporadas ${anoCards.map(a=>a.ano).join(', ')}</div>
+        <div class="ficha-sub" style="margin-top:.3rem">Racha máxima de victorias: <strong style="color:var(--green)">${maxStreak} seguidas</strong></div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">Stats <span style="color:var(--green)">Históricas</span></h3>
+    <div class="ficha-stats-grid">
+      <div class="ficha-stat-card"><div class="ficha-stat-val">${pj}</div><div class="ficha-stat-lbl">Partidos</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--green)">${pg}</div><div class="ficha-stat-lbl">Victorias</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${pe}</div><div class="ficha-stat-lbl">Empates</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--red)">${pp}</div><div class="ficha-stat-lbl">Derrotas</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val">${goles}</div><div class="ficha-stat-lbl">Goles</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val">${prom}</div><div class="ficha-stat-lbl">Goles/Partido</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val">${pct}%</div><div class="ficha-stat-lbl">% Victorias</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${mvps}</div><div class="ficha-stat-lbl">MVPs</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" class="${dif>=0?'dif-pos':'dif-neg'}">${dif>0?'+':''}${dif}</div><div class="ficha-stat-lbl">Dif. Goles</div></div>
+    </div>
+
+    <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">Por <span style="color:var(--green)">Temporada</span></h3>
+    <div class="ficha-ano-grid">
+      ${anoCards.map(a=>`
+        <div class="ficha-ano-card">
+          <div class="ficha-ano-title">${a.ano}${a.ano===2026?' ⚡':''}</div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">Partidos</span><span class="ficha-ano-val">${a.apj}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">Victorias</span><span class="ficha-ano-val" style="color:var(--green)">${a.apg}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">Empates</span><span class="ficha-ano-val">${a.ape}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">Derrotas</span><span class="ficha-ano-val" style="color:var(--red)">${a.app}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">Goles</span><span class="ficha-ano-val">${a.agoles}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">MVPs</span><span class="ficha-ano-val" style="color:var(--gold)">${a.amvp}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">Dif</span><span class="ficha-ano-val" style="color:${a.adif>=0?'#7dd87d':'var(--red)'}">${a.adif>0?'+':''}${a.adif}</span></div>
+        </div>`).join('')}
+    </div>
+
+    <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem">Últimos <span style="color:var(--green)">Resultados</span></h3>
+    <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:2rem">
+      ${racha.slice(-20).map(r=>`<span class="rc ${r==='G'?'rc-g':r==='P'?'rc-p':'rc-e'}" style="width:18px;height:18px" title="${r==='G'?'Victoria':r==='P'?'Derrota':'Empate'}"></span>`).join('')}
+    </div>
+  `;
+
+  document.getElementById('ficha-content').innerHTML=fichaHTML;
+  showPage('jugador', true, false);
+}
+
+
 
 
 function getNextWednesday(){
@@ -2391,9 +2639,12 @@ function renderAll(data){
   const maxF=fechas[fechas.length-1];
   const lbl=document.getElementById('updated-fecha-lbl');
   if(lbl)lbl.textContent=`F${maxF} · ${FD[maxF]||''}`;
+
+  // Si ya cargaron los datos históricos, actualizá el histórico global también
+  if(Object.keys(_histData).length>0) renderHistoricoGlobal();
 }
 
-function showPage(id, updateUrl = true){
+function showPage(id, updateUrl = true, resetTab = true){
   let targetId = id;
   if(id === 'foro') targetId = 'proxima';
 
@@ -2410,29 +2661,28 @@ function showPage(id, updateUrl = true){
   const mainNav = document.getElementById('main-nav');
   if(mainNav) mainNav.classList.remove('open');
   
-  // Reset cada sección al tab más reciente (2026) al navegar
-  const tabDefaults = {
-    tabla:  { group:'tabla', tab:'2026',  btnSel:'button.tab-btn[onclick*="tabla","2026"]' },
-    partidos:{ group:'par',  tab:'p2026', btnSel:null },
-    goleadores:{ group:'gol', tab:'g26',  btnSel:null },
-    mvp:    { group:'mvp',  tab:'m26',   btnSel:null },
-    stats:  { group:'stats', tab:'2026', btnSel:null },
-  };
-  if(tabDefaults[targetId]) {
-    const { group, tab } = tabDefaults[targetId];
-    // Desactivar todos los tabs de ese grupo
-    document.querySelectorAll(`[id^="${group}-"]`).forEach(c => c.classList.remove('active'));
-    const targetTab = document.getElementById(`${group}-${tab}`);
-    if(targetTab) targetTab.classList.add('active');
-    // Resetear botones: busca el botón que apunta al tab correcto
-    const page = document.getElementById('page-'+targetId);
-    if(page) {
-      page.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      page.querySelectorAll('.tab-btn').forEach(b => {
-        const oc = b.getAttribute('onclick')||'';
-        // El tab de 2026 suele ser el que contiene '2026' o 'g26' o 'm26' o 'p2026'
-        if(oc.includes(`'${tab}'`) || oc.includes(`"${tab}"`)) b.classList.add('active');
-      });
+  // Solo resetea al tab 2026 cuando se navega de página (no al cerrar popups)
+  if(resetTab) {
+    const tabDefaults = {
+      tabla:     { group:'tabla', tab:'2026'  },
+      partidos:  { group:'par',  tab:'p2026' },
+      goleadores:{ group:'gol',  tab:'g26'   },
+      mvp:       { group:'mvp',  tab:'m26'   },
+      stats:     { group:'stats',tab:'2026'  },
+    };
+    if(tabDefaults[targetId]) {
+      const { group, tab } = tabDefaults[targetId];
+      document.querySelectorAll(`[id^="${group}-"]`).forEach(c => c.classList.remove('active'));
+      const targetTab = document.getElementById(`${group}-${tab}`);
+      if(targetTab) targetTab.classList.add('active');
+      const page = document.getElementById('page-'+targetId);
+      if(page) {
+        page.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        page.querySelectorAll('.tab-btn').forEach(b => {
+          const oc = b.getAttribute('onclick')||'';
+          if(oc.includes(`'${tab}'`) || oc.includes(`"${tab}"`)) b.classList.add('active');
+        });
+      }
     }
   }
 
