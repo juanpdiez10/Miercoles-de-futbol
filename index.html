@@ -600,15 +600,15 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       </div>
     </div>
     <div id="tabla-2023" class="tab-content">
-      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft">JUGADOR</th><th>PG</th><th>PJ</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb23"></tbody></table></div>
-      <div class="pts-legend"><span>Criterio 2023: <strong>PG primero</strong>, luego PJ</span></div>
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb23"></tbody></table></div>
+      <div class="pts-legend"><span>Criterio 2023: <strong>PJ primero</strong>, luego PG</span></div>
     </div>
     <div id="tabla-2024" class="tab-content">
-      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft">JUGADOR</th><th>PG</th><th>PJ</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb24"></tbody></table></div>
-      <div class="pts-legend"><span>Criterio 2024: <strong>PG primero</strong>, luego PJ</span></div>
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb24"></tbody></table></div>
+      <div class="pts-legend"><span>Criterio 2024: <strong>PJ primero</strong>, luego PG</span></div>
     </div>
     <div id="tabla-2025" class="tab-content">
-      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft">JUGADOR</th><th>PTS</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>BONUS</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb25"></tbody></table></div>
+      <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PTS</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>BONUS</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb25"></tbody></table></div>
       <div class="pts-legend"><span><strong>PJ</strong> +2</span><span><strong>PG</strong> +3</span><span><strong>PE</strong> +1</span><span><strong>MVP</strong> +1</span></div>
     </div>
   </div>
@@ -640,7 +640,12 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <button class="tab-btn" onclick="switchTab('gol','g25',this)">2025</button>
       <button class="tab-btn" onclick="switchTab('gol','g24',this)">2024</button>
       <button class="tab-btn" onclick="switchTab('gol','g23',this)">2023</button>
-      <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida</button>
+    </div>
+    <div class="tabs" style="margin-top:.4rem">
+      <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida 2026</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv25',this)">Valla 2025</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv24',this)">Valla 2024</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv23',this)">Valla 2023</button>
     </div>
     <div id="gol-g26" class="tab-content active">
       <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
@@ -666,6 +671,27 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Ranking por promedio recibido / partido</div>
           <div class="rank-list" id="valla-prom-cnt"></div>
         </div>
+      </div>
+    </div>
+    <div id="gol-gv25" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🧤 Arqueros 2025 · Toca un nombre para ver goles recibidos por fecha</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles recibidos (menor = mejor)</div><div class="rank-list" id="valla-cnt-25"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio recibido / partido</div><div class="rank-list" id="valla-prom-cnt-25"></div></div>
+      </div>
+    </div>
+    <div id="gol-gv24" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🧤 Arqueros 2024 · Toca un nombre para ver goles recibidos por fecha</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles recibidos (menor = mejor)</div><div class="rank-list" id="valla-cnt-24"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio recibido / partido</div><div class="rank-list" id="valla-prom-cnt-24"></div></div>
+      </div>
+    </div>
+    <div id="gol-gv23" class="tab-content">
+      <p style="color:var(--text2);font-size:.78rem;margin-bottom:1rem">🧤 Arqueros 2023 · Toca un nombre para ver goles recibidos por fecha</p>
+      <div class="rank-section">
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por goles recibidos (menor = mejor)</div><div class="rank-list" id="valla-cnt-23"></div></div>
+        <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:.5rem">Por promedio recibido / partido</div><div class="rank-list" id="valla-prom-cnt-23"></div></div>
       </div>
     </div>
     <div id="gol-g25" class="tab-content">
@@ -1761,7 +1787,7 @@ function parseHistCSV(csv) {
 }
 
 function computeHistStandings(data, criterio) {
-  // criterio: 'pg' para 2023/2024, 'pts' para 2025
+  // criterio: 'pj' para 2023/2024 (PJ primero, luego PG), 'pts' para 2025
   const p = {};
   data.forEach(r => {
     if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, dif: 0, bonus: 0, mvp: 0 };
@@ -1779,7 +1805,7 @@ function computeHistStandings(data, criterio) {
     const prom = x.pj > 0 ? (x.goles / x.pj).toFixed(2) : 0;
     return { nombre: n, pts, pct, prom, ...x };
   }).sort((a, b) => {
-    if (criterio === 'pg') return b.pg - a.pg || b.pj - a.pj || b.goles - a.goles;
+    if (criterio === 'pj') return b.pj - a.pj || b.pg - a.pg || b.goles - a.goles;
     return b.pts - a.pts || b.pg - a.pg || b.goles - a.goles;
   });
 }
@@ -1790,21 +1816,23 @@ function renderHistStandings(standings, tbodyId, criterio) {
   tb.innerHTML = standings.map((p, i) => {
     const difStr = p.dif > 0 ? '+' + p.dif : p.dif;
     const pos = i < 3 ? `<span class="pb p${i+1}">${i+1}</span>` : `<span class="pb pn">${i+1}</span>`;
-    if (criterio === 'pg') {
+    if (criterio === 'pj') {
+      // 2023/2024: PJ primero, luego PG — sin columna PTS ni BONUS
       return `<tr class="${cls[i]||''}">
         <td>${pos}</td>
-        <td class="lft">${formatName(p.nombre)}</td>
-        <td class="pts-cell" style="color:var(--green)">${p.pg}</td>
-        <td>${p.pj}</td><td>${p.pe}</td><td>${p.pp}</td>
+        <td class="lft" style="min-width:160px">${formatName(p.nombre)}</td>
+        <td class="pts-cell" style="color:var(--green)">${p.pj}</td>
+        <td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
         <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
         <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
         <td>${p.mvp > 0 ? p.mvp : '—'}</td>
         <td>${p.pct}%</td><td>${p.prom}</td>
       </tr>`;
     }
+    // 2025: sistema de puntos
     return `<tr class="${cls[i]||''}">
       <td>${pos}</td>
-      <td class="lft">${formatName(p.nombre)}</td>
+      <td class="lft" style="min-width:160px">${formatName(p.nombre)}</td>
       <td class="pts-cell">${p.pts}</td>
       <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
       <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
@@ -1850,27 +1878,144 @@ function renderHistMatches(ms, containerId) {
   }).join('');
 }
 
-function computeHistScorers(data) {
-  const g = {}, pj = {};
+function renderHistScorers(data, totalId, promId, ano) {
+  const scorers = computeHistScorers(data);
+  const st = computeHistStandings(data, ano <= 2024 ? 'pj' : 'pts');
+  const totalFechas = [...new Set(data.map(r=>r.fecha))].length;
+  const minPJ = Math.ceil(totalFechas / 2);
+
+  // Build per-fecha map for popup
+  const golesPerFecha = {};
   data.forEach(r => {
-    if (!g[r.jugador]) g[r.jugador] = 0;
-    g[r.jugador] += r.goles;
-    if (['G','E','P'].includes(r.resultado)) { if (!pj[r.jugador]) pj[r.jugador] = 0; pj[r.jugador]++; }
+    if (!golesPerFecha[r.jugador]) golesPerFecha[r.jugador] = {};
+    golesPerFecha[r.jugador][r.fecha] = (golesPerFecha[r.jugador][r.fecha] || 0) + r.goles;
   });
-  return Object.entries(g).filter(([,v]) => v > 0).map(([n, v]) => ({ nombre: n, goles: v, pj: pj[n] || 1 })).sort((a, b) => b.goles - a.goles);
+
+  const makeItem = (s, i) => {
+    const pj = (st.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1;
+    const prom = (s.goles/pj).toFixed(2);
+    const safeName = s.nombre.replace(/'/g,"\\'");
+    return `<div class="rank-item" onclick="openHistScoreModal('${safeName}',${ano})">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${formatName(s.nombre)}</div><div class="ri-sub">Toca para ver desglose</div></div>
+      <div class="ri-stats"><div class="ri-count">${s.goles}</div><div class="ri-unit">goles</div><div class="ri-prom">${prom}/pj</div></div>
+    </div>`;
+  };
+  const makeItemProm = (s, i) => {
+    const pj = (st.find(p=>p.nombre===s.nombre)||{pj:s.pj||1}).pj||1;
+    const prom = (s.goles/pj).toFixed(2);
+    const safeName = s.nombre.replace(/'/g,"\\'");
+    return `<div class="rank-item" onclick="openHistScoreModal('${safeName}',${ano})">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${formatName(s.nombre)}</div><div class="ri-sub">${pj} partidos</div></div>
+      <div class="ri-stats"><div class="ri-count">${prom}</div><div class="ri-unit">gol/pj</div><div class="ri-prom">${s.goles} totales</div></div>
+    </div>`;
+  };
+
+  const byProm = [...scorers]
+    .filter(s => { const pj=(st.find(p=>p.nombre===s.nombre)||{pj:0}).pj||0; return pj >= minPJ; })
+    .sort((a,b) => {
+      const pjA=(st.find(p=>p.nombre===a.nombre)||{pj:1}).pj||1;
+      const pjB=(st.find(p=>p.nombre===b.nombre)||{pj:1}).pj||1;
+      return (b.goles/pjB)-(a.goles/pjA);
+    });
+
+  const tEl = document.getElementById(totalId), pEl = document.getElementById(promId);
+  if (tEl) tEl.innerHTML = scorers.map(makeItem).join('') || '<div class="empty-box">Sin datos.</div>';
+  if (pEl) pEl.innerHTML = byProm.map(makeItemProm).join('') || '<div class="empty-box">Sin datos.</div>';
 }
 
-function renderHistScorers(scorers, totalId, promId) {
-  const makeRow = (p, i, key) => {
-    const medals = ['🥇','🥈','🥉'];
-    const prom = (p.goles / p.pj).toFixed(2);
-    const val = key === 'total' ? p.goles : prom;
-    return `<div class="rank-row"><span class="rank-pos">${medals[i] || (i+1)}</span><span class="rank-name">${formatName(p.nombre)}</span><span class="rank-val">${val} ${key==='total'?'⚽':'/pj'}</span></div>`;
+// Store hist goles per fecha for popups
+const _histGolesPerFecha = {};
+
+function openHistScoreModal(nombre, ano) {
+  const modal = document.getElementById('score-modal');
+  document.getElementById('sm-name').textContent = formatName(nombre);
+  document.getElementById('sm-sub').textContent = `Goles anotados por fecha · ${ano}`;
+  const data = _histData[ano] || [];
+  const fd = {};
+  data.forEach(r => { if (r.jugador === nombre && r.goles > 0) fd[r.fecha] = (fd[r.fecha]||0) + r.goles; });
+  const total = Object.values(fd).reduce((a,b)=>a+b,0);
+  const pj = (data.filter(r=>r.jugador===nombre&&['G','E','P'].includes(r.resultado))).length || 1;
+  const prom = (total/pj).toFixed(2);
+  let rows = Object.entries(fd).sort((a,b)=>Number(a[0])-Number(b[0]))
+    .map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f}</span><span class="sm-val">${g} gol${g>1?'es':''}</span></div>`).join('');
+  rows += `<div class="sm-row sm-total"><span class="sm-fecha">Total goles</span><span class="sm-val">${total}</span></div>`;
+  rows += `<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val">${prom}</span></div>`;
+  document.getElementById('sm-rows').innerHTML = rows;
+  if (!history.state || !history.state.modalOpen) history.pushState({ modalOpen: true }, '', '#modal-abierto');
+  modal.classList.add('open');
+}
+
+const ARQUEROS_VALIDOS = ['Cañete, Maxi','Questa, Ezequiel','Diaz, Gonzalo'];
+
+function renderHistValla(data, totalId, promId, ano) {
+  const gcMap = {};
+  ARQUEROS_VALIDOS.forEach(n => { gcMap[n] = {}; });
+  data.forEach(r => {
+    if (!ARQUEROS_VALIDOS.includes(r.jugador)) return;
+    // gc = goles recibidos por el arquero = goles del equipo contrario
+    // En el CSV, gc = goles en contra del jugador = goles recibidos como arquero
+    const gc = r.gc || 0;
+    if (r.resultado === 'G' || r.resultado === 'E' || r.resultado === 'P') {
+      gcMap[r.jugador][r.fecha] = (gcMap[r.jugador][r.fecha] || 0) + gc;
+    }
+  });
+
+  const vallas = ARQUEROS_VALIDOS.map(n => {
+    const fd = gcMap[n];
+    const fechas = Object.keys(fd).filter(f => fd[f] !== undefined);
+    if (fechas.length === 0) return null;
+    // Deduplicate by fecha (take unique fechas)
+    const uniqueFechas = [...new Set(fechas)];
+    const total = uniqueFechas.reduce((a,f)=>a+(fd[f]||0),0);
+    const pj = uniqueFechas.length;
+    return { nombre: n, gc: total, pj, fd };
+  }).filter(Boolean).sort((a,b)=>a.gc-b.gc);
+
+  const vallasProm = [...vallas].sort((a,b)=>(a.gc/a.pj)-(b.gc/b.pj));
+
+  const makeValla = (a, i) => {
+    const prom = (a.gc/a.pj).toFixed(2);
+    const safeName = a.nombre.replace(/'/g,"\\'");
+    return `<div class="rank-item" onclick="openHistVallaModal('${safeName}',${ano})">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${formatName(a.nombre)}</div><div class="ri-sub">Toca para ver desglose</div></div>
+      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${a.gc}</div><div class="ri-unit">recibidos</div><div class="ri-prom">${prom}/pj</div></div>
+    </div>`;
   };
-  const byProm = [...scorers].sort((a,b) => (b.goles/b.pj) - (a.goles/a.pj));
+  const makeVallaProm = (a, i) => {
+    const prom = (a.gc/a.pj).toFixed(2);
+    const safeName = a.nombre.replace(/'/g,"\\'");
+    return `<div class="rank-item" onclick="openHistVallaModal('${safeName}',${ano})">
+      <div class="ri-pos ${i===0?'r1':i===1?'r2':i===2?'r3':''}">${i+1}</div>
+      <div class="ri-info"><div class="ri-name">${formatName(a.nombre)}</div><div class="ri-sub">${a.pj} partidos</div></div>
+      <div class="ri-stats"><div class="ri-count" style="color:#ff9977">${prom}</div><div class="ri-unit">prom/pj</div><div class="ri-gc">${a.gc} totales</div></div>
+    </div>`;
+  };
+
   const tEl = document.getElementById(totalId), pEl = document.getElementById(promId);
-  if (tEl) tEl.innerHTML = scorers.map((p,i) => makeRow(p,i,'total')).join('') || '<div class="empty-box">Sin datos.</div>';
-  if (pEl) pEl.innerHTML = byProm.map((p,i) => makeRow(p,i,'prom')).join('') || '<div class="empty-box">Sin datos.</div>';
+  if (tEl) tEl.innerHTML = vallas.map(makeValla).join('') || '<div class="empty-box">Sin datos de arqueros.</div>';
+  if (pEl) pEl.innerHTML = vallasProm.map(makeVallaProm).join('') || '<div class="empty-box">Sin datos de arqueros.</div>';
+}
+
+function openHistVallaModal(nombre, ano) {
+  const modal = document.getElementById('score-modal');
+  document.getElementById('sm-name').textContent = formatName(nombre);
+  document.getElementById('sm-sub').textContent = `Goles recibidos por fecha · ${ano}`;
+  const data = (_histData[ano] || []).filter(r => r.jugador === nombre && ['G','E','P'].includes(r.resultado));
+  const fd = {};
+  data.forEach(r => { fd[r.fecha] = (fd[r.fecha]||0) + r.gc; });
+  const total = Object.values(fd).reduce((a,b)=>a+b,0);
+  const pj = Object.keys(fd).length || 1;
+  const prom = (total/pj).toFixed(2);
+  let rows = Object.entries(fd).sort((a,b)=>Number(a[0])-Number(b[0]))
+    .map(([f,g])=>`<div class="sm-row"><span class="sm-fecha">Fecha ${f}</span><span class="sm-val" style="color:#ff9977">${g} gol${g!==1?'es':''}</span></div>`).join('');
+  rows += `<div class="sm-row sm-total"><span class="sm-fecha">Total recibidos</span><span class="sm-val" style="color:#ff9977">${total}</span></div>`;
+  rows += `<div class="sm-row sm-total"><span class="sm-fecha">Promedio / partido</span><span class="sm-val" style="color:#ff9977">${prom}</span></div>`;
+  document.getElementById('sm-rows').innerHTML = rows;
+  if (!history.state || !history.state.modalOpen) history.pushState({ modalOpen: true }, '', '#modal-abierto');
+  modal.classList.add('open');
 }
 
 function renderHistMVPs(data, containerId) {
@@ -1879,11 +2024,17 @@ function renderHistMVPs(data, containerId) {
   if (!mvps.length) { el.innerHTML = '<div class="empty-box">Sin MVPs registrados.</div>'; return; }
   el.innerHTML = mvps.map(r => {
     const foto = getUrlFoto(r.jugador);
-    return `<div class="mvp-card" style="cursor:default">
-      <img src="${foto}" class="mvp-img" onerror="this.style.display='none'">
-      <div class="mvp-card-fecha">FECHA ${r.fecha}</div>
-      <div class="mvp-card-name">${formatName(r.jugador)}</div>
-      <div class="mvp-card-date" style="font-size:.7rem;color:var(--text2)">${r.dia}</div>
+    const thumb = `<img class="mvp-thumb" src="${foto}" alt="${r.jugador}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
+    const stat = r.goles > 0 ? `${r.goles} gol${r.goles>1?'es':''} · ${r.equipo==='BLANCO'?'Blanco':'Negro'} ${r.resultado==='G'?'ganó':''}` : `MVP · ${r.equipo==='BLANCO'?'Blanco':'Negro'}`;
+    const safeNombre = r.jugador.replace(/'/g,"\\'");
+    const safeStat = stat.replace(/'/g,"\\'");
+    const safeDate = r.dia || '';
+    return `<div class="mvp-card" onclick="openMvpModal('${foto}','${safeNombre}','Fecha ${r.fecha} · ${safeDate}','${safeStat}')">
+      <div class="mvp-card-top">${thumb}<div>
+        <div class="mvp-card-date">Fecha ${r.fecha} · ${r.dia||''}</div>
+        <div class="mvp-card-name">${formatName(r.jugador)}</div>
+      </div></div>
+      <div class="mvp-card-stat">${stat}</div>
     </div>`;
   }).join('');
 }
@@ -1951,11 +2102,22 @@ async function loadHistData() {
   }
 }
 
+function computeHistScorers(data) {
+  const g = {}, pj = {};
+  data.forEach(r => {
+    if (!g[r.jugador]) g[r.jugador] = 0;
+    g[r.jugador] += r.goles;
+    if (['G','E','P'].includes(r.resultado)) { if (!pj[r.jugador]) pj[r.jugador] = 0; pj[r.jugador]++; }
+  });
+  return Object.entries(g).filter(([,v]) => v > 0).map(([n, v]) => ({ nombre: n, goles: v, pj: pj[n] || 1 })).sort((a, b) => b.goles - a.goles);
+}
+
 function renderAllHistorico() {
   [2023, 2024, 2025].forEach(ano => {
     const data = _histData[ano] || [];
-    const criterio = ano <= 2024 ? 'pg' : 'pts';
-    const tbodyId = `tb${ano.toString().slice(-2)}`;
+    const criterio = ano <= 2024 ? 'pj' : 'pts';
+    const suffix = ano.toString().slice(-2);
+    const tbodyId = `tb${suffix}`;
 
     // Tabla
     const st = computeHistStandings(data, criterio);
@@ -1964,11 +2126,13 @@ function renderAllHistorico() {
     // Partidos
     renderHistMatches(computeHistMatches(data), `par-p${ano}`);
 
-    // Goleadores
-    const suffix = ano.toString().slice(-2);
-    renderHistScorers(computeHistScorers(data), `gol-g${suffix}-total`, `gol-g${suffix}-prom`);
+    // Goleadores con popup
+    renderHistScorers(data, `gol-g${suffix}-total`, `gol-g${suffix}-prom`, ano);
 
-    // MVP
+    // Valla histórica
+    renderHistValla(data, `valla-cnt-${suffix}`, `valla-prom-cnt-${suffix}`, ano);
+
+    // MVP con mismo formato 2026
     renderHistMVPs(data, `mvp-hist-${suffix}`);
 
     // Stats
