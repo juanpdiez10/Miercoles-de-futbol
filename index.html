@@ -2126,15 +2126,6 @@ function renderHistStats(data, cardsId, curiId, ano) {
   const unbeaten = st.filter(p=>p.pp===0&&p.pj>=minPJ);
   const topProm = st.filter(p=>p.pj>=minPJ&&p.goles>0).sort((a,b)=>b.goles/b.pj-a.goles/a.pj)[0];
 
-  // Racha — debe calcularse ANTES de cardsData porque se usa en la card
-  let maxStreak=0,streakPlayers=[];
-  st.forEach(p=>{
-    let cur=0,localMax=0;
-    (p.hist||[]).forEach(r=>{if(r==='G'){cur++;localMax=Math.max(localMax,cur);}else cur=0;});
-    if(localMax>maxStreak&&localMax>0){maxStreak=localMax;streakPlayers=[formatName(p.nombre)];}
-    else if(localMax===maxStreak&&localMax>0&&!streakPlayers.includes(formatName(p.nombre)))streakPlayers.push(formatName(p.nombre));
-  });
-
   const mostGolesSub = isHistorico
     ? `${mostGoles.gfB+mostGoles.gfN} goles (${mostGoles.gfB}-${mostGoles.gfN}) · Temp. ${mostGoles.ano}`
     : `${mostGoles.gfB+mostGoles.gfN} goles totales (${mostGoles.gfB}-${mostGoles.gfN})`;
@@ -2162,6 +2153,13 @@ function renderHistStats(data, cardsId, curiId, ano) {
   const cEl = document.getElementById(cardsId);
   if (cEl) cEl.innerHTML = cardsData.map(c=>`<div class="stat-card"><span class="stat-card-icon">${c.icon}</span><div class="stat-card-label">${c.label}</div><div class="stat-card-value">${c.value}</div><div class="stat-card-sub">${c.sub}</div></div>`).join('');
 
+  let maxStreak=0,streakPlayers=[];
+  st.forEach(p=>{
+    let cur=0,localMax=0;
+    (p.hist||[]).forEach(r=>{if(r==='G'){cur++;localMax=Math.max(localMax,cur);}else cur=0;});
+    if(localMax>maxStreak&&localMax>0){maxStreak=localMax;streakPlayers=[formatName(p.nombre)];}
+    else if(localMax===maxStreak&&localMax>0&&!streakPlayers.includes(formatName(p.nombre)))streakPlayers.push(formatName(p.nombre));
+  });
   const txtRacha=maxStreak>0?`<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mayor racha de victorias al hilo con <strong>${maxStreak} victorias seguidas</strong>.`:'Sin rachas registradas.';
 
   let maxGolesP=0,golesEventos=[];
