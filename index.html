@@ -626,7 +626,6 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
       <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb-hist"></tbody></table></div>
       <div class="pts-legend"><span>Criterio histórico: <strong>PJ primero</strong>, luego PG · Todos los años combinados</span></div>
     </div>
-    <div id="tabla-2023" class="tab-content">
       <div class="tbl-wrap"><table class="st"><thead><tr><th>POS</th><th class="lft" style="min-width:160px">JUGADOR</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GOL</th><th>+/-</th><th>MVP</th><th>%VIC</th><th>P/G</th></tr></thead><tbody id="tb23"></tbody></table></div>
       <div class="pts-legend"><span>Criterio 2023: <strong>PJ primero</strong>, luego PG</span></div>
     </div>
@@ -671,10 +670,10 @@ footer{background:var(--bg2);border-top:1px solid var(--green-dark);padding:1.5r
     </div>
     <div class="tabs" style="margin-top:.4rem">
       <button class="tab-btn" onclick="switchTab('gol','gv',this)">🧤 Valla Menos Vencida 2026</button>
-      <button class="tab-btn" onclick="switchTab('gol','gv25',this)">2025</button>
-      <button class="tab-btn" onclick="switchTab('gol','gv24',this)">2024</button>
-      <button class="tab-btn" onclick="switchTab('gol','gv23',this)">2023</button>
-      <button class="tab-btn" onclick="switchTab('gol','gvhist',this)">🌐 Histórica</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv25',this)">Valla 2025</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv24',this)">Valla 2024</button>
+      <button class="tab-btn" onclick="switchTab('gol','gv23',this)">Valla 2023</button>
+      <button class="tab-btn" onclick="switchTab('gol','gvhist',this)">🌐 Valla Histórica</button>
     </div>
     <div id="gol-g26" class="tab-content active">
       <p style="color:var(--green);font-size:.78rem;margin-bottom:1rem">🟢 Temporada en curso · 6 fechas · Toca un nombre para ver desglose por fecha</p>
@@ -1326,16 +1325,13 @@ function shareInscripcionWA() {
   // ═══════════════════════════════════════
 // COMPUTE Y ESTADÍSTICAS
 // ═══════════════════════════════════════
-const ARQUEROS_VALIDOS = ['Cañete, Maxi','Questa, Ezequiel'];
-
 function computeStandings(data){
   const p={};
   data.forEach(r=>{
-    if(!p[r.jugador])p[r.jugador]={pj:0,pg:0,pe:0,pp:0,goles:0,dif:0,bonus:0,mvp:0,camiseta:0,hist:[],gcTotal:0};
+    if(!p[r.jugador])p[r.jugador]={pj:0,pg:0,pe:0,pp:0,goles:0,dif:0,bonus:0,mvp:0,camiseta:0,hist:[]};
     const x=p[r.jugador];
     if(r.resultado==='G'||r.resultado==='E'||r.resultado==='P'){
       x.pj++;x.goles+=r.goles;x.dif+=r.dif;x.bonus+=r.bonus;x.mvp+=r.mvp;x.camiseta+=r.camiseta;
-      if(ARQUEROS_VALIDOS.includes(r.jugador)) x.gcTotal+=(r.gc||0);
       if(r.resultado==='G')x.pg++;else if(r.resultado==='E')x.pe++;else x.pp++;
       x.hist.push(r.resultado);
     }else{x.goles+=r.goles;x.camiseta+=r.camiseta;}
@@ -1392,14 +1388,12 @@ function renderStandings(standings){
     const shirt=p.camiseta>0?`<div class="shirt-badge">👕 x${p.camiseta}</div>`:'';
     const pos=i<3?`<span class="pb p${i+1}">${i+1}</span>`:`<span class="pb pn">${i+1}</span>`;
     const safe=p.nombre.replace(/'/g,"\\'");
-    const isArquero = ARQUEROS_VALIDOS.includes(p.nombre);
-    const golesDisplay = isArquero ? (p.gcTotal>0?`<span style="color:#ff9977">-${p.gcTotal}</span>`:'—') : (p.goles>0?p.goles:'—');
     return`<tr class="${cls[i]||''}">
       <td>${pos}</td>
       <td class="lft"><div class="name-wrap"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span>${shirt}</div></td>
       <td class="pts-cell">${p.pts}</td>
       <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
-      <td style="color:#7dd87d">${golesDisplay}</td>
+      <td style="color:#7dd87d">${p.goles>0?p.goles:'—'}</td>
       <td class="${p.dif>=0?'dif-pos':'dif-neg'}">${difStr}</td>
       <td>${p.mvp>0?p.mvp:'—'}</td>
       <td style="color:#7db8d8">${p.bonus>0?'+'+p.bonus:'—'}</td>
@@ -1659,29 +1653,6 @@ function renderEstadisticas(data){
   const unbeaten=st.filter(p=>p.pp===0&&p.pj>=2&&!p.nombre.startsWith('Invitado'));
   const topProm=st.filter(p=>p.pj>=3&&p.goles>0&&!p.nombre.startsWith('Invitado')).sort((a,b)=>b.goles/b.pj-a.goles/a.pj)[0];
 
-  // Racha máxima — necesaria tanto para cards como para curiosidades
-  let maxStreak = 0, streakPlayers = [];
-  st.forEach(p => {
-    let cur=0,localMax=0;
-    p.hist.forEach(r=>{if(r==='G'){cur++;localMax=Math.max(localMax,cur);}else cur=0;});
-    if(localMax>maxStreak&&localMax>0){maxStreak=localMax;streakPlayers=[formatName(p.nombre)];}
-    else if(localMax===maxStreak&&localMax>0&&!streakPlayers.includes(formatName(p.nombre)))streakPlayers.push(formatName(p.nombre));
-  });
-
-  // Victorias por equipo por jugador (para "dato random")
-  const winsBlanco26={},winsNegro26={};
-  data.forEach(r=>{
-    if(!r.nombre?.toLowerCase().includes('invitado')){
-      if(r.resultado==='G'){
-        if(r.equipo==='BLANCO')winsBlanco26[r.jugador]=(winsBlanco26[r.jugador]||0)+1;
-        if(r.equipo==='NEGRO')winsNegro26[r.jugador]=(winsNegro26[r.jugador]||0)+1;
-      }
-    }
-  });
-  let mxWB=0,tWB=[],mxWN=0,tWN=[];
-  for(let j in winsBlanco26){if(winsBlanco26[j]>mxWB){mxWB=winsBlanco26[j];tWB=[formatName(j)];}else if(winsBlanco26[j]===mxWB)tWB.push(formatName(j));}
-  for(let j in winsNegro26){if(winsNegro26[j]>mxWN){mxWN=winsNegro26[j];tWN=[formatName(j)];}else if(winsNegro26[j]===mxWN)tWN.push(formatName(j));}
-
   const cardsData=[
     {icon:'⚽',label:'Total de goles',value:totalGoles,sub:'en 6 fechas'},
     {icon:'📊',label:'Promedio por partido',value:avgGoles,sub:'goles por fecha'},
@@ -1694,7 +1665,7 @@ function renderEstadisticas(data){
     {icon:'📈',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${formatName(topWinPct?.nombre)||''} · ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos`},
     {icon:'🌟',label:'Más veces MVP',value:mostMVP?.mvp||0,sub:`${formatName(mostMVP?.nombre)||''}`},
     {icon:'🎯',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'—',sub:`${formatName(topProm?.nombre)||''} · ${topProm?.goles||0} goles en ${topProm?.pj||0} PJ`},
-    {icon:'🔥',label:'Mayor racha de victorias',value:maxStreak>0?`${maxStreak} seguidas`:'—',sub:maxStreak>0?streakPlayers.join(', '):'sin racha registrada'},
+    {icon:'🏆',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>formatName(p.nombre)).join(', '):'—',sub:'sin ninguna derrota en la temporada'},
   ];
 
   document.getElementById('stats-cards').innerHTML=cardsData.map(c=>`
@@ -1705,8 +1676,22 @@ function renderEstadisticas(data){
       <div class="stat-card-sub">${c.sub}</div>
     </div>`).join('');
 
+  let maxStreak = 0;
+  let streakPlayers = [];
+  st.forEach(p => {
+     let current = 0; let localMax = 0;
+     p.hist.forEach(r => {
+         if(r === 'G') { current++; localMax = Math.max(localMax, current); }
+         else { current = 0; }
+     });
+     if(localMax > maxStreak && localMax > 0) {
+         maxStreak = localMax; streakPlayers = [formatName(p.nombre)];
+     } else if (localMax === maxStreak && localMax > 0) {
+         if(!streakPlayers.includes(formatName(p.nombre))) streakPlayers.push(formatName(p.nombre));
+     }
+  });
   const txtRacha = maxStreak > 0 
-    ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mayor racha de victorias al hilo con <strong>${maxStreak} victorias seguidas</strong>.` 
+    ? `<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha de partidos ganados seguidos con <strong>${maxStreak} victorias al hilo</strong>.` 
     : 'Aún no hay rachas de victorias registradas.';
 
   let maxGolesP = 0;
@@ -1748,8 +1733,21 @@ function renderEstadisticas(data){
 
   const txtPromedio = `El promedio general es de <strong>${avgGoles} goles</strong> por partido — los Miércoles de Fútbol son un show ofensivo.`;
 
-  const realGolesBlanco = matches.reduce((acc, m) => acc + m.gfB, 0);
-  const realGolesNegro = matches.reduce((acc, m) => acc + m.gfN, 0);
+  const winsBlanco = {}, winsNegro = {};
+  let totalGolesBlanco = 0; let totalGolesNegro = 0; 
+  
+  data.forEach(r => {
+      if(r.equipo === 'BLANCO') totalGolesBlanco += (r.gf || 0); 
+      if(r.equipo === 'NEGRO') totalGolesNegro += (r.gf || 0);
+      
+      if(r.resultado === 'G') {
+         if(r.equipo === 'BLANCO') winsBlanco[r.jugador] = (winsBlanco[r.jugador]||0)+1;
+         if(r.equipo === 'NEGRO') winsNegro[r.jugador] = (winsNegro[r.jugador]||0)+1;
+      }
+  });
+
+  let realGolesBlanco = matches.reduce((acc, m) => acc + m.gfB, 0);
+  let realGolesNegro = matches.reduce((acc, m) => acc + m.gfN, 0);
   let txtEquipoGoleador = '';
   if(realGolesBlanco > realGolesNegro) {
     txtEquipoGoleador = `El <strong>Equipo Blanco</strong> es el más letal frente al arco: lleva anotados <strong>${realGolesBlanco} goles</strong>, contra los ${realGolesNegro} del Equipo Negro.`;
@@ -1759,17 +1757,35 @@ function renderEstadisticas(data){
     txtEquipoGoleador = `¡Pólvora repartida! Tanto el Equipo Blanco como el Negro han anotado exactamente <strong>${realGolesBlanco} goles</strong> en total.`;
   }
 
-  const fmtList = (arr) => arr.length === 1 ? arr[0] : arr.slice(0, -1).join(', ') + ' y ' + arr[arr.length - 1];
-
+  let maxWB = 0, pWB = [];
+  for(let j in winsBlanco) {
+      if(winsBlanco[j] > maxWB) { maxWB = winsBlanco[j]; pWB = [formatName(j)]; }
+      else if(winsBlanco[j] === maxWB) pWB.push(formatName(j));
+  }
+  let maxWN = 0, pWN = [];
+  for(let j in winsNegro) {
+      if(winsNegro[j] > maxWN) { maxWN = winsNegro[j]; pWN = [formatName(j)]; }
+      else if(winsNegro[j] === maxWN) pWN.push(formatName(j));
+  }
+  
   let txtRandom = '';
-  txtRandom += tWB.length>0 ? `<strong>${fmtList(tWB)}</strong> ${tWB.length>1?'lideran':'lidera'} las victorias en el Equipo Blanco con <strong>${mxWB}</strong>. ` : '';
-  txtRandom += tWN.length>0 ? `<strong>${fmtList(tWN)}</strong> ${tWN.length>1?'lideran':'lidera'} en el Equipo Negro con <strong>${mxWN}</strong>.` : '';
-  if(!txtRandom) txtRandom = '¡El torneo está súper peleado y nadie saca ventaja clara!';
+  if(maxWB >= maxWN && maxWB > 0) {
+     txtRandom = `Dato random: <strong>${pWB.join(' y ')}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Equipo Blanco, con <strong>${maxWB} victorias</strong> vistiendo ese color.`;
+  } else if (maxWN > 0) {
+     txtRandom = `Dato random: <strong>${pWN.join(' y ')}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Equipo Negro, con <strong>${maxWN} victorias</strong> vistiendo ese color.`;
+  } else {
+     txtRandom = `Dato random: ¡El torneo está súper peleado y nadie saca ventaja clara con ninguna camiseta!`;
+  }
 
   const maxPj = Math.max(...st.map(p => p.pj));
   const ironMen = st.filter(p => p.pj === maxPj && maxPj > 0).map(p => formatName(p.nombre));
+  const minutos = maxPj * 60;
+  
+  // Regla gramatical para separar con comas y dejar la "y" al final
+  const fmtList = (arr) => arr.length === 1 ? arr[0] : arr.slice(0, -1).join(', ') + ' y ' + arr[arr.length - 1];
+  
   const txtMinutos = maxPj > 0 
-    ? `Mayor asistencia: <strong>${fmtList(ironMen)}</strong> con <strong>${maxPj} partidos jugados</strong>.`
+    ? `<strong>${fmtList(ironMen)}</strong> ${ironMen.length>1?'son':'es'} de fierro: ${ironMen.length>1?'suman':'suma'} <strong>${minutos} minutos</strong> en cancha (${maxPj} PJ completos) liderando la asistencia.` 
     : 'Aún no hay minutos jugados.';
   
   const clist=[
@@ -1830,17 +1846,16 @@ function parseHistCSV(csv) {
 }
 
 function computeHistStandings(data, criterio) {
+  // criterio: 'pj' para 2023/2024 (PJ primero, luego PG), 'pts' para 2025
   const p = {};
   data.forEach(r => {
-    if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, dif: 0, bonus: 0, mvp: 0, hist: [], gcTotal: 0 };
+    if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, dif: 0, bonus: 0, mvp: 0 };
     const x = p[r.jugador];
     if (r.resultado === 'G' || r.resultado === 'E' || r.resultado === 'P') {
       x.pj++; x.goles += r.goles; x.dif += r.dif; x.bonus += r.bonus; x.mvp += r.mvp;
-      if(ARQUEROS_VALIDOS.includes(r.jugador)) x.gcTotal += (r.gc||0);
       if (r.resultado === 'G') x.pg++;
       else if (r.resultado === 'E') x.pe++;
       else x.pp++;
-      x.hist.push(r.resultado);
     } else { x.goles += r.goles; }
   });
   return Object.entries(p).map(([n, x]) => {
@@ -1861,15 +1876,13 @@ function renderHistStandings(standings, tbodyId, criterio) {
     const difStr = p.dif > 0 ? '+' + p.dif : p.dif;
     const pos = i < 3 ? `<span class="pb p${i+1}">${i+1}</span>` : `<span class="pb pn">${i+1}</span>`;
     const safe = p.nombre.replace(/'/g,"\\'");
-    const isArquero = ARQUEROS_VALIDOS.includes(p.nombre);
-    const golesDisplay = isArquero ? (p.gcTotal>0?`<span style="color:#ff9977">-${p.gcTotal}</span>`:'—') : (p.goles>0?p.goles:'—');
     if (criterio === 'pj') {
       return `<tr class="${cls[i]||''}">
         <td>${pos}</td>
         <td class="lft" style="min-width:160px"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span></td>
         <td class="pts-cell" style="color:var(--green)">${p.pj}</td>
         <td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
-        <td>${golesDisplay}</td>
+        <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
         <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
         <td>${p.mvp > 0 ? p.mvp : '—'}</td>
         <td>${p.pct}%</td><td>${p.prom}</td>
@@ -1880,7 +1893,7 @@ function renderHistStandings(standings, tbodyId, criterio) {
       <td class="lft" style="min-width:160px"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span></td>
       <td class="pts-cell">${p.pts}</td>
       <td>${p.pj}</td><td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
-      <td>${golesDisplay}</td>
+      <td style="color:#7dd87d">${p.goles > 0 ? p.goles : '—'}</td>
       <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
       <td>${p.mvp > 0 ? p.mvp : '—'}</td>
       <td style="color:#7db8d8">${p.bonus > 0 ? '+' + p.bonus : '—'}</td>
@@ -1991,6 +2004,8 @@ function openHistScoreModal(nombre, ano) {
   if (!history.state || !history.state.modalOpen) history.pushState({ modalOpen: true }, '', '#modal-abierto');
   modal.classList.add('open');
 }
+
+const ARQUEROS_VALIDOS = ['Cañete, Maxi','Questa, Ezequiel'];
 
 function renderHistValla(data, totalId, promId, ano) {
   const gcMap = {};
@@ -2144,11 +2159,11 @@ function renderHistStats(data, cardsId, curiId, ano) {
     {icon:'\ud83d\udcaa',label:'Mayor goleada',value:`F${biggestWin.fecha}`,sub:biggestSub},
     {icon:'\u26aa',label:'Victorias Equipo Blanco',value:blancoWins,sub:`de ${matches.length} partidos jugados`},
     {icon:'\u26ab',label:'Victorias Equipo Negro',value:negroWins,sub:`de ${matches.length} partidos jugados`},
-    {icon:'\ud83d\udc5f',label:'M\u00e1ximo goleador',value:formatName(topScorer?.nombre)||'\u2014',sub:`${topScorer?.goles||0} goles en la temporada`},
+    {icon:'\ud83d\udc9f',label:'M\u00e1ximo goleador',value:formatName(topScorer?.nombre)||'\u2014',sub:`${topScorer?.goles||0} goles en la temporada`},
     {icon:'\ud83d\udcc8',label:'Mejor % de victorias',value:`${topWinPct?.pct||0}%`,sub:`${formatName(topWinPct?.nombre||'')} \u00b7 ${topWinPct?.pg||0}/${topWinPct?.pj||0} partidos (m\u00edn. ${minPJ} PJ)`},
     {icon:'\ud83c\udf1f',label:'M\u00e1s veces MVP',value:mostMVP?.mvp||0,sub:`${formatName(mostMVP?.nombre||'')}`},
     {icon:'\ud83c\udfaf',label:'Mejor promedio goleador',value:topProm?`${(topProm.goles/topProm.pj).toFixed(2)}/pj`:'\u2014',sub:topProm?`${formatName(topProm.nombre)} \u00b7 ${topProm.goles} goles en ${topProm.pj} PJ`:`m\u00edn. ${minPJ} PJ para clasificar`},
-    {icon:'\ud83d\udd25',label:'Mayor racha de victorias',value:maxStreak>0?`${maxStreak} seguidas`:'\u2014',sub:maxStreak>0?streakPlayers.join(', '):'sin racha registrada'},
+    {icon:'\ud83c\udfc6',label:'Jugador invicto',value:unbeaten.length?unbeaten.map(p=>formatName(p.nombre)).join(', '):'\u2014',sub:`sin derrotas con m\u00edn. ${minPJ} PJ`},
   ];
   const cEl = document.getElementById(cardsId);
   if (cEl) cEl.innerHTML = cardsData.map(c=>`<div class="stat-card"><span class="stat-card-icon">${c.icon}</span><div class="stat-card-label">${c.label}</div><div class="stat-card-value">${c.value}</div><div class="stat-card-sub">${c.sub}</div></div>`).join('');
@@ -2160,7 +2175,7 @@ function renderHistStats(data, cardsId, curiId, ano) {
     if(localMax>maxStreak&&localMax>0){maxStreak=localMax;streakPlayers=[formatName(p.nombre)];}
     else if(localMax===maxStreak&&localMax>0&&!streakPlayers.includes(formatName(p.nombre)))streakPlayers.push(formatName(p.nombre));
   });
-  const txtRacha=maxStreak>0?`<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mayor racha de victorias al hilo con <strong>${maxStreak} victorias seguidas</strong>.`:'Sin rachas registradas.';
+  const txtRacha=maxStreak>0?`<strong>${streakPlayers.join(' y ')}</strong> ${streakPlayers.length>1?'tienen':'tiene'} la mejor racha con <strong>${maxStreak} victorias al hilo</strong>.`:'Sin rachas registradas.';
 
   let maxGolesP=0,golesEventos=[];
   data.forEach(r=>{
@@ -2190,14 +2205,14 @@ function renderHistStats(data, cardsId, curiId, ano) {
   for(let j in wB){if(wB[j]>mWB){mWB=wB[j];pWB=[formatName(j)];}else if(wB[j]===mWB)pWB.push(formatName(j));}
   for(let j in wN){if(wN[j]>mWN){mWN=wN[j];pWN=[formatName(j)];}else if(wN[j]===mWN)pWN.push(formatName(j));}
   let txtRandom='';
-  if(pWB.length>0)txtRandom+=`<strong>${fmtList(pWB)}</strong> ${pWB.length>1?'lideran':'lidera'} victorias en Equipo Blanco con <strong>${mWB}</strong>. `;
-  if(pWN.length>0)txtRandom+=`<strong>${fmtList(pWN)}</strong> ${pWN.length>1?'lideran':'lidera'} en Equipo Negro con <strong>${mWN}</strong>.`;
-  if(!txtRandom)txtRandom=`El torneo estuvo muy parejo entre equipos.`;
+  if(mWB>=mWN&&mWB>0)txtRandom=`Dato random: <strong>${pWB.join(' y ')}</strong> ${pWB.length>1?'son los talismanes':'es el talismán'} del Blanco, con <strong>${mWB} victorias</strong>.`;
+  else if(mWN>0)txtRandom=`Dato random: <strong>${pWN.join(' y ')}</strong> ${pWN.length>1?'son los talismanes':'es el talismán'} del Negro, con <strong>${mWN} victorias</strong>.`;
+  else txtRandom=`El torneo estuvo muy parejo entre equipos.`;
 
   const maxPj2=st.length?Math.max(...st.map(p=>p.pj)):0;
   const ironMen=st.filter(p=>p.pj===maxPj2&&maxPj2>0).map(p=>formatName(p.nombre));
   const fmtList=(arr)=>arr.length===1?arr[0]:arr.slice(0,-1).join(', ')+' y '+arr[arr.length-1];
-  const txtMin=maxPj2>0?`Mayor asistencia: <strong>${fmtList(ironMen)}</strong> con <strong>${maxPj2} partidos jugados</strong>.`:'Sin datos.';
+  const txtMin=maxPj2>0?`<strong>${fmtList(ironMen)}</strong> ${ironMen.length>1?'son':'es'} de fierro con <strong>${maxPj2} partidos</strong> liderando la asistencia.`:'Sin datos.';
 
   const clist=[
     {e:'\ud83d\udd25',t:txtRacha},{e:'\ud83c\udfaf',t:txtGoles},{e:'\u26aa',t:domTeamTxt},
@@ -2268,11 +2283,10 @@ function renderHistoricoGlobal() {
   // Tabla histórica (criterio PJ primero, luego PG)
   const p = {};
   allData.forEach(r => {
-    if(!p[r.jugador]) p[r.jugador] = {pj:0,pg:0,pe:0,pp:0,goles:0,dif:0,mvp:0,gcTotal:0};
+    if(!p[r.jugador]) p[r.jugador] = {pj:0,pg:0,pe:0,pp:0,goles:0,dif:0,mvp:0};
     const x = p[r.jugador];
     if(['G','E','P'].includes(r.resultado)){
       x.pj++;x.goles+=r.goles;x.dif+=r.dif;x.mvp+=r.mvp;
-      if(ARQUEROS_VALIDOS.includes(r.jugador)) x.gcTotal+=(r.gc||0);
       if(r.resultado==='G')x.pg++;else if(r.resultado==='E')x.pe++;else x.pp++;
     } else { x.goles+=r.goles; }
   });
@@ -2289,14 +2303,12 @@ function renderHistoricoGlobal() {
       const difStr=p.dif>0?'+'+p.dif:p.dif;
       const pos=i<3?`<span class="pb p${i+1}">${i+1}</span>`:`<span class="pb pn">${i+1}</span>`;
       const safe=p.nombre.replace(/'/g,"\\'");
-      const isArquero = ARQUEROS_VALIDOS.includes(p.nombre);
-      const golesDisplay = isArquero ? (p.gcTotal>0?`<span style="color:#ff9977">-${p.gcTotal}</span>`:'—') : (p.goles>0?p.goles:'—');
       return`<tr class="${cls[i]||''}">
         <td>${pos}</td>
         <td class="lft" style="min-width:160px"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span></td>
         <td class="pts-cell" style="color:var(--green)">${p.pj}</td>
         <td>${p.pg}</td><td>${p.pe}</td><td>${p.pp}</td>
-        <td>${golesDisplay}</td>
+        <td style="color:#7dd87d">${p.goles>0?p.goles:'—'}</td>
         <td class="${p.dif>=0?'dif-pos':'dif-neg'}">${difStr}</td>
         <td>${p.mvp>0?p.mvp:'—'}</td>
         <td>${p.pct}%</td><td>${p.prom}</td>
