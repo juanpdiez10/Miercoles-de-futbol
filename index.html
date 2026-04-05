@@ -3784,7 +3784,8 @@
     }
 
     function rachaHTML(hist, n = 7) {
-      return hist.slice(-n).map(r =>
+      const filtered = hist.filter(r => r !== 'X');
+      return filtered.slice(-n).map(r =>
         `<span class="rc ${r === 'G' ? 'rc-g' : r === 'P' ? 'rc-p' : 'rc-e'}" title="${r === 'G' ? 'Victoria' : r === 'P' ? 'Derrota' : 'Empate'}"></span>`
       ).join('');
     }
@@ -3810,7 +3811,7 @@
       <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
       <td>${p.mvp > 0 ? p.mvp : '—'}</td>
       <td style="color:#7db8d8">${p.bonus > 0 ? '+' + p.bonus : '—'}</td>
-      <td>${p.pct}%</td><td>${p.prom}</td>
+      <td>${p.pct}%</td><td style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? ('-'+(Object.values(GC_ARQUEROS[p.nombre]||{}).reduce((a,b)=>a+b,0)/p.pj).toFixed(2)) : p.prom}</td>
       <td><div class="racha-wrap">${rachaHTML(p.hist)}</div></td>
     </tr>`;
       }).join('');
@@ -4258,10 +4259,18 @@
     function computeHistStandings(data, criterio) {
       // criterio: 'pj' para 2023/2024 (PJ primero, luego PG), 'pts' para 2025
       const p = {};
-      data.forEach(r => {
+      const lastAno = {};
+      // Sort by year then by fecha so streaks are computed in order
+      const sorted = [...data].sort((a, b) => (a.ano || 0) - (b.ano || 0) || a.fecha - b.fecha);
+      sorted.forEach(r => {
         if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, dif: 0, bonus: 0, mvp: 0, gc: 0, hist: [] };
         const x = p[r.jugador];
         if (r.resultado === 'G' || r.resultado === 'E' || r.resultado === 'P') {
+          // Insert year boundary marker to prevent streaks spanning across seasons
+          if (lastAno[r.jugador] !== undefined && (r.ano || 0) !== lastAno[r.jugador]) {
+            x.hist.push('X');
+          }
+          lastAno[r.jugador] = r.ano || 0;
           x.pj++; x.goles += r.goles; x.dif += r.dif; x.bonus += r.bonus; x.mvp += r.mvp;
           x.hist.push(r.resultado);
           if (ARQUEROS_VALIDOS.includes(r.jugador)) x.gc += (r.gc || 0);
@@ -4273,7 +4282,8 @@
       return Object.entries(p).map(([n, x]) => {
         const pts = x.pj * 2 + x.pg * 3 + x.pe * 1 + x.mvp + x.bonus;
         const pct = x.pj > 0 ? Math.round(x.pg / x.pj * 100) : 0;
-        const prom = x.pj > 0 ? (x.goles / x.pj).toFixed(2) : 0;
+        const isArq = ARQUEROS_VALIDOS.includes(n);
+        const prom = x.pj > 0 ? (isArq ? '-'+(x.gc / x.pj).toFixed(2) : (x.goles / x.pj).toFixed(2)) : 0;
         return { nombre: n, pts, pct, prom, ...x };
       }).sort((a, b) => {
         if (criterio === 'pj') return b.pj - a.pj || b.pg - a.pg || b.goles - a.goles;
@@ -4300,7 +4310,7 @@
         <td style="color:${gCol}">${gDisp}</td>
         <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
         <td>${p.mvp > 0 ? p.mvp : '—'}</td>
-        <td>${p.pct}%</td><td>${p.prom}</td>
+        <td>${p.pct}%</td><td style="color:${isArq ? '#ff9977' : ''}">${p.prom}</td>
       </tr>`;
         }
         return `<tr class="${cls[i] || ''}">
@@ -4312,7 +4322,7 @@
       <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
       <td>${p.mvp > 0 ? p.mvp : '—'}</td>
       <td style="color:#7db8d8">${p.bonus > 0 ? '+' + p.bonus : '—'}</td>
-      <td>${p.pct}%</td><td>${p.prom}</td>
+      <td>${p.pct}%</td><td style="color:${isArq ? '#ff9977' : ''}">${p.prom}</td>
     </tr>`;
       }).join('');
     }
@@ -4730,7 +4740,7 @@
         <td style="color:${gCol}">${gDisp}</td>
         <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
         <td>${p.mvp > 0 ? p.mvp : '—'}</td>
-        <td>${p.pct}%</td><td>${p.prom}</td>
+        <td>${p.pct}%</td><td style="color:${isArq ? '#ff9977' : ''}">${isArq ? '-'+(p.gc/p.pj).toFixed(2) : p.prom}</td>
       </tr>`;
         }).join('');
       }
@@ -4875,7 +4885,10 @@
       const partidos = rows.filter(r => ['G', 'E', 'P'].includes(r.resultado));
       const pj = partidos.length, pg = partidos.filter(r => r.resultado === 'G').length;
       const pe = partidos.filter(r => r.resultado === 'E').length, pp = partidos.filter(r => r.resultado === 'P').length;
-      const goles = rows.reduce((a, r) => a + r.goles, 0);
+      const isArquero = ARQUEROS_VALIDOS.includes(nombre);
+      const golesRaw = rows.reduce((a, r) => a + r.goles, 0);
+      const gcTotal = isArquero ? rows.reduce((a, r) => a + (r.gc || 0), 0) : 0;
+      const goles = isArquero ? gcTotal : golesRaw;
       const mvps = rows.reduce((a, r) => a + r.mvp, 0);
       const dif = rows.reduce((a, r) => a + r.dif, 0);
       const pct = pj > 0 ? Math.round(pg / pj * 100) : 0;
@@ -4891,7 +4904,7 @@
         if (!pts.length && !d.some(r => r.goles > 0)) return null;
         const apj = pts.length, apg = pts.filter(r => r.resultado === 'G').length;
         const ape = pts.filter(r => r.resultado === 'E').length, app = pts.filter(r => r.resultado === 'P').length;
-        const agoles = d.reduce((a, r) => a + r.goles, 0);
+        const agoles = isArquero ? d.reduce((a, r) => a + (r.gc || 0), 0) : d.reduce((a, r) => a + r.goles, 0);
         const amvp = d.reduce((a, r) => a + r.mvp, 0);
         const adif = d.reduce((a, r) => a + r.dif, 0);
         return { ano, apj, apg, ape, app, agoles, amvp, adif };
@@ -4901,7 +4914,11 @@
       const histRaw = partidos.sort((a, b) => { if (a.ano !== b.ano) return a.ano - b.ano; return a.fecha - b.fecha; });
       const racha = histRaw.map(r => r.resultado);
       let maxStreak = 0, cur = 0;
-      racha.forEach(r => { if (r === 'G') { cur++; maxStreak = Math.max(maxStreak, cur); } else cur = 0; });
+      histRaw.forEach((r, i) => {
+        // Reset streak at year boundary
+        if (i > 0 && r.ano !== histRaw[i - 1].ano) cur = 0;
+        if (r.resultado === 'G') { cur++; maxStreak = Math.max(maxStreak, cur); } else cur = 0;
+      });
 
       // MVPs por año
       const mvpPorAno = {};
@@ -4923,8 +4940,8 @@
       <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--green)">${pg}</div><div class="ficha-stat-lbl">Victorias</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${pe}</div><div class="ficha-stat-lbl">Empates</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--red)">${pp}</div><div class="ficha-stat-lbl">Derrotas</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val">${goles}</div><div class="ficha-stat-lbl">Goles</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val">${prom}</div><div class="ficha-stat-lbl">Goles/Partido</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+goles : goles}</div><div class="ficha-stat-lbl">${isArquero ? 'Goles Recibidos' : 'Goles'}</div></div>
+      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+prom : prom}</div><div class="ficha-stat-lbl">${isArquero ? 'GC/Partido' : 'Goles/Partido'}</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val">${pct}%</div><div class="ficha-stat-lbl">% Victorias</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${mvps}</div><div class="ficha-stat-lbl">MVPs</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val" class="${dif >= 0 ? 'dif-pos' : 'dif-neg'}">${dif > 0 ? '+' : ''}${dif}</div><div class="ficha-stat-lbl">Dif. Goles</div></div>
@@ -4939,7 +4956,7 @@
           <div class="ficha-ano-row"><span class="ficha-ano-key">Victorias</span><span class="ficha-ano-val" style="color:var(--green)">${a.apg}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Empates</span><span class="ficha-ano-val">${a.ape}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Derrotas</span><span class="ficha-ano-val" style="color:var(--red)">${a.app}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">Goles</span><span class="ficha-ano-val">${a.agoles}</span></div>
+          <div class="ficha-ano-row"><span class="ficha-ano-key">${isArquero ? 'GC' : 'Goles'}</span><span class="ficha-ano-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+a.agoles : a.agoles}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">MVPs</span><span class="ficha-ano-val" style="color:var(--gold)">${a.amvp}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Dif</span><span class="ficha-ano-val" style="color:${a.adif >= 0 ? '#7dd87d' : 'var(--red)'}">${a.adif > 0 ? '+' : ''}${a.adif}</span></div>
         </div>`).join('')}
