@@ -4226,6 +4226,18 @@
 
     let _histData = {}; // { 2023: [...], 2024: [...], 2025: [...] }
 
+    // Normaliza nombres para que coincidan entre CSV histórico y datos 2026
+    // Ej: "Del rio, Pipa" → "Del Rio, Pipa"
+    function normalizePlayerName(name) {
+      if (!name) return name;
+      const parts = name.split(',');
+      if (parts.length === 2) {
+        const apellido = parts[0].trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        return apellido + ', ' + parts[1].trim();
+      }
+      return name;
+    }
+
     function parseHistCSV(csv) {
       const lines = csv.split('\n').filter(l => l.trim());
       const out = { 2023: [], 2024: [], 2025: [] };
@@ -4240,7 +4252,7 @@
         const goles = parseFloat(v[6]);
         out[ano].push({
           fecha: Math.round(fecha),
-          jugador: jugador,
+          jugador: normalizePlayerName(jugador),
           equipo: v[2],
           resultado: v[3],
           gf: parseInt(v[4]) || 0,
