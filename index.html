@@ -4918,7 +4918,7 @@
           const dataAno = _histData[ano] || [];
           d = dataAno.filter(r => r.jugador === nombre);
           if (dataAno.length > 0) {
-            const criterio = ano <= 2024 ? 'pj' : 'pts'; // Respeta tu criterio histórico
+            const criterio = ano <= 2024 ? 'pj' : 'pts'; 
             const stAno = computeHistStandings(dataAno, criterio);
             if (stAno.length > 0) campeonDelAno = stAno[0].nombre;
           }
@@ -4938,19 +4938,23 @@
         return { ano, apj, apg, ape, app, agoles, amvp, adif, esCampeon };
       }).filter(Boolean);
 
-      // Racha histórica (últimos resultados)
+      // --- TARJETA DE COPAS ---
+      const totalCopas = anoCards.filter(a => a.esCampeon).length;
+      const tarjetaCopasHtml = totalCopas > 0 
+        ? `<div class="ficha-stat-card" style="border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.05); display: flex; flex-direction: column; justify-content: center;">
+             <div class="ficha-stat-val" style="color:var(--gold); font-size: 1.8rem;">🏆 x${totalCopas}</div>
+             <div class="ficha-stat-lbl" style="color:var(--gold)">Torneos Ganados</div>
+           </div>`
+        : '';
+
+      // Racha histórica
       const histRaw = partidos.sort((a, b) => { if (a.ano !== b.ano) return a.ano - b.ano; return a.fecha - b.fecha; });
       const racha = histRaw.map(r => r.resultado);
       let maxStreak = 0, cur = 0;
       histRaw.forEach((r, i) => {
-        // Reset streak at year boundary
         if (i > 0 && r.ano !== histRaw[i - 1].ano) cur = 0;
         if (r.resultado === 'G') { cur++; maxStreak = Math.max(maxStreak, cur); } else cur = 0;
       });
-
-      // MVPs por año
-      const mvpPorAno = {};
-      rows.filter(r => r.mvp === 1).forEach(r => { mvpPorAno[r.ano] = (mvpPorAno[r.ano] || 0) + 1; });
 
       const fichaHTML = `
     <div class="ficha-header">
@@ -4973,15 +4977,16 @@
       <div class="ficha-stat-card"><div class="ficha-stat-val">${pct}%</div><div class="ficha-stat-lbl">% Victorias</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${mvps}</div><div class="ficha-stat-lbl">MVPs</div></div>
       <div class="ficha-stat-card"><div class="ficha-stat-val" class="${dif >= 0 ? 'dif-pos' : 'dif-neg'}">${dif > 0 ? '+' : ''}${dif}</div><div class="ficha-stat-lbl">Dif. Goles</div></div>
+      ${tarjetaCopasHtml}
     </div>
 
     <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">Por <span style="color:var(--green)">Temporada</span></h3>
     <div class="ficha-ano-grid">
       ${anoCards.map(a => `
         <div class="ficha-ano-card" style="${a.esCampeon ? 'border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.03);' : ''}">
-          <div class="ficha-ano-title">
-            ${a.ano}${a.ano === 2026 ? ' ⚡' : ''}
-            ${a.esCampeon ? '<span style="color:var(--gold); float:right; font-size:1.2rem;" title="Campeón de la Temporada">🏆</span>' : ''}
+          <div class="ficha-ano-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>${a.ano}${a.ano === 2026 ? ' ⚡' : ''}</span>
+            ${a.esCampeon ? '<span style="color:var(--gold); font-size:1.2rem;" title="Campeón de la Temporada">🏆</span>' : ''}
           </div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Partidos</span><span class="ficha-ano-val">${a.apj}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Victorias</span><span class="ficha-ano-val" style="color:var(--green)">${a.apg}</span></div>
@@ -5000,7 +5005,10 @@
   `;
 
       document.getElementById('ficha-content').innerHTML = fichaHTML;
-      showPage('jugador', true, false);
+      
+      // Guardamos en la URL al jugador para que al apretar F5 no se pierda
+      showPage('jugador', false, false);
+      history.pushState(null, null, '#jugador_' + encodeURIComponent(nombre));
     }
 
 
@@ -5292,8 +5300,14 @@
 
       const hash = window.location.hash.substring(1) || 'home';
       if (hash === 'modal-abierto') return;
-      // resetTab=false: al volver con el botón atrás no resetea el tab activo
-      showPage(hash, false, false);
+      
+      // Si navegamos para atrás y es una ficha de jugador
+      if (hash.startsWith('jugador_')) {
+        const nombre = decodeURIComponent(hash.substring(8));
+        openFicha(nombre);
+      } else {
+        showPage(hash, false, false);
+      }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -5303,13 +5317,31 @@
       loadHistData();
       setupNextDate();
 
-      // Leemos la memoria y dibujamos el cartel para todos apenas entran
       actualizarUI_Suspension();
 
       const hash = window.location.hash.substring(1);
-      if (hash && hash !== 'modal-abierto') showPage(hash, false);
+      if (hash && hash !== 'modal-abierto') {
+        
+        // Si actualizamos la página (F5) estando adentro de una ficha
+        if (hash.startsWith('jugador_')) {
+          const nombre = decodeURIComponent(hash.substring(8));
+          
+          showPage('jugador', false, false);
+          document.getElementById('ficha-content').innerHTML = '<div style="text-align:center; padding: 3rem; color:var(--text2);">Cargando estadísticas de la base de datos... ⏳</div>';
+          
+          // Esperamos a que los datos se bajen de Google Sheets antes de armar la ficha
+          const checkData = setInterval(() => {
+            if (_rawData && Object.keys(_histData).length > 0) {
+              clearInterval(checkData);
+              openFicha(nombre);
+            }
+          }, 200);
+
+        } else {
+          showPage(hash, false);
+        }
+      }
     });
   </script>
 </body>
-
 </html>
