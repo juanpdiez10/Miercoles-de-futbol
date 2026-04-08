@@ -3463,7 +3463,7 @@
     // ═══════════════════════════════════════
     async function loadApiData() {
       try {
-        const res = await fetch(API_URL);
+        const res = await fetch(API_URL + '?_=' + Math.random(), { cache: 'no-store' });
         const data = await res.json();
         _forumPosts = data.posts || [];
         _inscripcionData = data.inscripcion || [];
@@ -5058,7 +5058,7 @@
     function renderForum() {
       const f = document.getElementById('forum-fecha-sel').value;
       const container = document.getElementById('forum-posts');
-      const posts = _forumPosts.filter(p => p.fecha === f);
+      const posts = _forumPosts.filter(p => p.fecha == f);
 
       if (!posts.length) {
         container.innerHTML = `<div style="color:var(--text2);font-size:.83rem;text-align:center;padding:1rem">Nadie se quejó todavía para esta fecha... 🤐</div>`;
