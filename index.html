@@ -4988,9 +4988,11 @@
 
 
     function getNextWednesday() {
-      const now = new Date(); const day = now.getDay(); let diff = 3 - day;
-      if (diff <= 0) diff += 7; const nw = new Date(now); nw.setDate(now.getDate() + diff); return nw;
-    }
+  const now = new Date(); const day = now.getDay(); let diff = 3 - day;
+  // Cambiamos el <= por < para que si hoy es miércoles, muestre la fecha de hoy
+  if (diff < 0) diff += 7; 
+  const nw = new Date(now); nw.setDate(now.getDate() + diff); return nw;
+}
     function setupNextDate() {
       const nw = getNextWednesday();
       const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
