@@ -4885,7 +4885,7 @@
       modal.classList.add('open');
     }
 
-    // ═══════════════════════════════════════
+// ═══════════════════════════════════════
     // FICHA DE JUGADOR
     // ═══════════════════════════════════════
     function openFicha(nombre) {
@@ -4910,16 +4910,32 @@
       const anos = [2023, 2024, 2025, 2026];
       const anoCards = anos.map(ano => {
         let d;
-        if (ano === 2026) d = (_rawData || D).filter(r => r.jugador === nombre);
-        else d = (_histData[ano] || []).filter(r => r.jugador === nombre);
+        let campeonDelAno = null;
+
+        if (ano === 2026) {
+          d = (_rawData || D).filter(r => r.jugador === nombre);
+        } else {
+          const dataAno = _histData[ano] || [];
+          d = dataAno.filter(r => r.jugador === nombre);
+          if (dataAno.length > 0) {
+            const criterio = ano <= 2024 ? 'pj' : 'pts'; // Respeta tu criterio histórico
+            const stAno = computeHistStandings(dataAno, criterio);
+            if (stAno.length > 0) campeonDelAno = stAno[0].nombre;
+          }
+        }
+
         const pts = d.filter(r => ['G', 'E', 'P'].includes(r.resultado));
         if (!pts.length && !d.some(r => r.goles > 0)) return null;
+        
         const apj = pts.length, apg = pts.filter(r => r.resultado === 'G').length;
         const ape = pts.filter(r => r.resultado === 'E').length, app = pts.filter(r => r.resultado === 'P').length;
         const agoles = isArquero ? d.reduce((a, r) => a + (r.gc || 0), 0) : d.reduce((a, r) => a + r.goles, 0);
         const amvp = d.reduce((a, r) => a + r.mvp, 0);
         const adif = d.reduce((a, r) => a + r.dif, 0);
-        return { ano, apj, apg, ape, app, agoles, amvp, adif };
+        
+        const esCampeon = (campeonDelAno === nombre);
+
+        return { ano, apj, apg, ape, app, agoles, amvp, adif, esCampeon };
       }).filter(Boolean);
 
       // Racha histórica (últimos resultados)
@@ -4962,8 +4978,11 @@
     <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">Por <span style="color:var(--green)">Temporada</span></h3>
     <div class="ficha-ano-grid">
       ${anoCards.map(a => `
-        <div class="ficha-ano-card">
-          <div class="ficha-ano-title">${a.ano}${a.ano === 2026 ? ' ⚡' : ''}</div>
+        <div class="ficha-ano-card" style="${a.esCampeon ? 'border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.03);' : ''}">
+          <div class="ficha-ano-title">
+            ${a.ano}${a.ano === 2026 ? ' ⚡' : ''}
+            ${a.esCampeon ? '<span style="color:var(--gold); float:right; font-size:1.2rem;" title="Campeón de la Temporada">🏆</span>' : ''}
+          </div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Partidos</span><span class="ficha-ano-val">${a.apj}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Victorias</span><span class="ficha-ano-val" style="color:var(--green)">${a.apg}</span></div>
           <div class="ficha-ano-row"><span class="ficha-ano-key">Empates</span><span class="ficha-ano-val">${a.ape}</span></div>
