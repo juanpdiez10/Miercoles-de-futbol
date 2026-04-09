@@ -5193,8 +5193,43 @@
       } catch (e) { }
     }
 
-    function renderAll(data) {
+ function renderAll(data) {
       _rawData = data;
+
+      // ---- AUTOMATIZACION DESDE GOOGLE SHEETS ----
+      const fechas = [...new Set(data.map(r => r.fecha))].sort((a, b) => a - b);
+      MAX_FECHA = fechas.length > 0 ? fechas[fechas.length - 1] : 0;
+      const maxF = MAX_FECHA;
+
+      FD = {};
+      MVP_DATA = [];
+      fechas.forEach(f => {
+        const rows = data.filter(r => r.fecha === f);
+        if (rows.length > 0 && rows[0].dia) FD[f] = rows[0].dia;
+
+        const mvpRow = rows.find(r => r.mvp === 1);
+        if (mvpRow) {
+          const bW = rows.find(r => r.equipo === 'BLANCO')?.gf || 0;
+          const nW = rows.find(r => r.equipo === 'NEGRO')?.gf || 0;
+          const equipoGana = bW > nW ? 'Blanco' : (nW > bW ? 'Negro' : 'Empate');
+          const winScore = Math.max(bW, nW);
+          const loseScore = Math.min(bW, nW);
+          let statTxt = mvpRow.goles > 0 ? `${mvpRow.goles} goles` : 'MVP';
+          statTxt += ` · ${equipoGana} ganó ${winScore}-${loseScore}`;
+          MVP_DATA.push({ fecha: f, date: mvpRow.dia || '', nombre: formatName(mvpRow.jugador), stat: statTxt });
+        }
+      });
+      MVP_DATA.sort((a, b) => b.fecha - a.fecha);
+
+      // Actualizar textos estáticos del HTML solos:
+      const heroBadge = document.querySelector('.hero-badge');
+      if(heroBadge) heroBadge.innerHTML = `🏆 Temporada 2026 · Fecha ${MAX_FECHA} jugada`;
+      const liveBadge = document.querySelector('.live-badge');
+      if(liveBadge) liveBadge.innerHTML = `<div class="pulse"></div> 2026 en curso · Fecha ${MAX_FECHA} jugada`;
+      const golP = document.querySelector('#gol-g26 p');
+      if(golP) golP.innerHTML = `🟢 Temporada en curso · ${MAX_FECHA} fechas · Toca un nombre para ver desglose por fecha`;
+      // ---------------------------------------------
+
       buildGolesPerFecha(data);
       const st = computeStandings(data);
       _allStandings = st;
@@ -5209,8 +5244,6 @@
       renderMVPs();
       renderEstadisticas(data);
 
-      const fechas = [...new Set(data.map(r => r.fecha))].sort((a, b) => a - b);
-      const maxF = fechas[fechas.length - 1];
       const lbl = document.getElementById('updated-fecha-lbl');
       if (lbl) lbl.textContent = `F${maxF} · ${FD[maxF] || ''}`;
 
