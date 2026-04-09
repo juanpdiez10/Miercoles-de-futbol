@@ -5314,7 +5314,9 @@ function renderAll(data) {
     function showPage(id, updateUrl = true, resetTab = true) {
       let targetId = id;
       if (id === 'foro') targetId = 'proxima';
-
+      // Agregá esta línea para detectar si ya estabas en la página
+      const estabaEnMvp = document.getElementById('page-mvp') && document.getElementById('page-mvp').classList.contains('active');
+      
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
 
@@ -5366,7 +5368,7 @@ function renderAll(data) {
       if (targetId === 'inscripcion') renderInscripcion();
 
 // --- AGREGAR ESTO PARA LOS PAPELITOS ---
-      if (targetId === 'mvp' && typeof confetti === 'function') {
+      if (targetId === 'mvp' && typeof confetti === 'function' && !estabaEnMvp) {
         setTimeout(() => {
           confetti({
             particleCount: 150,
