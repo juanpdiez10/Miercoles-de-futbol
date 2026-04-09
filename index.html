@@ -3444,10 +3444,7 @@
     let FD = {};
     let MAX_FECHA = 0;
 
-    const GC_ARQUEROS = {
-      'Cañete, Maxi': { 1: 7, 2: 6, 3: 8, 4: 1, 5: 4, 6: 8 },
-      'Questa, Ezequiel': { 1: 8, 2: 5, 3: 4, 5: 9, 6: 9 }
-    };
+    let GC_ARQUEROS = {};
 
     let MVP_DATA = [];
 
@@ -5224,8 +5221,12 @@ function renderAll(data) {
       // El diccionario FD ya se llenó solito en la función parseCSV leyendo tu Excel
 
       MVP_DATA = [];
+      GC_ARQUEROS = {}; // <-- Vaciamos la memoria de los arqueros para recalcular todo
+      
       fechas.forEach(f => {
         const rows = data.filter(r => r.fecha === f);
+        
+        // --- 1. BLOQUE MVP ---
         const mvpRow = rows.find(r => r.mvp === 1);
         if (mvpRow) {
           const bW = rows.find(r => r.equipo === 'BLANCO')?.gf || 0;
@@ -5236,9 +5237,18 @@ function renderAll(data) {
           let statTxt = mvpRow.goles > 0 ? `${mvpRow.goles} goles` : 'MVP';
           statTxt += ` · ${equipoGana} ganó ${winScore}-${loseScore}`;
           
-          // FOTOS ARREGLADAS: Le sacamos el formatName. Usamos el nombre crudo para que encuentre tu PNG
           MVP_DATA.push({ fecha: f, date: FD[f] || '', nombre: mvpRow.jugador, stat: statTxt });
         }
+
+        // --- 2. BLOQUE ARQUEROS (NUEVO) ---
+        rows.forEach(r => {
+          if (['Cañete, Maxi', 'Questa, Ezequiel'].includes(r.jugador)) {
+            if (!GC_ARQUEROS[r.jugador]) GC_ARQUEROS[r.jugador] = {};
+            if (['G', 'E', 'P'].includes(r.resultado)) {
+              GC_ARQUEROS[r.jugador][r.fecha] = r.gc || 0;
+            }
+          }
+        });
       });
       MVP_DATA.sort((a, b) => b.fecha - a.fecha);
 
