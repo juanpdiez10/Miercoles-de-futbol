@@ -3428,6 +3428,7 @@
 
           renderForum();
           renderInscripcion();
+          renderMVPs();
 
           alert('Modo Admin activado 😎. Ya podés gestionar todo.');
         } else {
@@ -4026,19 +4027,23 @@
 
       const lastMVP = MVP_DATA[0];
       if (lastMVP) {
-        const lastUrl = getUrlFoto(lastMVP.nombre);
-        const lastThumb = `<img class="mvp-photo-featured" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-featured\\'>⭐</div>'">`;
+    const lastUrl = getUrlFoto(lastMVP.nombre);
+    const lastThumb = `<img class="mvp-photo-featured" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-featured\\'>⭐</div>'">`;
 
-        feat.innerHTML = `
-        ${lastThumb}
-        <div>
-          <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
-          <div class="mvp-n">${lastMVP.nombre}</div>
-          <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
-          <div class="mvp-desc">${lastMVP.stat}</div>
-        </div>
+    // Botón de WhatsApp solo si es Admin
+    const adminBtn = adminUnlocked ? `<button class="btn btn-wa" style="margin-top: 1.2rem; font-size: 0.85rem;" onclick="shareMVPWhatsApp('${lastMVP.nombre.replace(/'/g, "\\'")}', '${lastMVP.fecha}')">📲 Felicitar por WhatsApp</button>` : '';
+
+    feat.innerHTML = `
+    ${lastThumb}
+    <div>
+      <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
+      <div class="mvp-n">${lastMVP.nombre}</div>
+      <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
+      <div class="mvp-desc">${lastMVP.stat}</div>
+      ${adminBtn}
+    </div>
     `;
-      }
+  }
 
       c.innerHTML = MVP_DATA.map(m => {
         const url = getUrlFoto(m.nombre);
@@ -5357,6 +5362,18 @@ function renderAll(data) {
       if (targetId === 'proxima') renderForum();
       if (targetId === 'inscripcion') renderInscripcion();
 
+// --- AGREGAR ESTO PARA LOS PAPELITOS ---
+      if (targetId === 'mvp' && typeof confetti === 'function') {
+        setTimeout(() => {
+          confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.3 },
+            colors: ['#FFD700', '#39FF14', '#ffffff'] // Oro, Verde MDF, Blanco
+          });
+        }, 300);
+      }
+      
       if (updateUrl) {
         history.pushState(null, null, '#' + id);
       }
