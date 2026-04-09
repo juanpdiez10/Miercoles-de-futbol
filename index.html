@@ -5146,20 +5146,41 @@
     function esc(s) { return s.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>'); }
 
     function parseCSV(csv) {
-      const lines = csv.split('\n').filter(l => l.trim()); const out = [];
+      const lines = csv.split('\n').filter(l => l.trim()); 
+      const out = [];
+      
+      // Limpiamos las fechas para cargar las nuevas directamente de tu Excel
+      FD = {}; 
+
       for (let i = 1; i < lines.length; i++) {
         const v = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(x => x.trim().replace(/^"|"$/g, ''));
+        
+        // --- MAGIA ACÁ: Leemos la columna M (12) y N (13) del Excel ---
+        if (v[12] && v[13]) {
+          const numF = parseInt(v[12]);
+          if (!isNaN(numF)) {
+            let diaStr = v[13];
+            // Le agregamos el "20" adelante del 26 para que se vea más lindo en la web
+            if (diaStr.length === 8 && diaStr.endsWith('/26')) {
+              diaStr = diaStr.replace('/26', '/2026');
+            }
+            FD[numF] = diaStr;
+          }
+        }
+        // --------------------------------------------------------------
+
         const f = parseFloat(v[0]); if (!isFinite(f) || f <= 0) continue;
         const j = v[1]; if (!j || j === 'JUGADOR') continue;
         const g = parseFloat(v[6]);
+        
         out.push({
-        fecha: Math.round(f), jugador: j, equipo: v[2], resultado: v[3],
-        gf: parseInt(v[4]) || 0, gc: parseInt(v[5]) || 0, goles: isFinite(g) && g > 0 ? g : 0,
-        mvp: v[7] === '1' ? 1 : 0, dif: parseFloat(v[8]) || 0, bonus: parseFloat(v[9]) || 0,
-        camiseta: v[10] && v[10].includes('👕') ? 1 : 0,
-        dia: v[11] || ''
-      });
-      } return out;
+          fecha: Math.round(f), jugador: j, equipo: v[2], resultado: v[3],
+          gf: parseInt(v[4]) || 0, gc: parseInt(v[5]) || 0, goles: isFinite(g) && g > 0 ? g : 0,
+          mvp: v[7] === '1' ? 1 : 0, dif: parseFloat(v[8]) || 0, bonus: parseFloat(v[9]) || 0,
+          camiseta: v[10] && v[10].includes('👕') ? 1 : 0
+        });
+      } 
+      return out;
     }
 
     async function loadData() {
@@ -5193,20 +5214,18 @@
       } catch (e) { }
     }
 
- function renderAll(data) {
+function renderAll(data) {
       _rawData = data;
 
-      // ---- AUTOMATIZACION DESDE GOOGLE SHEETS ----
       const fechas = [...new Set(data.map(r => r.fecha))].sort((a, b) => a - b);
       MAX_FECHA = fechas.length > 0 ? fechas[fechas.length - 1] : 0;
       const maxF = MAX_FECHA;
 
-      FD = {};
+      // El diccionario FD ya se llenó solito en la función parseCSV leyendo tu Excel
+
       MVP_DATA = [];
       fechas.forEach(f => {
         const rows = data.filter(r => r.fecha === f);
-        if (rows.length > 0 && rows[0].dia) FD[f] = rows[0].dia;
-
         const mvpRow = rows.find(r => r.mvp === 1);
         if (mvpRow) {
           const bW = rows.find(r => r.equipo === 'BLANCO')?.gf || 0;
@@ -5216,7 +5235,9 @@
           const loseScore = Math.min(bW, nW);
           let statTxt = mvpRow.goles > 0 ? `${mvpRow.goles} goles` : 'MVP';
           statTxt += ` · ${equipoGana} ganó ${winScore}-${loseScore}`;
-          MVP_DATA.push({ fecha: f, date: mvpRow.dia || '', nombre: formatName(mvpRow.jugador), stat: statTxt });
+          
+          // FOTOS ARREGLADAS: Le sacamos el formatName. Usamos el nombre crudo para que encuentre tu PNG
+          MVP_DATA.push({ fecha: f, date: FD[f] || '', nombre: mvpRow.jugador, stat: statTxt });
         }
       });
       MVP_DATA.sort((a, b) => b.fecha - a.fecha);
@@ -5247,7 +5268,6 @@
       const lbl = document.getElementById('updated-fecha-lbl');
       if (lbl) lbl.textContent = `F${maxF} · ${FD[maxF] || ''}`;
 
-      // Si ya cargaron los datos históricos, actualizá el histórico global también
       if (Object.keys(_histData).length > 0) renderHistoricoGlobal();
     }
 
