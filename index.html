@@ -5153,11 +5153,12 @@
         const j = v[1]; if (!j || j === 'JUGADOR') continue;
         const g = parseFloat(v[6]);
         out.push({
-          fecha: Math.round(f), jugador: j, equipo: v[2], resultado: v[3],
-          gf: parseInt(v[4]) || 0, gc: parseInt(v[5]) || 0, goles: isFinite(g) && g > 0 ? g : 0,
-          mvp: v[7] === '1' ? 1 : 0, dif: parseFloat(v[8]) || 0, bonus: parseFloat(v[9]) || 0,
-          camiseta: v[10] && v[10].includes('👕') ? 1 : 0
-        });
+        fecha: Math.round(f), jugador: j, equipo: v[2], resultado: v[3],
+        gf: parseInt(v[4]) || 0, gc: parseInt(v[5]) || 0, goles: isFinite(g) && g > 0 ? g : 0,
+        mvp: v[7] === '1' ? 1 : 0, dif: parseFloat(v[8]) || 0, bonus: parseFloat(v[9]) || 0,
+        camiseta: v[10] && v[10].includes('👕') ? 1 : 0,
+        dia: v[11] || ''
+      });
       } return out;
     }
 
