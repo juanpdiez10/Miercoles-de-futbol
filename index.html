@@ -4020,44 +4020,47 @@
       return `${folder}/${formateado}.png`;
     }
 
-    function renderMVPs() {
-      const c = document.getElementById('mvp-cnt');
-      const feat = document.getElementById('mvp-featured-cnt');
-      if (!c || !feat) return;
+function renderMVPs() {
+    const c = document.getElementById('mvp-cnt');
+    const feat = document.getElementById('mvp-featured-cnt');
+    if (!c || !feat) return;
 
-      const lastMVP = MVP_DATA[0];
-      if (lastMVP) {
-    const lastUrl = getUrlFoto(lastMVP.nombre);
-    const lastThumb = `<img class="mvp-photo-featured" src="${lastUrl}" alt="${lastMVP.nombre}" onerror="this.outerHTML='<div class=\\'mvp-photo-featured\\'>⭐</div>'">`;
+    const lastMVP = MVP_DATA[0];
+    if (lastMVP) {
+      const lastUrl = getUrlFoto(lastMVP.nombre);
+      const nombreLindo = formatName(lastMVP.nombre); // <--- ACÁ DAMOS VUELTA EL NOMBRE
 
-    // Botón de WhatsApp solo si es Admin
-    const adminBtn = adminUnlocked ? `<button class="btn btn-wa" style="margin-top: 1.2rem; font-size: 0.85rem;" onclick="shareMVPWhatsApp('${lastMVP.nombre.replace(/'/g, "\\'")}', '${lastMVP.fecha}')">📲 Felicitar por WhatsApp</button>` : '';
+      const lastThumb = `<img class="mvp-photo-featured" src="${lastUrl}" alt="${nombreLindo}" onerror="this.outerHTML='<div class=\\'mvp-photo-featured\\'>⭐</div>'">`;
 
-    feat.innerHTML = `
-    ${lastThumb}
-    <div>
-      <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
-      <div class="mvp-n">${lastMVP.nombre}</div>
-      <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
-      <div class="mvp-desc">${lastMVP.stat}</div>
-      ${adminBtn}
-    </div>
-    `;
-  }
+      // Pasamos el nombre dado vuelta al WhatsApp
+      const adminBtn = adminUnlocked ? `<button class="btn btn-wa" style="margin-top: 1.2rem; font-size: 0.85rem;" onclick="shareMVPWhatsApp('${nombreLindo.replace(/'/g, "\\'")}', '${lastMVP.fecha}')">📲 Felicitar por WhatsApp</button>` : '';
 
-      c.innerHTML = MVP_DATA.map(m => {
-        const url = getUrlFoto(m.nombre);
-        const thumb = `<img class="mvp-thumb" src="${url}" alt="${m.nombre}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
-
-        return `<div class="mvp-card" onclick="openMvpModal('${url}', '${m.nombre.replace(/'/g, "\\'")}', 'Fecha ${m.fecha} · ${m.date}', '${m.stat.replace(/'/g, "\\'")}')">
-      <div class="mvp-card-top">${thumb}<div>
-        <div class="mvp-card-date">Fecha ${m.fecha} · ${m.date}</div>
-        <div class="mvp-card-name">${m.nombre}</div>
-      </div></div>
-      <div class="mvp-card-stat">${m.stat}</div>
-    </div>`;
-      }).join('');
+      feat.innerHTML = `
+      ${lastThumb}
+      <div>
+        <div class="mvp-l">★ MVP — Última fecha · ${lastMVP.date}</div>
+        <div class="mvp-n">${nombreLindo}</div> <div class="mvp-d">Fecha ${lastMVP.fecha}</div>
+        <div class="mvp-desc">${lastMVP.stat}</div>
+        ${adminBtn}
+      </div>
+  `;
     }
+
+    // Arreglamos la grilla del historial de abajo para que también se vea bien
+    c.innerHTML = MVP_DATA.map(m => {
+      const url = getUrlFoto(m.nombre);
+      const nombreLindoHistorial = formatName(m.nombre); // <--- DAMOS VUELTA LOS NOMBRES DEL HISTORIAL
+      const thumb = `<img class="mvp-thumb" src="${url}" alt="${nombreLindoHistorial}" onerror="this.outerHTML='<div class=\\'mvp-thumb-ph\\'>😎</div>'">`;
+
+      return `<div class="mvp-card" onclick="openMvpModal('${url}', '${nombreLindoHistorial.replace(/'/g, "\\'")}', 'Fecha ${m.fecha} · ${m.date}', '${m.stat.replace(/'/g, "\\'")}')">
+    <div class="mvp-card-top">${thumb}<div>
+      <div class="mvp-card-date">Fecha ${m.fecha} · ${m.date}</div>
+      <div class="mvp-card-name">${nombreLindoHistorial}</div>
+    </div></div>
+    <div class="mvp-card-stat">${m.stat}</div>
+  </div>`;
+    }).join('');
+  }
 
     function openMvpModal(imgSrc, name, date, stat) {
       document.getElementById('modal-img-wrap').innerHTML = `<img class="mvp-modal-img" src="${imgSrc}" alt="${name}" onerror="this.outerHTML='<div class=\\'mvp-modal-img-ph\\'>😎</div>'">`;
