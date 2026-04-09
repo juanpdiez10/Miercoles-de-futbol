@@ -3729,28 +3729,34 @@
       window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    // ═══════════════════════════════════════
+// ═══════════════════════════════════════
     // COMPUTE Y ESTADÍSTICAS
     // ═══════════════════════════════════════
     function computeStandings(data) {
       const p = {};
       data.forEach(r => {
-        if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, dif: 0, bonus: 0, mvp: 0, camiseta: 0, hist: [] };
+        // Agregamos "gc: 0" para llevar la cuenta de goles en contra al vuelo
+        if (!p[r.jugador]) p[r.jugador] = { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, gc: 0, dif: 0, bonus: 0, mvp: 0, camiseta: 0, hist: [] };
         const x = p[r.jugador];
         if (r.resultado === 'G' || r.resultado === 'E' || r.resultado === 'P') {
-          x.pj++; x.goles += r.goles; x.dif += r.dif; x.bonus += r.bonus; x.mvp += r.mvp; x.camiseta += r.camiseta;
+          x.pj++; x.goles += r.goles; x.gc += (r.gc || 0); x.dif += r.dif; x.bonus += r.bonus; x.mvp += r.mvp; x.camiseta += r.camiseta;
           if (r.resultado === 'G') x.pg++; else if (r.resultado === 'E') x.pe++; else x.pp++;
           x.hist.push(r.resultado);
-        } else { x.goles += r.goles; x.camiseta += r.camiseta; }
+        } else { x.goles += r.goles; x.gc += (r.gc || 0); x.camiseta += r.camiseta; }
       });
       return Object.entries(p).map(([n, x]) => {
         let pts = x.pj * 2 + x.pg * 3 + x.pe * 1 + x.mvp + x.bonus;
         if (n === 'Cañete, Martin') pts -= 2;
         const pct = x.pj > 0 ? Math.round(x.pg / x.pj * 100) : 0;
-        const prom = x.pj > 0 ? (x.goles / x.pj).toFixed(2) : 0;
-        return { nombre: n, pts, pct, prom, ...x };
+        
+        const isArq = ['Cañete, Maxi', 'Questa, Ezequiel'].includes(n);
+        // Si es arquero el promedio es GC/PJ, sino Goles/PJ
+        const prom = x.pj > 0 ? (isArq ? (x.gc / x.pj).toFixed(2) : (x.goles / x.pj).toFixed(2)) : 0;
+        
+        return { nombre: n, pts, pct, prom, isArq, ...x };
       }).sort((a, b) => b.pts - a.pts || b.pg - a.pg || b.goles - a.goles);
     }
+    
     function computeScorers(data) {
       const g = {};
       const pj = {};
@@ -3765,6 +3771,7 @@
       return Object.entries(g).filter(([, v]) => v > 0).map(([n, v]) => ({ nombre: n, goles: v, pj: pj[n] || 1 }))
         .sort((a, b) => b.goles - a.goles);
     }
+    
     function computeMatches(data) {
       return [...new Set(data.map(r => r.fecha))].sort((a, b) => a - b).map(f => {
         const rows = data.filter(r => r.fecha === f);
@@ -3775,6 +3782,7 @@
         };
       });
     }
+    
     function buildGolesPerFecha(data) {
       _golesPerFecha = {};
       data.forEach(r => {
@@ -3798,10 +3806,17 @@
         const shirt = p.camiseta > 0 ? `<div class="shirt-badge">👕 x${p.camiseta}</div>` : '';
         const pos = i < 3 ? `<span class="pb p${i + 1}">${i + 1}</span>` : `<span class="pb pn">${i + 1}</span>`;
         const safe = p.nombre.replace(/'/g, "\\'");
-        const isArquero = ARQUEROS_VALIDOS.includes(p.nombre);
+        
         let golesDisplay, golesColor;
-        if (isArquero) { const gcTotal = Object.values(GC_ARQUEROS[p.nombre] || {}).reduce((a, b) => a + b, 0); golesDisplay = gcTotal > 0 ? '-' + gcTotal : '—'; golesColor = '#ff9977'; }
-        else { golesDisplay = p.goles > 0 ? p.goles : '—'; golesColor = '#7dd87d'; }
+        if (p.isArq) { 
+            // ACÁ ESTÁ EL ARREGLO CLAVE: Usamos p.gc que viene calculado "al vuelo" para esta fecha
+            golesDisplay = p.gc > 0 ? '-' + p.gc : '—'; 
+            golesColor = '#ff9977'; 
+        } else { 
+            golesDisplay = p.goles > 0 ? p.goles : '—'; 
+            golesColor = '#7dd87d'; 
+        }
+
         return `<tr class="${cls[i] || ''}">
       <td>${pos}</td>
       <td class="lft"><div class="name-wrap"><span class="player-link" onclick="openFicha('${safe}')">${formatName(p.nombre)}</span>${shirt}</div></td>
@@ -3811,7 +3826,7 @@
       <td class="${p.dif >= 0 ? 'dif-pos' : 'dif-neg'}">${difStr}</td>
       <td>${p.mvp > 0 ? p.mvp : '—'}</td>
       <td style="color:#7db8d8">${p.bonus > 0 ? '+' + p.bonus : '—'}</td>
-      <td>${p.pct}%</td><td style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? ('-'+(Object.values(GC_ARQUEROS[p.nombre]||{}).reduce((a,b)=>a+b,0)/p.pj).toFixed(2)) : p.prom}</td>
+      <td>${p.pct}%</td><td style="color:${p.isArq ? '#ff9977' : ''}">${p.isArq ? '-'+p.prom : p.prom}</td>
       <td><div class="racha-wrap">${rachaHTML(p.hist)}</div></td>
     </tr>`;
       }).join('');
