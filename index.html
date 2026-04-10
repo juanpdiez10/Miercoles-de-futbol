@@ -5437,6 +5437,10 @@ function renderAll(data) {
       actualizarUI_Suspension();
 
       const hash = window.location.hash.substring(1);
+      if (hash && hash !== 'home' && hash !== 'modal-abierto') {
+        history.replaceState(null, null, '#home'); // Clavamos el inicio como base del historial
+        history.pushState(null, null, '#' + hash); // Ponemos la página actual por encima
+      }
       if (hash && hash !== 'modal-abierto') {
         
         // Si actualizamos la página (F5) estando adentro de una ficha
