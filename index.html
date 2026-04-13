@@ -3232,14 +3232,7 @@
         <div class="forum-header">
           <h3>😤 Foro de quejas/comentarios</h3>
           <select class="forum-select" id="forum-fecha-sel" onchange="renderForum()">
-            <option value="7">Fecha 7</option>
-            <option value="6">Fecha 6</option>
-            <option value="5">Fecha 5</option>
-            <option value="4">Fecha 4</option>
-            <option value="3">Fecha 3</option>
-            <option value="2">Fecha 2</option>
-            <option value="1">Fecha 1</option>
-          </select>
+            </select>
         </div>
         <div class="forum-posts" id="forum-posts"></div>
         <div class="forum-form">
@@ -5255,7 +5248,24 @@ function renderMVPs() {
         if (negro.length > 0) document.getElementById('team-negro-list').innerHTML = negro.map(makePlayer).join('');
       } catch (e) { }
     }
+        function setupForumDropdown() {
+          const sel = document.getElementById('forum-fecha-sel');
+          if (!sel) return;
 
+          const proximaFecha = MAX_FECHA + 1;
+          let options = '';
+  
+          // Genera las opciones del menú
+          for (let i = proximaFecha; i >= 1; i--) {
+            options += `<option value="${i}">Fecha ${i}</option>`;
+          }
+  
+          sel.innerHTML = options;
+  
+          // Esto hace que el foro se actualice automáticamente 
+          // a la fecha más nueva apenas carga la página
+          renderForum(); 
+        }
 function renderAll(data) {
       _rawData = data;
 
@@ -5263,7 +5273,9 @@ function renderAll(data) {
       MAX_FECHA = fechas.length > 0 ? fechas[fechas.length - 1] : 0;
       const maxF = MAX_FECHA;
 
-      setupNextDate();
+      setupNextDate();      // Actualiza el cartel de próxima fecha
+      setupForumDropdown(); // <--- AGREGAR ESTA LÍNEA AQUÍ
+      renderForum();       // Refresca los mensajes para la fecha actual
 
       // El diccionario FD ya se llenó solito en la función parseCSV leyendo tu Excel
 
