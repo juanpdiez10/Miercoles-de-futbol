@@ -3514,9 +3514,8 @@
   const dateStr = `${nw.getDate().toString().padStart(2, '0')}/${(nw.getMonth() + 1).toString().padStart(2, '0')}`;
 
   // Armamos el mensaje usando tu variable automática _clima
-  const msg = `⚽ *¡MIÉRCOLES DE FÚTBOL - SE ABRE LA LISTA PARA LA FECHA ${nroFecha}!* ⚽\n` +
+  const msg = `⚽ *¡SE ABRE LA LISTA PARA LA FECHA ${nroFecha}!* ⚽\n` +
               `Clima Miércoles ${dateStr}: ${_clima}\n\n` +
-              `Ya pueden anotarse para el próximo partido. ¡No se queden afuera!\n` +
               `👇 *Anotate acá:*\n${url} 👈`;
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
