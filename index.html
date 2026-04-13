@@ -5263,6 +5263,8 @@ function renderAll(data) {
       MAX_FECHA = fechas.length > 0 ? fechas[fechas.length - 1] : 0;
       const maxF = MAX_FECHA;
 
+      setupNextDate();
+
       // El diccionario FD ya se llenó solito en la función parseCSV leyendo tu Excel
 
       MVP_DATA = [];
