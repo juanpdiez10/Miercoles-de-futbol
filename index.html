@@ -3504,7 +3504,24 @@
 
       return false;
     }
+    
+    function shareInvitationWhatsApp() {
+  const url = "www.miercolesdefutbol.com.ar/#inscripcion";
+  const nroFecha = MAX_FECHA + 1;
+  
+  // Usamos tu misma lógica para calcular la fecha del miércoles
+  const nw = getNextWednesday();
+  const dateStr = `${nw.getDate().toString().padStart(2, '0')}/${(nw.getMonth() + 1).toString().padStart(2, '0')}`;
 
+  // Armamos el mensaje usando tu variable automática _clima
+  const msg = `⚽ *¡MIÉRCOLES DE FÚTBOL - SE ABRE LA LISTA PARA LA FECHA ${nroFecha}!* ⚽\n` +
+              `Clima Miércoles ${dateStr}: ${_clima}\n\n` +
+              `Ya pueden anotarse para el próximo partido. ¡No se queden afuera!\n` +
+              `👇 *Anotate acá:*\n${url} 👈`;
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+    
     function renderInscripcion() {
       const container = document.getElementById('insc-slots');
       const divCerrada = document.getElementById('inscripcion-cerrada');
@@ -3524,7 +3541,27 @@
 
       divAbierta.style.display = 'block';
       divCerrada.style.display = 'none';
-
+      
+// --- BOTÓN DE INVITACIÓN SOLO ADMIN ---
+    let adminInviteDiv = document.getElementById('admin-invite-div');
+    if (adminUnlocked) {
+      if (!adminInviteDiv) {
+        adminInviteDiv = document.createElement('div');
+        adminInviteDiv.id = 'admin-invite-div';
+        adminInviteDiv.innerHTML = `
+          <div style="margin-top: 20px; padding: 15px; background: #222; border-radius: 8px; text-align: center; border: 1px dashed #25D366;">
+            <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">👑 Solo Admin: Enviar invitación (Martes 13hs)</p>
+            <button onclick="shareInvitationWhatsApp()" style="background: #25D366; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%;">
+              📲 Enviar Invitación al Grupo
+            </button>
+          </div>
+        `;
+        divAbierta.appendChild(adminInviteDiv);
+      }
+    } else {
+      if (adminInviteDiv) adminInviteDiv.remove();
+    }
+    // --------------------------------------
       // Nombres disponibles para el combo gigante
       const anotados = _inscripcionData.map(s => s.jugador).filter(j => j !== '');
       const disponibles = _allPlayersList.filter(p => !anotados.includes(p));
