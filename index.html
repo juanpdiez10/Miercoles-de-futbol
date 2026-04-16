@@ -3527,7 +3527,7 @@
   
   const msg = `🏆 *TABLA ACTUALIZADA* 🏆\n\n` +
               `Ya están cargados los resultados y las posiciones de la *FECHA ${ultimaFecha}*.\n\n` +
-              `📊 *Mirá tu posición acá:* \n${url} 👈\n\n` +
+              `📊 *Mirá tu posición acá:* \n${url} 👈\n\n` 
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }   
@@ -3887,6 +3887,29 @@
       <td><div class="racha-wrap">${rachaHTML(p.hist)}</div></td>
     </tr>`;
       }).join('');
+
+      // --- BOTÓN DE COMPARTIR TABLA SOLO ADMIN ---
+      let adminTablaDiv = document.getElementById('admin-tabla-div');
+      const tablaContainer = document.getElementById('tabla-2026'); 
+
+      if (adminUnlocked && tablaContainer) {
+        if (!adminTablaDiv) {
+          adminTablaDiv = document.createElement('div');
+          adminTablaDiv.id = 'admin-tabla-div';
+          adminTablaDiv.innerHTML = `
+            <div style="margin-top: 25px; padding: 15px; background: #1a1a1a; border-radius: 8px; text-align: center; border: 1px dashed #FFD700;">
+              <p style="font-size: 13px; color: #FFD700; margin-bottom: 10px; font-weight: bold;">🏆 PANEL CONTROL: DIFUNDIR TABLA</p>
+              <button onclick="shareTablaWA()" style="background: #25D366; color: #fff; border: none; padding: 12px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                📲 Compartir Tabla
+              </button>
+            </div>
+          `;
+          tablaContainer.appendChild(adminTablaDiv);
+        }
+      } else {
+        if (adminTablaDiv) adminTablaDiv.remove();
+      }
+      
     }
 
     function renderFechaFilter() {
