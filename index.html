@@ -3535,79 +3535,74 @@
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }   
     
-  function iniciarBaja() {
-  // 1. Mensaje de advertencia
-  alert("Si te das de baja del partido, compartí la lista actualizada por WhatsApp al grupo para avisar.");
+  async function iniciarBaja(slotNum, nombreJugador) {
+  if (!confirm(`¿Seguro que te querés dar de baja, ${nombreJugador}?`)) return;
+
+  // 1. Mandamos la orden oculta a la base de datos para liberar el lugar
+  const payload = { action: 'admin_update_slot', slot: slotNum, estado: 'Libre', jugador: '' };
   
-  // 2. Buscamos el botón de compartir público
-  const btnShare = document.getElementById('btn-share-insc');
-  if (btnShare) {
-    // A veces el botón se oculta si la lista no está llena. Lo forzamos a mostrarse.
-    btnShare.style.display = 'inline-block';
+  try {
+    // Disparamos la petición a Google
+    await fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
     
-    // Hacemos scroll suave hasta abajo
-    btnShare.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // 2. Limpiamos la memoria de su celular para que le vuelva a aparecer el botón de anotarse a futuro
+    localStorage.removeItem('mdf_mi_jugador');
     
-    // 3. Creamos la burbuja de diálogo
-    let burbuja = document.getElementById('burbuja-baja');
-    if (!burbuja) {
-      burbuja = document.createElement('div');
-      burbuja.id = 'burbuja-baja';
-      burbuja.innerHTML = '¡Compartí la lista desde este botón! 👇';
+    // 3. Esperamos un segundito a que Google procese, y recargamos la web
+    setTimeout(async () => {
+      await loadApiData();
       
-      // Le inyectamos los estilos directo acá
-      Object.assign(burbuja.style, {
-        position: 'absolute',
-        bottom: '120%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: '#FFD700',
-        color: '#000',
-        padding: '8px 12px',
-        borderRadius: '8px',
-        fontWeight: 'bold',
-        fontFamily: '"Barlow Condensed", sans-serif',
-        whiteSpace: 'nowrap',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.5)',
-        zIndex: '10',
-        opacity: '0',
-        transition: 'opacity 0.3s ease, bottom 0.4s ease'
-      });
-
-      // Le agregamos la colita amarilla
-      const flecha = document.createElement('div');
-      Object.assign(flecha.style, {
-        content: '""',
-        position: 'absolute',
-        top: '100%',
-        left: '50%',
-        marginLeft: '-6px',
-        borderWidth: '6px',
-        borderStyle: 'solid',
-        borderColor: '#FFD700 transparent transparent transparent'
-      });
-      burbuja.appendChild(flecha);
-
-      // Metemos la burbuja arriba del botón de WhatsApp
-      btnShare.parentElement.style.position = 'relative';
-      btnShare.parentElement.appendChild(burbuja);
-    }
-    
-    // 4. Animamos la burbuja
-    setTimeout(() => {
-      burbuja.style.opacity = '1';
-      let sube = true;
-      const anim = setInterval(() => {
-        burbuja.style.bottom = sube ? '135%' : '120%';
-        sube = !sube;
-      }, 400);
+      // 4. ¡Ahora sí! Tiramos la alerta y mostramos la burbuja para compartir la NUEVA lista
+      alert("¡Listo! Ya te dimos de baja.\n\nPor favor, compartí la lista actualizada en el grupo para avisar que quedó un lugar libre.");
       
-      // La ocultamos a los 6 segundos
-      setTimeout(() => {
-        clearInterval(anim);
-        burbuja.style.opacity = '0';
-      }, 6000);
-    }, 500); 
+      const btnShare = document.getElementById('btn-share-insc');
+      if (btnShare) {
+        btnShare.style.display = 'inline-block';
+        btnShare.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        let burbuja = document.getElementById('burbuja-baja');
+        if (!burbuja) {
+          burbuja = document.createElement('div');
+          burbuja.id = 'burbuja-baja';
+          burbuja.innerHTML = '¡Compartí la lista actualizada desde acá! 👇';
+          
+          Object.assign(burbuja.style, {
+            position: 'absolute', bottom: '120%', left: '50%', transform: 'translateX(-50%)',
+            background: '#FFD700', color: '#000', padding: '8px 12px', borderRadius: '8px',
+            fontWeight: 'bold', fontFamily: '"Barlow Condensed", sans-serif', whiteSpace: 'nowrap',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.5)', zIndex: '10', opacity: '0', transition: 'opacity 0.3s ease, bottom 0.4s ease'
+          });
+
+          const flecha = document.createElement('div');
+          Object.assign(flecha.style, {
+            content: '""', position: 'absolute', top: '100%', left: '50%', marginLeft: '-6px',
+            borderWidth: '6px', borderStyle: 'solid', borderColor: '#FFD700 transparent transparent transparent'
+          });
+          burbuja.appendChild(flecha);
+
+          btnShare.parentElement.style.position = 'relative';
+          btnShare.parentElement.appendChild(burbuja);
+        }
+        
+        // Animamos la burbuja
+        setTimeout(() => {
+          burbuja.style.opacity = '1';
+          let sube = true;
+          const anim = setInterval(() => {
+            burbuja.style.bottom = sube ? '135%' : '120%';
+            sube = !sube;
+          }, 400);
+          
+          setTimeout(() => {
+            clearInterval(anim);
+            burbuja.style.opacity = '0';
+          }, 6000);
+        }, 500); 
+      }
+    }, 1200); // 1.2 segundos de espera para asegurar que Google Sheets actualizó
+
+  } catch (e) {
+    alert("Hubo un error de conexión al intentar bajarte. Intentá de nuevo.");
   }
 }
     
@@ -3685,7 +3680,7 @@
             btnBajar = `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>`;
           } else {
             // Vista jugador (Abre popup y manda al botón de compartir)
-            btnBajar = `<button onclick="iniciarBaja()" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); background:transparent; cursor:pointer;">❌ Darme de baja</button>`;
+            btnBajar = `<button onclick="iniciarBaja(${slot.slot}, '${slot.jugador}')" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); background:transparent; cursor:pointer;">❌ Darme de baja</button>`;
           }
 
           contenido = `<span class="insc-name">${carita} ${slot.jugador}</span> ${btnBajar}`;
