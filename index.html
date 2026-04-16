@@ -3535,75 +3535,74 @@
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }   
     
-  async function iniciarBaja(slotNum, nombreJugador) {
+  function iniciarBaja(slotNum, nombreJugador) {
   if (!confirm(`¿Seguro que te querés dar de baja, ${nombreJugador}?`)) return;
 
-  // 1. Mandamos la orden oculta a la base de datos para liberar el lugar
-  const payload = { action: 'admin_update_slot', slot: slotNum, estado: 'Libre', jugador: '' };
-  
-  try {
-    // Disparamos la petición a Google
-    await fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
-    
-    // 2. Limpiamos la memoria de su celular para que le vuelva a aparecer el botón de anotarse a futuro
-    localStorage.removeItem('mdf_mi_jugador');
-    
-    // 3. Esperamos un segundito a que Google procese, y recargamos la web
-    setTimeout(async () => {
-      await loadApiData();
-      
-      // 4. ¡Ahora sí! Tiramos la alerta y mostramos la burbuja para compartir la NUEVA lista
-      alert("¡Listo! Ya te dimos de baja.\n\nPor favor, compartí la lista actualizada en el grupo para avisar que quedó un lugar libre.");
-      
-      const btnShare = document.getElementById('btn-share-insc');
-      if (btnShare) {
-        btnShare.style.display = 'inline-block';
-        btnShare.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        let burbuja = document.getElementById('burbuja-baja');
-        if (!burbuja) {
-          burbuja = document.createElement('div');
-          burbuja.id = 'burbuja-baja';
-          burbuja.innerHTML = '¡Compartí la lista actualizada desde acá! 👇';
-          
-          Object.assign(burbuja.style, {
-            position: 'absolute', bottom: '120%', left: '50%', transform: 'translateX(-50%)',
-            background: '#FFD700', color: '#000', padding: '8px 12px', borderRadius: '8px',
-            fontWeight: 'bold', fontFamily: '"Barlow Condensed", sans-serif', whiteSpace: 'nowrap',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.5)', zIndex: '10', opacity: '0', transition: 'opacity 0.3s ease, bottom 0.4s ease'
-          });
+  // 1. Borramos la memoria del celular al instante
+  localStorage.removeItem('mdf_mi_jugador');
 
-          const flecha = document.createElement('div');
-          Object.assign(flecha.style, {
-            content: '""', position: 'absolute', top: '100%', left: '50%', marginLeft: '-6px',
-            borderWidth: '6px', borderStyle: 'solid', borderColor: '#FFD700 transparent transparent transparent'
-          });
-          burbuja.appendChild(flecha);
-
-          btnShare.parentElement.style.position = 'relative';
-          btnShare.parentElement.appendChild(burbuja);
-        }
-        
-        // Animamos la burbuja
-        setTimeout(() => {
-          burbuja.style.opacity = '1';
-          let sube = true;
-          const anim = setInterval(() => {
-            burbuja.style.bottom = sube ? '135%' : '120%';
-            sube = !sube;
-          }, 400);
-          
-          setTimeout(() => {
-            clearInterval(anim);
-            burbuja.style.opacity = '0';
-          }, 6000);
-        }, 500); 
-      }
-    }, 1200); // 1.2 segundos de espera para asegurar que Google Sheets actualizó
-
-  } catch (e) {
-    alert("Hubo un error de conexión al intentar bajarte. Intentá de nuevo.");
+  // 2. Modificamos la lista "en memoria" de la web para que desaparezcas YA MISMO
+  const slotIndex = _inscripcionData.findIndex(s => s.slot === slotNum);
+  if (slotIndex !== -1) {
+    _inscripcionData[slotIndex].estado = 'Libre';
+    _inscripcionData[slotIndex].jugador = '';
   }
+
+  // 3. Redibujamos la lista (tu nombre desaparece de la pantalla al milisegundo)
+  renderInscripcion();
+
+  // 4. Magia visual: forzamos el botón y la burbuja AL TOQUE
+  const btnShare = document.getElementById('btn-share-insc');
+  if (btnShare) {
+    btnShare.style.display = 'inline-block'; // Lo forzamos a aparecer
+    
+    // Scrolleamos para abajo
+    btnShare.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    let burbuja = document.getElementById('burbuja-baja');
+    if (!burbuja) {
+      burbuja = document.createElement('div');
+      burbuja.id = 'burbuja-baja';
+      burbuja.innerHTML = '¡Tu lugar quedó libre! Avisá al grupo 👇';
+      
+      Object.assign(burbuja.style, {
+        position: 'absolute', bottom: '120%', left: '50%', transform: 'translateX(-50%)',
+        background: '#FFD700', color: '#000', padding: '10px 14px', borderRadius: '8px',
+        fontWeight: 'bold', fontFamily: '"Barlow Condensed", sans-serif', whiteSpace: 'nowrap',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.5)', zIndex: '10', opacity: '0', transition: 'opacity 0.3s ease, bottom 0.4s ease'
+      });
+
+      const flecha = document.createElement('div');
+      Object.assign(flecha.style, {
+        content: '""', position: 'absolute', top: '100%', left: '50%', marginLeft: '-6px',
+        borderWidth: '6px', borderStyle: 'solid', borderColor: '#FFD700 transparent transparent transparent'
+      });
+      burbuja.appendChild(flecha);
+
+      btnShare.parentElement.style.position = 'relative';
+      btnShare.parentElement.appendChild(burbuja);
+    }
+    
+    // Animamos casi sin demora
+    setTimeout(() => {
+      burbuja.style.opacity = '1';
+      let sube = true;
+      const anim = setInterval(() => {
+        burbuja.style.bottom = sube ? '135%' : '120%';
+        sube = !sube;
+      }, 400);
+      
+      setTimeout(() => {
+        clearInterval(anim);
+        burbuja.style.opacity = '0';
+      }, 7000);
+    }, 100); 
+  }
+
+  // 5. Le avisamos a Google Sheets EN SEGUNDO PLANO (el usuario no espera nada)
+  const payload = { action: 'admin_update_slot', slot: slotNum, estado: 'Libre', jugador: '' };
+  fetch(API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
+    .catch(e => console.log("Error de actualización en segundo plano", e));
 }
     
     function renderInscripcion() {
