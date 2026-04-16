@@ -3521,6 +3521,17 @@
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
     
+ function shareTablaWA() {
+  const url = "www.miercolesdefutbol.com.ar/#tabla";
+  const ultimaFecha = MAX_FECHA;
+  
+  const msg = `🏆 *TABLA ACTUALIZADA* 🏆\n\n` +
+              `Ya están cargados los resultados y las posiciones de la *FECHA ${ultimaFecha}*.\n\n` +
+              `📊 *Mirá tu posición acá:* \n${url} 👈\n\n` +
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}   
+  
     function renderInscripcion() {
       const container = document.getElementById('insc-slots');
       const divCerrada = document.getElementById('inscripcion-cerrada');
