@@ -3610,6 +3610,7 @@
       const divCerrada = document.getElementById('inscripcion-cerrada');
       const divAbierta = document.getElementById('inscripcion-lista');
       const btnShare = document.getElementById('btn-share-insc');
+      const miRegistro = localStorage.getItem('mdf_mi_jugador');
 
       const selectGlobal = document.getElementById('select-jugador-global');
       const btnGlobal = document.getElementById('btn-anotar-global');
@@ -3669,17 +3670,20 @@
           const btnAdminDesbloq = adminUnlocked ? `<button class="btn-admin" style="color:var(--green);" onclick="adminLiberar(${slot.slot})">🔓 Desbloquear</button>` : '';
           contenido = `<span class="insc-name blocked">${slot.jugador}</span> ${btnAdminDesbloq}`;
         }
+          
         else {
           const urlFoto = getUrlFoto(slot.jugador);
           const carita = `<img src="${urlFoto}" style="width:24px; height:24px; border-radius:50%; object-fit:cover; object-position:top;" onerror="this.style.display='none'">`;
 
           let btnBajar = '';
+          
           if (adminUnlocked) {
-            // Vista de Admin
+            // El Admin siempre ve el botón en todos los jugadores
             btnBajar = `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>`;
-          } else {
-            // Vista jugador (Abre popup y manda al botón de compartir)
-            btnBajar = `<button onclick="iniciarBaja(${slot.slot}, '${slot.jugador}')" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); background:transparent; cursor:pointer;">❌ Darme de baja</button>`;
+          } 
+          else if (slot.jugador === miRegistro) {
+            // EL JUGADOR SOLO VE EL BOTÓN SI EL NOMBRE COINCIDE CON SU MEMORIA
+            btnBajar = `<button onclick="iniciarBaja(${slot.slot}, '${slot.jugador.replace(/'/g, "\\'")}')" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); background:transparent; cursor:pointer;">❌ Darme de baja</button>`;
           }
 
           contenido = `<span class="insc-name">${carita} ${slot.jugador}</span> ${btnBajar}`;
@@ -3692,7 +3696,7 @@
       }).join('');
 
       // Lógica de memoria para bloquear si ya se anotó y control de carga
-      const miRegistro = localStorage.getItem('mdf_mi_jugador');
+      // (Borrarmos el 'const miRegistro' que estaba acá porque ya lo tenés arriba de todo)
       const yaAnotado = _inscripcionData.some(s => s.jugador === miRegistro);
 
       if (_inscripcionData.length === 0) {
