@@ -3532,7 +3532,83 @@
 
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }   
+    
+  function iniciarBaja() {
+  // 1. Mensaje de advertencia
+  alert("Si te das de baja del partido, compartí la lista actualizada por WhatsApp al grupo para avisar.");
   
+  // 2. Buscamos el botón de compartir público
+  const btnShare = document.getElementById('btn-share-insc');
+  if (btnShare) {
+    // A veces el botón se oculta si la lista no está llena. Lo forzamos a mostrarse.
+    btnShare.style.display = 'inline-block';
+    
+    // Hacemos scroll suave hasta abajo
+    btnShare.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    // 3. Creamos la burbuja de diálogo
+    let burbuja = document.getElementById('burbuja-baja');
+    if (!burbuja) {
+      burbuja = document.createElement('div');
+      burbuja.id = 'burbuja-baja';
+      burbuja.innerHTML = '¡Compartí la lista desde este botón! 👇';
+      
+      // Le inyectamos los estilos directo acá
+      Object.assign(burbuja.style, {
+        position: 'absolute',
+        bottom: '120%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: '#FFD700',
+        color: '#000',
+        padding: '8px 12px',
+        borderRadius: '8px',
+        fontWeight: 'bold',
+        fontFamily: '"Barlow Condensed", sans-serif',
+        whiteSpace: 'nowrap',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.5)',
+        zIndex: '10',
+        opacity: '0',
+        transition: 'opacity 0.3s ease, bottom 0.4s ease'
+      });
+
+      // Le agregamos la colita amarilla
+      const flecha = document.createElement('div');
+      Object.assign(flecha.style, {
+        content: '""',
+        position: 'absolute',
+        top: '100%',
+        left: '50%',
+        marginLeft: '-6px',
+        borderWidth: '6px',
+        borderStyle: 'solid',
+        borderColor: '#FFD700 transparent transparent transparent'
+      });
+      burbuja.appendChild(flecha);
+
+      // Metemos la burbuja arriba del botón de WhatsApp
+      btnShare.parentElement.style.position = 'relative';
+      btnShare.parentElement.appendChild(burbuja);
+    }
+    
+    // 4. Animamos la burbuja
+    setTimeout(() => {
+      burbuja.style.opacity = '1';
+      let sube = true;
+      const anim = setInterval(() => {
+        burbuja.style.bottom = sube ? '135%' : '120%';
+        sube = !sube;
+      }, 400);
+      
+      // La ocultamos a los 6 segundos
+      setTimeout(() => {
+        clearInterval(anim);
+        burbuja.style.opacity = '0';
+      }, 6000);
+    }, 500); 
+  }
+}
+    
     function renderInscripcion() {
       const container = document.getElementById('insc-slots');
       const divCerrada = document.getElementById('inscripcion-cerrada');
@@ -3606,10 +3682,8 @@
             // Vista de Admin
             btnBajar = `<button class="btn-admin" style="color:var(--red); border-color:var(--red);" onclick="adminLiberar(${slot.slot})">❌ Bajar</button>`;
           } else {
-            // Vista jugador (Abre WhatsApp)
-            const miNumero = "5491164666436"; // <--- PONÉ TU NÚMERO ACÁ
-            const msj = encodeURIComponent(`Hola, dame de baja del partido de este miércoles por favor. Soy ${slot.jugador}.`);
-            btnBajar = `<a href="https://wa.me/${miNumero}?text=${msj}" target="_blank" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); text-decoration:none;">❌ Darme de baja</a>`;
+            // Vista jugador (Abre popup y manda al botón de compartir)
+            btnBajar = `<button onclick="iniciarBaja()" class="btn-admin" style="color:var(--text2); border-color:rgba(255,255,255,0.2); background:transparent; cursor:pointer;">❌ Darme de baja</button>`;
           }
 
           contenido = `<span class="insc-name">${carita} ${slot.jugador}</span> ${btnBajar}`;
