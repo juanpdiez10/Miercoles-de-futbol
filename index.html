@@ -2427,6 +2427,19 @@
   margin: 2rem auto;
   max-width: 500px;
 }
+    /* ════ PESTAÑAS Y STATS PRO FICHA JUGADOR ════ */
+    .tabs-ficha { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(57, 255, 20, 0.2); padding-bottom: 0.5rem; }
+    .tabs-ficha button { flex: 1; background: transparent; border: none; color: var(--text2); font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.2s; padding: 0.5rem; }
+    .tabs-ficha button.active { color: var(--green); border-bottom: 2px solid var(--green); }
+    .tf-content { display: none; animation: fadeIn 0.3s ease; }
+    .tf-content.active { display: block; }
+    
+    .stat-pro-card { background: var(--card); border: 1px solid rgba(57, 255, 20, 0.1); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; }
+    .sp-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .sp-info { flex: 1; }
+    .sp-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--green); text-transform: uppercase; font-size: 0.9rem; margin-bottom: 0.2rem; letter-spacing: 1px; }
+    .sp-desc { color: var(--text); font-size: 0.85rem; line-height: 1.4; }
+    .sp-desc strong { color: var(--green); font-size: 1rem; font-family: 'Anton', sans-serif; letter-spacing: 1px; margin: 0 0.2rem; }
     
     /* RESPONSIVE */
     @media(max-width:900px) {
@@ -5060,15 +5073,67 @@ function renderMVPs() {
       if (!history.state || !history.state.modalOpen) history.pushState({ modalOpen: true }, '', '#modal-abierto');
       modal.classList.add('open');
     }
+// Cambiar pestañas dentro de la ficha
+function switchTabFicha(tabId) {
+  document.querySelectorAll('.tabs-ficha button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tf-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('btn-tf-' + tabId).classList.add('active');
+  document.getElementById('tf-' + tabId).classList.add('active');
+}
 
+// Calculadora del Duelo Directo
+function actualizarDueloVS(nombreA) {
+  const nombreB = document.getElementById('select-vs').value;
+  const container = document.getElementById('resultado-duelo');
+  if (!nombreB) { container.style.display = 'none'; return; }
+
+  const allData = getAllDataCombined();
+  let jugados = 0, ganoA = 0, ganoB = 0, empates = 0;
+  const fechas = [...new Set(allData.map(r => r.fecha + '-' + (r.ano || 2026)))];
+
+  fechas.forEach(fKey => {
+    const [fNum, fAno] = fKey.split('-');
+    const dia = allData.filter(r => r.fecha == fNum && (r.ano || 2026) == fAno);
+    const rowA = dia.find(r => r.jugador === nombreA);
+    const rowB = dia.find(r => r.jugador === nombreB);
+
+    // Condición: jugaron los dos, en equipos distintos, y el partido tuvo resultado
+    if (rowA && rowB && rowA.equipo !== rowB.equipo && ['G', 'P', 'E'].includes(rowA.resultado)) {
+      jugados++;
+      if (rowA.resultado === 'G') ganoA++;
+      else if (rowA.resultado === 'P') ganoB++;
+      else empates++;
+    }
+  });
+
+  container.style.display = 'block';
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; text-align:center; gap:10px; margin-top:15px; padding-top:15px; border-top:1px dashed rgba(255,255,255,0.1);">
+      <div>
+        <div style="font-size:0.75rem; color:var(--text2); text-transform:uppercase;">Victorias</div>
+        <div style="font-family:'Anton',sans-serif; font-size:2rem; color:var(--green);">${ganoA}</div>
+      </div>
+      <div style="background:var(--card2); padding:10px; border-radius:8px; min-width:80px;">
+        <div style="font-size:1.2rem; font-weight:bold; color:var(--text);">${jugados}</div>
+        <div style="font-size:0.6rem; color:var(--text2); text-transform:uppercase;">Partidos</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem; color:var(--text2); text-transform:uppercase;">Victorias</div>
+        <div style="font-family:'Anton',sans-serif; font-size:2rem; color:var(--red);">${ganoB}</div>
+      </div>
+    </div>
+    <p style="text-align:center; font-size:0.85rem; color:var(--text2); margin-top:10px;">Empataron en <strong>${empates}</strong> cruces.</p>
+  `;
+}
+    
 // ═══════════════════════════════════════
-    // FICHA DE JUGADOR
+    // FICHA DE JUGADOR (Versión Pestañas + Stats Pro)
     // ═══════════════════════════════════════
     function openFicha(nombre) {
       const allData = getAllDataCombined();
       const foto = `jugadores/${nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '').replace(/,\s*/g, '-').replace(/\s+/g, '-')}.png`;
 
-      // Stats globales
+      // Stats globales (Originales)
       const rows = allData.filter(r => r.jugador === nombre);
       const partidos = rows.filter(r => ['G', 'E', 'P'].includes(r.resultado));
       const pj = partidos.length, pg = partidos.filter(r => r.resultado === 'G').length;
@@ -5081,8 +5146,9 @@ function renderMVPs() {
       const dif = rows.reduce((a, r) => a + r.dif, 0);
       const pct = pj > 0 ? Math.round(pg / pj * 100) : 0;
       const prom = pj > 0 ? (goles / pj).toFixed(2) : 0;
+      const utilero = rows.reduce((a, r) => a + (r.camiseta || 0), 0);
 
-      // Stats por año
+      // Stats por año (Originales)
       const anos = [2023, 2024, 2025, 2026];
       const anoCards = anos.map(ano => {
         let d;
@@ -5114,7 +5180,7 @@ function renderMVPs() {
         return { ano, apj, apg, ape, app, agoles, amvp, adif, esCampeon };
       }).filter(Boolean);
 
-      // --- TARJETA DE COPAS ---
+      // Tarjeta de copas (Original)
       const totalCopas = anoCards.filter(a => a.esCampeon).length;
       const tarjetaCopasHtml = totalCopas > 0 
         ? `<div class="ficha-stat-card" style="border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.05); display: flex; flex-direction: column; justify-content: center;">
@@ -5123,8 +5189,8 @@ function renderMVPs() {
            </div>`
         : '';
 
-      // Racha histórica
-      const histRaw = partidos.sort((a, b) => { if (a.ano !== b.ano) return a.ano - b.ano; return a.fecha - b.fecha; });
+      // Racha histórica (Original)
+      const histRaw = partidos.sort((a, b) => { if (a.ano !== b.ano) return (a.ano||2026) - (b.ano||2026); return a.fecha - b.fecha; });
       const racha = histRaw.map(r => r.resultado);
       let maxStreak = 0, cur = 0;
       histRaw.forEach((r, i) => {
@@ -5132,53 +5198,209 @@ function renderMVPs() {
         if (r.resultado === 'G') { cur++; maxStreak = Math.max(maxStreak, cur); } else cur = 0;
       });
 
-      const fichaHTML = `
-    <div class="ficha-header">
-      <img src="${foto}" class="ficha-foto" onerror="this.outerHTML='<div class=\\'ficha-foto-ph\\'>👤</div>'">
-      <div>
-        <div class="ficha-nombre">${formatName(nombre)}</div>
-        <div class="ficha-sub">🏟️ ${pj} partidos jugados · Temporadas ${anoCards.map(a => a.ano).join(', ')}</div>
-        <div class="ficha-sub" style="margin-top:.3rem">Racha máxima de victorias: <strong style="color:var(--green)">${maxStreak} seguidas</strong></div>
+      // ═══════════════════════════════════════
+      // NUEVAS ESTADÍSTICAS PRO Y CRUCES
+      // ═══════════════════════════════════════
+      const todosLosPibes = [...new Set(allData.map(r => r.jugador))].sort();
+
+      // 1. Rendimiento por Camiseta
+      const calcCamiseta = (eq) => {
+        const p = partidos.filter(r => r.equipo === eq);
+        const w = p.filter(r => r.resultado === 'G').length;
+        const g = p.reduce((a, r) => a + r.goles, 0);
+        return { pj: p.length, winRate: p.length > 0 ? Math.round((w/p.length)*100) : 0, goles: g };
+      };
+      const statB = calcCamiseta('BLANCO');
+      const statN = calcCamiseta('NEGRO');
+
+      // 2. Termómetro (Win rate con goles)
+      const partConGol = partidos.filter(r => !isArquero && r.goles > 0);
+      const winConGol = partConGol.filter(r => r.resultado === 'G').length;
+      const termometro = partConGol.length > 0 ? Math.round((winConGol/partConGol.length)*100) : 0;
+
+      // 3. Peso Ofensivo
+      let teamGoles = 0;
+      partidos.forEach(r => { teamGoles += (r.gf || 0); });
+      const pesoOfensivo = teamGoles > 0 && !isArquero ? Math.round((golesRaw / teamGoles) * 100) : 0;
+
+      // 4. Invicto
+      let maxInvicto = 0, curInvicto = 0;
+      histRaw.forEach((r, i) => {
+        if (i > 0 && r.ano !== histRaw[i - 1].ano) curInvicto = 0;
+        if (['G', 'E'].includes(r.resultado)) { curInvicto++; maxInvicto = Math.max(maxInvicto, curInvicto); } else curInvicto = 0;
+      });
+
+      // 5. Dupla Letal
+      const compas = {};
+      partidos.filter(r => r.resultado === 'G').forEach(r => {
+        const matchCompas = allData.filter(m => m.fecha === r.fecha && (m.ano||2026) === (r.ano||2026) && m.equipo === r.equipo && m.jugador !== nombre);
+        matchCompas.forEach(c => { compas[c.jugador] = (compas[c.jugador] || 0) + 1; });
+      });
+      let mejorCompa = '—', maxWinsCompa = 0;
+      Object.entries(compas).forEach(([j, w]) => { if (w > maxWinsCompa) { maxWinsCompa = w; mejorCompa = formatName(j); } });
+
+      // 6. Verdugo de Arqueros
+      const arquerosHijos = {};
+      partConGol.forEach(r => {
+        const matchArq = allData.find(m => m.fecha === r.fecha && (m.ano||2026) === (r.ano||2026) && m.equipo !== r.equipo && ARQUEROS_VALIDOS.includes(m.jugador));
+        if (matchArq) arquerosHijos[matchArq.jugador] = (arquerosHijos[matchArq.jugador] || 0) + r.goles;
+      });
+      let maxGolesArq = 0, arqHijo = '—';
+      Object.entries(arquerosHijos).forEach(([a, g]) => { if (g > maxGolesArq) { maxGolesArq = g; arqHijo = formatName(a); } });
+
+
+      // ═══════════════════════════════════════
+      // ARMADO DEL HTML (PESTAÑAS)
+      // ═══════════════════════════════════════
+      const totalPuntosJugador = rows.reduce((a, r) => a + (r.resultado==='G'?3:r.resultado==='E'?1:0) + 2 + r.mvp + r.bonus, 0);
+
+      let fichaHTML = `
+      <div class="ficha-header" style="margin-bottom:1rem;">
+        <img src="${foto}" class="ficha-foto" onerror="this.outerHTML='<div class=\\'ficha-foto-ph\\'>👤</div>'">
+        <div>
+          <div class="ficha-nombre">${formatName(nombre)}</div>
+          <div class="ficha-sub">🏟️ ${pj} partidos jugados · Temp: ${anoCards.map(a => a.ano).join(', ')}</div>
+          <div class="ficha-sub" style="margin-top:.3rem">Puntos Totales: <strong style="color:var(--green)">${totalPuntosJugador} pts</strong></div>
+        </div>
       </div>
-    </div>
 
-    <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">Stats <span style="color:var(--green)">Históricas</span></h3>
-    <div class="ficha-stats-grid">
-      <div class="ficha-stat-card"><div class="ficha-stat-val">${pj}</div><div class="ficha-stat-lbl">Partidos</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--green)">${pg}</div><div class="ficha-stat-lbl">Victorias</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${pe}</div><div class="ficha-stat-lbl">Empates</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--red)">${pp}</div><div class="ficha-stat-lbl">Derrotas</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+goles : goles}</div><div class="ficha-stat-lbl">${isArquero ? 'Goles Recibidos' : 'Goles'}</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+prom : prom}</div><div class="ficha-stat-lbl">${isArquero ? 'GC/Partido' : 'Goles/Partido'}</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val">${pct}%</div><div class="ficha-stat-lbl">% Victorias</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${mvps}</div><div class="ficha-stat-lbl">MVPs</div></div>
-      <div class="ficha-stat-card"><div class="ficha-stat-val" class="${dif >= 0 ? 'dif-pos' : 'dif-neg'}">${dif > 0 ? '+' : ''}${dif}</div><div class="ficha-stat-lbl">Dif. Goles</div></div>
-      ${tarjetaCopasHtml}
-    </div>
+      <div class="tabs-ficha">
+        <button id="btn-tf-resumen" class="active" onclick="switchTabFicha('resumen')">RESUMEN</button>
+        <button id="btn-tf-stats" onclick="switchTabFicha('stats')">DATOS PRO</button>
+        <button id="btn-tf-duelos" onclick="switchTabFicha('duelos')">DUELOS VS</button>
+      </div>
+      `;
 
-    <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem">Por <span style="color:var(--green)">Temporada</span></h3>
-    <div class="ficha-ano-grid">
-      ${anoCards.map(a => `
-        <div class="ficha-ano-card" style="${a.esCampeon ? 'border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.03);' : ''}">
-          <div class="ficha-ano-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span>${a.ano}${a.ano === 2026 ? ' ⚡' : ''}</span>
-            ${a.esCampeon ? '<span style="color:var(--gold); font-size:1.2rem;" title="Campeón de la Temporada">🏆</span>' : ''}
+      // --- PESTAÑA 1: RESUMEN (Código Original Intacto) ---
+      fichaHTML += `
+      <div id="tf-resumen" class="tf-content active">
+        <h3 style="font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;color:var(--green)">Historial General</h3>
+        <div class="ficha-stats-grid">
+          <div class="ficha-stat-card"><div class="ficha-stat-val">${pj}</div><div class="ficha-stat-lbl">Partidos</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--green)">${pg}</div><div class="ficha-stat-lbl">Victorias</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${pe}</div><div class="ficha-stat-lbl">Empates</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--red)">${pp}</div><div class="ficha-stat-lbl">Derrotas</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+goles : goles}</div><div class="ficha-stat-lbl">${isArquero ? 'Goles Recibidos' : 'Goles'}</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+prom : prom}</div><div class="ficha-stat-lbl">${isArquero ? 'GC/Partido' : 'Goles/Partido'}</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val">${pct}%</div><div class="ficha-stat-lbl">% Victorias</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" style="color:var(--gold)">${mvps}</div><div class="ficha-stat-lbl">MVPs</div></div>
+          <div class="ficha-stat-card"><div class="ficha-stat-val" class="${dif >= 0 ? 'dif-pos' : 'dif-neg'}">${dif > 0 ? '+' : ''}${dif}</div><div class="ficha-stat-lbl">Dif. Goles</div></div>
+          ${tarjetaCopasHtml}
+        </div>
+
+        <h3 style="font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;margin-top:1.5rem">Por <span style="color:var(--green)">Temporada</span></h3>
+        <div class="ficha-ano-grid">
+          ${anoCards.map(a => `
+            <div class="ficha-ano-card" style="${a.esCampeon ? 'border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.03);' : ''}">
+              <div class="ficha-ano-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>${a.ano}${a.ano === 2026 ? ' ⚡' : ''}</span>
+                ${a.esCampeon ? '<span style="color:var(--gold); font-size:1.2rem;" title="Campeón de la Temporada">🏆</span>' : ''}
+              </div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">Partidos</span><span class="ficha-ano-val">${a.apj}</span></div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">Victorias</span><span class="ficha-ano-val" style="color:var(--green)">${a.apg}</span></div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">Empates</span><span class="ficha-ano-val">${a.ape}</span></div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">Derrotas</span><span class="ficha-ano-val" style="color:var(--red)">${a.app}</span></div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">${isArquero ? 'GC' : 'Goles'}</span><span class="ficha-ano-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+a.agoles : a.agoles}</span></div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">MVPs</span><span class="ficha-ano-val" style="color:var(--gold)">${a.amvp}</span></div>
+              <div class="ficha-ano-row"><span class="ficha-ano-key">Dif</span><span class="ficha-ano-val" style="color:${a.adif >= 0 ? '#7dd87d' : 'var(--red)'}">${a.adif > 0 ? '+' : ''}${a.adif}</span></div>
+            </div>`).join('')}
+        </div>
+
+        <h3 style="font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;margin-top:1.5rem">Últimos <span style="color:var(--green)">Resultados</span></h3>
+        <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:2rem">
+          ${racha.slice(-20).map(r => `<span class="rc ${r === 'G' ? 'rc-g' : r === 'P' ? 'rc-p' : 'rc-e'}" style="width:18px;height:18px" title="${r === 'G' ? 'Victoria' : r === 'P' ? 'Derrota' : 'Empate'}"></span>`).join('')}
+        </div>
+      </div>`;
+
+      // --- PESTAÑA 2: ESTADÍSTICAS PRO ---
+      fichaHTML += `
+      <div id="tf-stats" class="tf-content">
+        
+        <div class="stat-pro-card">
+          <div class="sp-icon">👕</div>
+          <div class="sp-info">
+            <div class="sp-title">Rendimiento por Camiseta</div>
+            <div class="sp-desc" style="display:flex; gap:10px; margin-top:8px;">
+              <div style="flex:1; background:#e8f5e9; color:#000; padding:10px; border-radius:6px; text-align:center;">
+                <strong>BLANCO</strong><br>WinRate: ${statB.winRate}%<br><small>${statB.goles} Goles en ${statB.pj} PJ</small>
+              </div>
+              <div style="flex:1; background:#111; color:#fff; border:1px solid #333; padding:10px; border-radius:6px; text-align:center;">
+                <strong>NEGRO</strong><br>WinRate: ${statN.winRate}%<br><small>${statN.goles} Goles en ${statN.pj} PJ</small>
+              </div>
+            </div>
           </div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">Partidos</span><span class="ficha-ano-val">${a.apj}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">Victorias</span><span class="ficha-ano-val" style="color:var(--green)">${a.apg}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">Empates</span><span class="ficha-ano-val">${a.ape}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">Derrotas</span><span class="ficha-ano-val" style="color:var(--red)">${a.app}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">${isArquero ? 'GC' : 'Goles'}</span><span class="ficha-ano-val" style="color:${isArquero ? '#ff9977' : ''}">${isArquero ? '-'+a.agoles : a.agoles}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">MVPs</span><span class="ficha-ano-val" style="color:var(--gold)">${a.amvp}</span></div>
-          <div class="ficha-ano-row"><span class="ficha-ano-key">Dif</span><span class="ficha-ano-val" style="color:${a.adif >= 0 ? '#7dd87d' : 'var(--red)'}">${a.adif > 0 ? '+' : ''}${a.adif}</span></div>
-        </div>`).join('')}
-    </div>
+        </div>
 
-    <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem">Últimos <span style="color:var(--green)">Resultados</span></h3>
-    <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:2rem">
-      ${racha.slice(-20).map(r => `<span class="rc ${r === 'G' ? 'rc-g' : r === 'P' ? 'rc-p' : 'rc-e'}" style="width:18px;height:18px" title="${r === 'G' ? 'Victoria' : r === 'P' ? 'Derrota' : 'Empate'}"></span>`).join('')}
-    </div>
-  `;
+        ${!isArquero ? `
+        <div class="stat-pro-card">
+          <div class="sp-icon">🔥</div>
+          <div class="sp-info">
+            <div class="sp-title">El Termómetro Goleador</div>
+            <div class="sp-desc">Cuando anota al menos un gol, su equipo termina ganando el <strong>${termometro}%</strong> de las veces.</div>
+          </div>
+        </div>
+        
+        <div class="stat-pro-card">
+          <div class="sp-icon">🎯</div>
+          <div class="sp-info">
+            <div class="sp-title">Peso Ofensivo</div>
+            <div class="sp-desc">Responsable del <strong>${pesoOfensivo}%</strong> de todos los goles que anota su equipo mientras está en cancha.</div>
+          </div>
+        </div>` : ''}
+
+        <div class="stat-pro-card">
+          <div class="sp-icon">🛡️</div>
+          <div class="sp-info">
+            <div class="sp-title">El Amuleto (Invicto)</div>
+            <div class="sp-desc">Llegó a estar <strong>${maxInvicto} fechas seguidas</strong> sin conocer la derrota (sumando victorias y empates). Su racha actual es de <strong>${maxStreak}</strong> victorias.</div>
+          </div>
+        </div>
+
+        <div class="stat-pro-card">
+          <div class="sp-icon">🧼</div>
+          <div class="sp-info">
+            <div class="sp-title">Utilero de Oro</div>
+            <div class="sp-desc">Se llevó las pecheras a lavar a su casa <strong>${utilero}</strong> veces a lo largo del torneo.</div>
+          </div>
+        </div>
+
+      </div>`;
+
+      // --- PESTAÑA 3: DUELOS Y SOCIOS ---
+      fichaHTML += `
+      <div id="tf-duelos" class="tf-content">
+        
+        <div class="stat-pro-card" style="flex-direction:column; align-items:stretch;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:5px;">
+            <div class="sp-icon" style="margin:0;">⚔️</div>
+            <div class="sp-title" style="margin:0; font-size:1.1rem; color:var(--red);">Duelo Directo VS</div>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text2); margin-bottom:10px;">Elegí un rival para ver el historial jugando <strong>en contra</strong>.</p>
+          <select id="select-vs" class="insc-select" style="width:100%; border-color:rgba(255,85,85,0.5);" onchange="actualizarDueloVS('${nombre.replace(/'/g, "\\'")}')">
+            <option value="">Seleccioná un jugador...</option>
+            ${todosLosPibes.filter(p => p !== nombre).map(p => `<option value="${p}">${formatName(p)}</option>`).join('')}
+          </select>
+          <div id="resultado-duelo" style="display:none;"></div>
+        </div>
+
+        <div class="stat-pro-card">
+          <div class="sp-icon">🤝</div>
+          <div class="sp-info">
+            <div class="sp-title">La Dupla Letal</div>
+            <div class="sp-desc">El socio ideal. El jugador con el que más veces ganó compartiendo el mismo equipo es <strong>${mejorCompa}</strong> (${maxWinsCompa} victorias conjuntas).</div>
+          </div>
+        </div>
+
+        ${!isArquero && maxGolesArq > 0 ? `
+        <div class="stat-pro-card">
+          <div class="sp-icon">🧤</div>
+          <div class="sp-info">
+            <div class="sp-title">El Verdugo de Arqueros</div>
+            <div class="sp-desc">Su víctima favorita bajo los tres palos es <strong>${arqHijo}</strong>, a quien le anotó <strong>${maxGolesArq}</strong> goles oficiales.</div>
+          </div>
+        </div>` : ''}
+
+      </div>`;
 
       document.getElementById('ficha-content').innerHTML = fichaHTML;
       
@@ -5186,8 +5408,6 @@ function renderMVPs() {
       showPage('jugador', false, false);
       history.pushState(null, null, '#jugador_' + encodeURIComponent(nombre));
     }
-
-
 
 
     function getNextWednesday() {
