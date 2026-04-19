@@ -5127,7 +5127,7 @@ function actualizarDueloVS(nombreA) {
 }
     
 // ═══════════════════════════════════════
-    // FICHA DE JUGADOR (Versión Pestañas + Stats Pro)
+    // FICHA DE JUGADOR (Versión Pestañas + Stats Pro + Mejoras de Diseño y Duelo)
     // ═══════════════════════════════════════
     function openFicha(nombre) {
       const allData = getAllDataCombined();
@@ -5201,7 +5201,18 @@ function actualizarDueloVS(nombreA) {
       // ═══════════════════════════════════════
       // NUEVAS ESTADÍSTICAS PRO Y CRUCES
       // ═══════════════════════════════════════
-      const todosLosPibes = [...new Set(allData.map(r => r.jugador))].sort();
+      
+      // Filtro para el menú desplegable: Jugadores con 5+ PJ y ordenados alfabéticamente
+      const allPlayersCounts = allData.reduce((acc, row) => {
+          if (['G', 'E', 'P'].includes(row.resultado)) {
+              acc[row.jugador] = (acc[row.jugador] || 0) + 1;
+          }
+          return acc;
+      }, {});
+
+      const todosLosPibesFiltrados = Object.keys(allPlayersCounts)
+          .filter(p => p !== nombre && allPlayersCounts[p] >= 5)
+          .sort();
 
       // 1. Rendimiento por Camiseta
       const calcCamiseta = (eq) => {
@@ -5312,7 +5323,7 @@ function actualizarDueloVS(nombreA) {
         </div>
       </div>`;
 
-      // --- PESTAÑA 2: ESTADÍSTICAS PRO ---
+      // --- PESTAÑA 2: ESTADÍSTICAS PRO (Mejoras de Diseño) ---
       fichaHTML += `
       <div id="tf-stats" class="tf-content">
         
@@ -5321,11 +5332,11 @@ function actualizarDueloVS(nombreA) {
           <div class="sp-info">
             <div class="sp-title">Rendimiento por Camiseta</div>
             <div class="sp-desc" style="display:flex; gap:10px; margin-top:8px;">
-              <div style="flex:1; background:#e8f5e9; color:#000; padding:10px; border-radius:6px; text-align:center;">
-                <strong>BLANCO</strong><br>WinRate: ${statB.winRate}%<br><small>${statB.goles} Goles en ${statB.pj} PJ</small>
+              <div style="flex:1; background:var(--card); color:var(--text); padding:10px; border-radius:6px; border:1px solid rgba(57, 255, 20, 0.1); text-align:center;">
+                <strong><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#fff; border:1px solid rgba(57, 255, 20, 0.2); margin-right:5px; vertical-align:middle;"></span>BLANCO</strong><br>WinRate: ${statB.winRate}%<br><small>${statB.goles} Goles en ${statB.pj} PJ</small>
               </div>
-              <div style="flex:1; background:#111; color:#fff; border:1px solid #333; padding:10px; border-radius:6px; text-align:center;">
-                <strong>NEGRO</strong><br>WinRate: ${statN.winRate}%<br><small>${statN.goles} Goles en ${statN.pj} PJ</small>
+              <div style="flex:1; background:var(--card); color:var(--text); padding:10px; border-radius:6px; border:1px solid rgba(57, 255, 20, 0.1); text-align:center;">
+                <strong><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#111; border:1px solid rgba(57, 255, 20, 0.2); margin-right:5px; vertical-align:middle;"></span>NEGRO</strong><br>WinRate: ${statN.winRate}%<br><small>${statN.goles} Goles en ${statN.pj} PJ</small>
               </div>
             </div>
           </div>
@@ -5366,7 +5377,7 @@ function actualizarDueloVS(nombreA) {
 
       </div>`;
 
-      // --- PESTAÑA 3: DUELOS Y SOCIOS ---
+      // --- PESTAÑA 3: DUELOS Y SOCIOS (Mejoras de Duelo) ---
       fichaHTML += `
       <div id="tf-duelos" class="tf-content">
         
@@ -5375,10 +5386,10 @@ function actualizarDueloVS(nombreA) {
             <div class="sp-icon" style="margin:0;">⚔️</div>
             <div class="sp-title" style="margin:0; font-size:1.1rem; color:var(--red);">Duelo Directo VS</div>
           </div>
-          <p style="font-size:0.8rem; color:var(--text2); margin-bottom:10px;">Elegí un rival para ver el historial jugando <strong>en contra</strong>.</p>
+          <p style="font-size:0.8rem; color:var(--text2); margin-bottom:10px;">Elegí un rival para ver el historial jugando <strong>en contra</strong>. (Solo rivales con 5+ PJ)</p>
           <select id="select-vs" class="insc-select" style="width:100%; border-color:rgba(255,85,85,0.5);" onchange="actualizarDueloVS('${nombre.replace(/'/g, "\\'")}')">
             <option value="">Seleccioná un jugador...</option>
-            ${todosLosPibes.filter(p => p !== nombre).map(p => `<option value="${p}">${formatName(p)}</option>`).join('')}
+            ${todosLosPibesFiltrados.map(p => `<option value="${p}">${formatName(p)}</option>`).join('')}
           </select>
           <div id="resultado-duelo" style="display:none;"></div>
         </div>
@@ -5408,7 +5419,6 @@ function actualizarDueloVS(nombreA) {
       showPage('jugador', false, false);
       history.pushState(null, null, '#jugador_' + encodeURIComponent(nombre));
     }
-
 
     function getNextWednesday() {
   const now = new Date(); const day = now.getDay(); let diff = 3 - day;
