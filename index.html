@@ -5127,7 +5127,7 @@ function actualizarDueloVS(nombreA) {
 }
     
 // ═══════════════════════════════════════
-    // FICHA DE JUGADOR (Versión Pestañas + Stats Pro + Mejoras)
+    // FICHA DE JUGADOR (Versión Pestañas + Stats Pro)
     // ═══════════════════════════════════════
     function openFicha(nombre) {
       const allData = getAllDataCombined();
@@ -5202,7 +5202,7 @@ function actualizarDueloVS(nombreA) {
       // NUEVAS ESTADÍSTICAS PRO Y CRUCES
       // ═══════════════════════════════════════
 
-      // 1. Rendimiento por Camiseta (NUEVO DISEÑO)
+      // 1. Rendimiento por Camiseta (Diseño Limpio + Puntos LED)
       const calcCamiseta = (eq) => {
         const p = partidos.filter(r => r.equipo === eq);
         const w = p.filter(r => r.resultado === 'G').length;
@@ -5229,20 +5229,49 @@ function actualizarDueloVS(nombreA) {
         if (['G', 'E'].includes(r.resultado)) { curInvicto++; maxInvicto = Math.max(maxInvicto, curInvicto); } else curInvicto = 0;
       });
 
-      // 5. Solidez Defensiva (Arqueros y Defensores)
+      // 5. Solidez Defensiva y "Mejor Socio Defensivo"
       const vallasInvictas = partidos.filter(r => (r.gc || 0) === 0).length;
       const gcPromedioJugando = pj > 0 ? (partidos.reduce((a, r) => a + (r.gc || 0), 0) / pj).toFixed(2) : 0;
-
-      // 6. Filtro para Duelos VS (Solo +5 partidos en el historial, ordenados alfabéticamente)
-      const partidosPorJugador = {};
-      allData.filter(r => ['G','E','P'].includes(r.resultado)).forEach(r => {
-        partidosPorJugador[r.jugador] = (partidosPorJugador[r.jugador] || 0) + 1;
+      
+      const sociosDef = {};
+      partidos.forEach(r => {
+        const compasMatch = allData.filter(m => m.fecha === r.fecha && (m.ano||2026) === (r.ano||2026) && m.equipo === r.equipo && m.jugador !== nombre);
+        compasMatch.forEach(c => {
+          if (!sociosDef[c.jugador]) sociosDef[c.jugador] = { pj: 0, gc: 0 };
+          sociosDef[c.jugador].pj++;
+          sociosDef[c.jugador].gc += (r.gc || 0);
+        });
       });
-      const pibesFiltrados = Object.keys(partidosPorJugador)
-        .filter(p => p !== nombre && partidosPorJugador[p] >= 5)
-        .sort(); // Sort ya ordena alfabéticamente
 
-      // 7. Dupla Letal
+      let mejorSocioDef = 'Nadie (aún)';
+      let minGCProm = 999;
+      let socioDefPJ = 0, socioDefGC = 0;
+
+      // Filtramos para buscar socios con al menos 3 partidos jugados juntos
+      Object.entries(sociosDef).forEach(([j, stats]) => {
+        if (stats.pj >= 3) {
+          const prom = stats.gc / stats.pj;
+          if (prom < minGCProm) {
+            minGCProm = prom; mejorSocioDef = formatName(j); socioDefPJ = stats.pj; socioDefGC = stats.gc;
+          }
+        }
+      });
+      
+      // Si nadie llega a 3 partidos, bajamos el filtro a 1 partido para que no quede vacío
+      if (mejorSocioDef === 'Nadie (aún)') {
+        Object.entries(sociosDef).forEach(([j, stats]) => {
+          const prom = stats.gc / stats.pj;
+          if (prom < minGCProm) {
+            minGCProm = prom; mejorSocioDef = formatName(j); socioDefPJ = stats.pj; socioDefGC = stats.gc;
+          }
+        });
+      }
+
+      const socioDefTxt = socioDefPJ > 0 
+        ? `<br><br>🛡️ <strong>Socio Defensivo:</strong> Jugando junto a <strong>${mejorSocioDef}</strong>, tu equipo recibe apenas <strong>${minGCProm.toFixed(2)} goles/partido</strong> (recibieron ${socioDefGC} en ${socioDefPJ} partidos compartidos).`
+        : '';
+
+      // 6. Dupla Letal
       const compas = {};
       partidos.filter(r => r.resultado === 'G').forEach(r => {
         const matchCompas = allData.filter(m => m.fecha === r.fecha && (m.ano||2026) === (r.ano||2026) && m.equipo === r.equipo && m.jugador !== nombre);
@@ -5250,6 +5279,15 @@ function actualizarDueloVS(nombreA) {
       });
       let mejorCompa = '—', maxWinsCompa = 0;
       Object.entries(compas).forEach(([j, w]) => { if (w > maxWinsCompa) { maxWinsCompa = w; mejorCompa = formatName(j); } });
+
+      // 7. Filtro para Duelos VS (+5 partidos, orden alfabético)
+      const partidosPorJugador = {};
+      allData.filter(r => ['G','E','P'].includes(r.resultado)).forEach(r => {
+        partidosPorJugador[r.jugador] = (partidosPorJugador[r.jugador] || 0) + 1;
+      });
+      const pibesFiltrados = Object.keys(partidosPorJugador)
+        .filter(p => p !== nombre && partidosPorJugador[p] >= 5)
+        .sort();
 
       // 8. Verdugo de Arqueros
       const arquerosHijos = {};
@@ -5333,11 +5371,17 @@ function actualizarDueloVS(nombreA) {
           <div class="sp-info">
             <div class="sp-title">Rendimiento por Camiseta</div>
             <div class="sp-desc" style="display:flex; gap:10px; margin-top:8px;">
-              <div style="flex:1; background:var(--card); color:var(--text); padding:10px; border-radius:6px; border:1px solid rgba(57, 255, 20, 0.1); text-align:center;">
-                <strong><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#f4f4f4; border:2px solid rgba(255, 255, 255, 0.4); box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); margin-right:5px; vertical-align:middle;"></span>BLANCO</strong><br>WinRate: ${statB.winRate}%<br><small>${statB.goles} Goles en ${statB.pj} PJ</small>
+              <div style="flex:1; background:rgba(57, 255, 20, 0.04); color:var(--text); padding:10px; border-radius:6px; border:1px solid rgba(57, 255, 20, 0.2); text-align:center;">
+                <div style="display:flex; align-items:center; justify-content:center; gap:6px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; margin-bottom:4px;">
+                  <span class="dot-w"></span> BLANCO
+                </div>
+                WinRate: <strong>${statB.winRate}%</strong><br><small style="color:var(--text2)">${statB.goles} Goles en ${statB.pj} PJ</small>
               </div>
-              <div style="flex:1; background:var(--card); color:var(--text); padding:10px; border-radius:6px; border:1px solid rgba(57, 255, 20, 0.1); text-align:center;">
-                <strong><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#111; border:2px solid rgba(255, 255, 255, 0.2); margin-right:5px; vertical-align:middle;"></span>NEGRO</strong><br>WinRate: ${statN.winRate}%<br><small>${statN.goles} Goles en ${statN.pj} PJ</small>
+              <div style="flex:1; background:rgba(57, 255, 20, 0.04); color:var(--text); padding:10px; border-radius:6px; border:1px solid rgba(57, 255, 20, 0.2); text-align:center;">
+                <div style="display:flex; align-items:center; justify-content:center; gap:6px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1rem; margin-bottom:4px;">
+                  <span class="dot-n"></span> NEGRO
+                </div>
+                WinRate: <strong>${statN.winRate}%</strong><br><small style="color:var(--text2)">${statN.goles} Goles en ${statN.pj} PJ</small>
               </div>
             </div>
           </div>
@@ -5347,7 +5391,7 @@ function actualizarDueloVS(nombreA) {
           <div class="sp-icon">🧱</div>
           <div class="sp-info">
             <div class="sp-title">Solidez Defensiva</div>
-            <div class="sp-desc">Logró mantener la <strong>valla invicta en ${vallasInvictas} partidos</strong>. Con él en cancha, su equipo recibe un promedio de <strong>${gcPromedioJugando} goles</strong> por fecha.</div>
+            <div class="sp-desc">Logró mantener la <strong>valla invicta en ${vallasInvictas} partidos</strong>. Con él en cancha, su equipo recibe un promedio de <strong>${gcPromedioJugando} goles</strong> por partido. ${socioDefTxt}</div>
           </div>
         </div>
 
@@ -5372,7 +5416,7 @@ function actualizarDueloVS(nombreA) {
           <div class="sp-icon">🛡️</div>
           <div class="sp-info">
             <div class="sp-title">El Amuleto (Invicto)</div>
-            <div class="sp-desc">Llegó a estar <strong>${maxInvicto} fechas seguidas</strong> sin conocer la derrota (sumando victorias y empates). Su racha actual es de <strong>${maxStreak}</strong> victorias.</div>
+            <div class="sp-desc">Llegó a estar <strong>${maxInvicto} fechas seguidas</strong> sin conocer la derrota (sumando victorias y empates). Su racha actual es de <strong>${maxStreak}</strong> victorias seguidas.</div>
           </div>
         </div>
 
@@ -5395,9 +5439,9 @@ function actualizarDueloVS(nombreA) {
             <div class="sp-icon" style="margin:0;">⚔️</div>
             <div class="sp-title" style="margin:0; font-size:1.1rem; color:var(--red);">Duelo Directo VS</div>
           </div>
-          <p style="font-size:0.8rem; color:var(--text2); margin-bottom:10px;">Elegí un rival para ver el historial jugando <strong>en contra</strong>. <br>(Solo se listan jugadores con 5+ PJ históricos)</p>
+          <p style="font-size:0.8rem; color:var(--text2); margin-bottom:10px;">Elegí un rival para ver el historial jugando <strong>en contra</strong>.<br><span style="font-size:0.75rem">(Solo se listan jugadores con 5 o más partidos históricos)</span></p>
           <select id="select-vs" class="insc-select" style="width:100%; border-color:rgba(255,85,85,0.5);" onchange="actualizarDueloVS('${nombre.replace(/'/g, "\\'")}')">
-            <option value="">Seleccioná un jugador...</option>
+            <option value="">Seleccioná un rival...</option>
             ${pibesFiltrados.map(p => `<option value="${p}">${formatName(p)}</option>`).join('')}
           </select>
           <div id="resultado-duelo" style="display:none;"></div>
@@ -5407,7 +5451,7 @@ function actualizarDueloVS(nombreA) {
           <div class="sp-icon">🤝</div>
           <div class="sp-info">
             <div class="sp-title">La Dupla Letal</div>
-            <div class="sp-desc">El socio ideal. El jugador con el que más veces ganó compartiendo el mismo equipo es <strong>${mejorCompa}</strong> (${maxWinsCompa} victorias conjuntas).</div>
+            <div class="sp-desc">El socio ideal en ataque. El jugador con el que más veces ganó compartiendo el mismo equipo es <strong>${mejorCompa}</strong> (${maxWinsCompa} victorias conjuntas).</div>
           </div>
         </div>
 
