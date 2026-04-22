@@ -5202,7 +5202,7 @@ function actualizarDueloVS(nombreA) {
       const todosLosPibes = [...new Set(allData.map(r => r.jugador))].sort();
       const pibesFiltrados = Object.keys(partidosPorJugador)
         .filter(p => p !== nombre && partidosPorJugador[p] >= 5)
-        .sort();
+        .sort((a, b) => formatName(a).localeCompare(formatName(b))); // <-- Esto hace la magia
 
       // 1. Rendimiento por Camiseta
       const calcCamiseta = (eq) => {
