@@ -3741,11 +3741,7 @@
       }
 
       // Botón de WhatsApp
-      if (ocupadosCont + _inscripcionData.filter(s => s.estado.startsWith('Bloqueado')).length >= 16 || adminUnlocked) {
-        btnShare.style.display = 'inline-block';
-      } else {
-        btnShare.style.display = 'none';
-      }
+      btnShare.style.display = 'inline-block';
     }
 
     // Nueva función de Anotado Automático (Anti-choques)
