@@ -5471,8 +5471,17 @@ function actualizarDueloVS(nombreA) {
 
       document.getElementById('ficha-content').innerHTML = fichaHTML;
       
-      showPage('jugador', false, false);
+showPage('jugador', false, false);
       history.pushState(null, null, '#jugador_' + encodeURIComponent(nombre));
+
+      // Avisar a Analytics que miraron a este jugador puntual
+      if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+          page_title: 'Ficha: ' + nombre,
+          page_location: window.location.href,
+          page_path: '/jugador_' + encodeURIComponent(nombre)
+        });
+      }
     }
 
     function getNextWednesday() {
@@ -5837,8 +5846,17 @@ function renderAll(data) {
         }, 300);
       }
       
-      if (updateUrl) {
+     if (updateUrl) {
         history.pushState(null, null, '#' + id);
+      }
+      
+      // Forzar el aviso a Google Analytics
+      if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+          page_title: id,
+          page_location: window.location.href,
+          page_path: '/' + id
+        });
       }
     }
 
