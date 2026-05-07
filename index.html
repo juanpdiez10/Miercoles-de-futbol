@@ -3886,7 +3886,6 @@
       });
       return Object.entries(p).map(([n, x]) => {
         let pts = x.pj * 2 + x.pg * 3 + x.pe * 1 + x.mvp + x.bonus;
-        if (n === 'Cañete, Martin') pts -= 2;
         const pct = x.pj > 0 ? Math.round(x.pg / x.pj * 100) : 0;
         
         const isArq = ['Cañete, Maxi', 'Questa, Ezequiel'].includes(n);
