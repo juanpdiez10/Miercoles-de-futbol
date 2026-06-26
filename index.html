@@ -4270,7 +4270,7 @@ function renderMVPs() {
         : 'Aún no hay rachas de victorias registradas.';
 
       const cardsData = [
-        { icon: '⚽', label: 'Total de goles', value: totalGoles, sub: 'en 6 fechas' },
+        { icon: '⚽', label: 'Total de goles', value: totalGoles, sub: 'en ${matches.length} fechas' },
         { icon: '📊', label: 'Promedio por partido', value: avgGoles, sub: 'goles por fecha' },
         { icon: '🔥', label: 'Partido más goleador', value: `F${mostGoles.fecha}`, sub: `${mostGoles.gfB + mostGoles.gfN} goles totales (${mostGoles.gfB}-${mostGoles.gfN})` },
         { icon: '😰', label: 'Partido más ajustado', value: `F${tightest.fecha}`, sub: `${tightest.gfB}-${tightest.gfN} · solo ${Math.abs(tightest.gfB - tightest.gfN)} gol de diferencia` },
