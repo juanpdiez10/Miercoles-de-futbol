@@ -4951,8 +4951,7 @@ function renderMVPs() {
       const histScorers = Object.entries(gTot).filter(([, v]) => v > 0)
         .map(([n, v]) => ({ nombre: n, goles: v, pj: gPJ[n] || 1 }))
         .sort((a, b) => b.goles - a.goles);
-      const totalPJhist = Math.max(...Object.values(gPJ || { 1: 1 }));
-      const minPJhist = Math.ceil(totalPJhist / 2);
+      const minPJhist = 50;
       const histScorersByProm = [...histScorers]
         .filter(s => (gPJ[s.nombre] || 0) >= minPJhist)
         .sort((a, b) => (b.goles / b.pj) - (a.goles / a.pj));
