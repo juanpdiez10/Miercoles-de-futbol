@@ -4561,7 +4561,7 @@ function renderMVPs() {
       const scorers = computeHistScorers(data);
       const st = computeHistStandings(data, ano <= 2024 ? 'pj' : 'pts');
       const totalFechas = [...new Set(data.map(r => r.fecha))].length;
-      const minPJ = Math.ceil(totalFechas / 2);
+      const minPJ = isHistorico ? 50 : Math.ceil(totalFechas / 2);
 
       // Build per-fecha map for popup
       const golesPerFecha = {};
@@ -4747,7 +4747,7 @@ function renderMVPs() {
       const st = stAll.filter(p => !p.nombre.startsWith('Invitado') && !p.nombre.toLowerCase().includes('amigo'));
 
       const totalFechas = matches.length;
-      const minPJ = Math.ceil(totalFechas / 2);
+      const minPJ = isHistorico ? 50 : Math.ceil(totalFechas / 2);
 
       const totalGoles = matches.reduce((a, m) => a + m.gfB + m.gfN, 0);
       const avgGoles = (totalGoles / matches.length).toFixed(1);
