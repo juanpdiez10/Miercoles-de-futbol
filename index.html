@@ -4561,7 +4561,7 @@ function renderMVPs() {
       const scorers = computeHistScorers(data);
       const st = computeHistStandings(data, ano <= 2024 ? 'pj' : 'pts');
       const totalFechas = [...new Set(data.map(r => r.fecha))].length;
-      const minPJ = isHistorico ? 50 : Math.ceil(totalFechas / 2);
+      const minPJ = Math.ceil(totalFechas / 2);
 
       // Build per-fecha map for popup
       const golesPerFecha = {};
