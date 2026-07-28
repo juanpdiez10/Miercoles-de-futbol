@@ -618,8 +618,9 @@
 
     .name-wrap {
       display: inline-flex;
-      flex-direction: column;
-      gap: 0;
+      flex-direction: row; /* Pasamos de column a row */
+      align-items: center; /* Centramos verticalmente nombre y emoji */
+      gap: 0.5rem; /* Espacio entre el nombre y el emoji */
       line-height: 1.25
     }
 
@@ -635,8 +636,9 @@
       font-weight: 700;
       padding: .04rem .28rem;
       border-radius: 8px;
-      margin-top: .08rem;
-      width: fit-content
+      margin-top: 0; /* Eliminamos el margen superior que lo empujaba hacia abajo */
+      width: fit-content;
+      white-space: nowrap; /* Evita que el badge se rompa en dos renglones */
     }
 
     .pts-legend {
